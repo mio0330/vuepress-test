@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <p>Rollup 是一款基于 ES Module 模块规范实现的 JavaScript 打包工具，在前端社区中赫赫有名，同时也在 Vite 的架构体系中发挥着重要作用。不仅是 Vite 生产环境下的打包工具，其插件机制也被 Vite 所兼容，可以说是 Vite 的构建基石。因此，掌握 Rollup 也是深入学习 Vite 的必经之路。</p>
+<p>接下来，我们将通过两小节系统学习 Rollup。本节主要围绕 Rollup 的基本概念和核心特性展开，你不仅能知道 Rollup 是如何打包项目的，还能学会 Rollup 更高阶的使用方式，甚至能够通过 JavaScript API 二次开发 Rollup。</p>
+<h2>快速上手</h2>
+<p>首先让我们用<code>npm init -y</code>新建一个项目，然后安装 <code>rollup</code> 依赖:</p>
+<pre><code class="hljs language-ts">pnpm i rollup
+</code></pre>
+<p>接着新增 <code>src/index.js</code> 和 <code>src/util.js</code> 和<code>rollup.config.js</code> 三个文件，目录结构如下所示:</p>
+<pre><code class="hljs language-js">.
+├── package.<span class="hljs-property">json</span>
+├── pnpm-lock.<span class="hljs-property">yaml</span>
+├── rollup.<span class="hljs-property">config</span>.<span class="hljs-property">js</span>
+└── src
+    ├── index.<span class="hljs-property">js</span>
+    └── util.<span class="hljs-property">js</span>
+</code></pre>
+<p>文件的内容分别如下:</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// src/index.js</span>
+<span class="hljs-keyword">import</span> { add } <span class="hljs-keyword">from</span> <span class="hljs-string">"./util"</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>));
+
+<span class="hljs-comment">// src/util.js</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">add</span> = (<span class="hljs-params">a, b</span>) => a + b;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">multi</span> = (<span class="hljs-params">a, b</span>) => a * b;
+<span class="hljs-comment">// rollup.config.js</span>
+<span class="hljs-comment">// 以下注释是为了能使用 VSCode 的类型提示</span>
+<span class="hljs-comment">/**
+ * <span class="hljs-doctag">@type</span> {<span class="hljs-type"> import('rollup').RollupOptions </span>}
+ */</span>
+<span class="hljs-keyword">const</span> buildOptions = {
+  <span class="hljs-attr">input</span>: [<span class="hljs-string">"src/index.js"</span>],
+  <span class="hljs-attr">output</span>: {
+    <span class="hljs-comment">// 产物输出目录</span>
+    <span class="hljs-attr">dir</span>: <span class="hljs-string">"dist/es"</span>,
+    <span class="hljs-comment">// 产物格式</span>
+    <span class="hljs-attr">format</span>: <span class="hljs-string">"esm"</span>,
+  },
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> buildOptions;
+</code></pre>
+<p>你可以在<code>package.json</code>中加入如下的构建脚本:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-comment">// rollup 打包命令，`-c` 表示使用配置文件中的配置</span>
+  <span class="hljs-attr">"build"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"rollup -c"</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>接着在终端执行一下<code>npm run build</code>，可以看到如下的命令行信息:</p>
+<p><img src="img\b9d9860f-ae61-11ed-b819-342eb7027b95.jpg" alt="image.png"></p>
+<p>OK，现在你已经成功使用 Rollup 打出了第一份产物! 我们可以去 <code>dist/es</code> 目录查看一下产物的内容:</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// dist/es/index.js</span>
+<span class="hljs-comment">// 代码已经打包到一起</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">add</span> = (<span class="hljs-params">a, b</span>) => a + b;
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>));
+</code></pre>
+<p>同时你也可以发现，<code>util.js</code>中的<code>multi</code>方法并没有被打包到产物中，这是因为 Rollup 具有天然的 <code>Tree Shaking</code> 功能，可以分析出未使用到的模块并自动擦除。</p>
+<p>所谓 <code>Tree Shaking</code>(摇树)，也是计算机编译原理中<code>DCE</code>(Dead Code Elimination，即消除无用代码) 技术的一种实现。由于 ES 模块依赖关系是确定的，和运行时状态无关。因此 Rollup 可以在编译阶段分析出依赖关系，对 AST 语法树中没有使用到的节点进行删除，从而实现 Tree Shaking。</p>
+<h2>常用配置解读</h2>
+<h3>1. 多产物配置</h3>
+<p>在打包 JavaScript 类库的场景中，我们通常需要对外暴露出不同格式的产物供他人使用，不仅包括 <code>ESM</code>，也需要包括诸如<code>CommonJS</code>、<code>UMD</code>等格式，保证良好的兼容性。那么，同一份入口文件，如何让 Rollup 给我们打包出不一样格式的产物呢？我们基于上述的配置文件来进行修改:</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// rollup.config.js</span>
+<span class="hljs-comment">/**
+ * <span class="hljs-doctag">@type</span> {<span class="hljs-type"> import('rollup').RollupOptions </span>}
+ */</span>
+<span class="hljs-keyword">const</span> buildOptions = {
+  <span class="hljs-attr">input</span>: [<span class="hljs-string">"src/index.js"</span>],
+  <span class="hljs-comment">// 将 output 改造成一个数组</span>
+  <span class="hljs-attr">output</span>: [
+    {
+      <span class="hljs-attr">dir</span>: <span class="hljs-string">"dist/es"</span>,
+      <span class="hljs-attr">format</span>: <span class="hljs-string">"esm"</span>,
+    },
+    {
+      <span class="hljs-attr">dir</span>: <span class="hljs-string">"dist/cjs"</span>,
+      <span class="hljs-attr">format</span>: <span class="hljs-string">"cjs"</span>,
+    },
+  ],
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> buildOptions;
+</code></pre>
+<p>从代码中可以看到，我们将<code>output</code>属性配置成一个数组，数组中每个元素都是一个描述对象，决定了不同产物的输出行为。</p>
+<h3>2. 多入口配置</h3>
+<p>除了多产物配置，Rollup 中也支持多入口配置，而且通常情况下两者会被结合起来使用。接下来，就让我们继续改造之前的配置文件，将 <code>input</code> 设置为一个数组或者一个对象，如下所示:</p>
+<pre><code class="hljs language-js">{
+  <span class="hljs-attr">input</span>: [<span class="hljs-string">"src/index.js"</span>, <span class="hljs-string">"src/util.js"</span>]
+}
+<span class="hljs-comment">// 或者</span>
+{
+  <span class="hljs-attr">input</span>: {
+    <span class="hljs-attr">index</span>: <span class="hljs-string">"src/index.js"</span>,
+    <span class="hljs-attr">util</span>: <span class="hljs-string">"src/util.js"</span>,
+  },
+}
+</code></pre>
+<p>通过执行<code>npm run build</code>可以发现，所有入口的不同格式产物已经成功输出:
+<img src="img\b9f88a93-ae61-11ed-882f-342eb7027b95.jpg" alt="image.png"></p>
+<p>如果不同入口对应的打包配置不一样，我们也可以默认导出一个<code>配置数组</code>，如下所示:</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// rollup.config.js</span>
+<span class="hljs-comment">/**
+ * <span class="hljs-doctag">@type</span> {<span class="hljs-type"> import('rollup').RollupOptions </span>}
+ */</span>
+<span class="hljs-keyword">const</span> buildIndexOptions = {
+  <span class="hljs-attr">input</span>: [<span class="hljs-string">"src/index.js"</span>],
+  <span class="hljs-attr">output</span>: [
+    <span class="hljs-comment">// 省略 output 配置</span>
+  ],
+};
+
+<span class="hljs-comment">/**
+ * <span class="hljs-doctag">@type</span> {<span class="hljs-type"> import('rollup').RollupOptions </span>}
+ */</span>
+<span class="hljs-keyword">const</span> buildUtilOptions = {
+  <span class="hljs-attr">input</span>: [<span class="hljs-string">"src/util.js"</span>],
+  <span class="hljs-attr">output</span>: [
+    <span class="hljs-comment">// 省略 output 配置</span>
+  ],
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> [buildIndexOptions, buildUtilOptions];
+</code></pre>
+<p>如果是比较复杂的打包场景(如 <a href="https://github.com/vitejs/vite/blob/main/packages/vite/rollup.config.js" target="_blank" rel="nofollow noopener noreferrer">Vite 源码本身的打包</a>)，我们需要将项目的代码分成几个部分，用不同的 Rollup 配置分别打包，这种配置就很有用了。</p>
+<h3>3. 自定义<code>output</code>配置</h3>
+<p>刚才我们提到了<code>input</code>的使用，主要用来声明入口，可以配置成字符串、数组或者对象，使用比较简单。而<code>output</code>与之相对，用来配置输出的相关信息，常用的配置项如下:</p>
+<pre><code class="hljs language-js"><span class="hljs-attr">output</span>: {
+  <span class="hljs-comment">// 产物输出目录</span>
+  <span class="hljs-attr">dir</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">'dist'</span>),
+  <span class="hljs-comment">// 以下三个配置项都可以使用这些占位符:</span>
+  <span class="hljs-comment">// 1. [name]: 去除文件后缀后的文件名</span>
+  <span class="hljs-comment">// 2. [hash]: 根据文件名和文件内容生成的 hash 值</span>
+  <span class="hljs-comment">// 3. [format]: 产物模块格式，如 es、cjs</span>
+  <span class="hljs-comment">// 4. [extname]: 产物后缀名(带`.`)</span>
+  <span class="hljs-comment">// 入口模块的输出文件名</span>
+  <span class="hljs-attr">entryFileNames</span>: <span class="hljs-string">`[name].js`</span>,
+  <span class="hljs-comment">// 非入口模块(如动态 import)的输出文件名</span>
+  <span class="hljs-attr">chunkFileNames</span>: <span class="hljs-string">'chunk-[hash].js'</span>,
+  <span class="hljs-comment">// 静态资源文件输出文件名</span>
+  <span class="hljs-attr">assetFileNames</span>: <span class="hljs-string">'assets/[name]-[hash][extname]'</span>,
+  <span class="hljs-comment">// 产物输出格式，包括`amd`、`cjs`、`es`、`iife`、`umd`、`system`</span>
+  <span class="hljs-attr">format</span>: <span class="hljs-string">'cjs'</span>,
+  <span class="hljs-comment">// 是否生成 sourcemap 文件</span>
+  <span class="hljs-attr">sourcemap</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-comment">// 如果是打包出 iife/umd 格式，需要对外暴露出一个全局变量，通过 name 配置变量名</span>
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'MyBundle'</span>,
+  <span class="hljs-comment">// 全局变量声明</span>
+  <span class="hljs-attr">globals</span>: {
+    <span class="hljs-comment">// 项目中可以直接用`$`代替`jquery`</span>
+    <span class="hljs-attr">jquery</span>: <span class="hljs-string">'$'</span>
+  }
+}
+</code></pre>
+<h3>4. 依赖 external</h3>
+<p>对于某些第三方包，有时候我们不想让 Rollup 进行打包，也可以通过 external 进行外部化:</p>
+<pre><code class="hljs language-ts">{
+  <span class="hljs-attr">external</span>: [<span class="hljs-string">'react'</span>, <span class="hljs-string">'react-dom'</span>]
+}
+</code></pre>
+<p>在 SSR 构建或者使用 ESM CDN 的场景中，这个配置将非常有用，具体细节我们会在<strong>高级应用</strong>这一章展开。</p>
+<h3>5. 接入插件能力</h3>
+<p>在 Rollup 的日常使用中，我们难免会遇到一些 Rollup 本身不支持的场景，比如<code>兼容 CommonJS 打包</code>、<code>注入环境变量</code>、<code>配置路径别名</code>、<code>压缩产物代码</code> 等等。这个时候就需要我们引入相应的 Rollup 插件了。接下来以一个具体的场景为例带大家熟悉一下 Rollup 插件的使用。</p>
+<p>虽然 Rollup 能够打包<code>输出</code>出 <code>CommonJS</code> 格式的产物，但对于<code>输入</code>给 Rollup 的代码并不支持 CommonJS，仅仅支持 ESM。你可能会说，那我们直接在项目中统一使用 ESM 规范就可以了啊，这有什么问题呢？需要注意的是，我们不光要考虑项目本身的代码，还要考虑第三方依赖。目前为止，还是有不少第三方依赖只有 CommonJS 格式产物而并未提供 ESM 产物，比如项目中用到 <code>lodash</code> 时，打包项目会出现这样的报错：</p>
+<p><img src="img\ba0e6167-ae61-11ed-9b71-342eb7027b95.jpg" alt="image.png">
+因此，我们需要引入额外的插件去解决这个问题。</p>
+<p>首先需要安装两个核心的插件包:</p>
+<pre><code class="hljs language-js">pnpm i @rollup/plugin-node-resolve @rollup/plugin-commonjs 
+</code></pre>
+<ul>
+<li><code>@rollup/plugin-node-resolve</code>是为了允许我们加载第三方依赖，否则像<code>import React from 'react'</code> 的依赖导入语句将不会被 Rollup 识别。</li>
+<li><code>@rollup/plugin-commonjs</code> 的作用是将 CommonJS 格式的代码转换为 ESM 格式</li>
+</ul>
+<p>然后让我们在配置文件中导入这些插件:</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// rollup.config.js</span>
+<span class="hljs-keyword">import</span> resolve <span class="hljs-keyword">from</span> <span class="hljs-string">"@rollup/plugin-node-resolve"</span>;
+<span class="hljs-keyword">import</span> commonjs <span class="hljs-keyword">from</span> <span class="hljs-string">"@rollup/plugin-commonjs"</span>;
+
+<span class="hljs-comment">/**
+ * <span class="hljs-doctag">@type</span> {<span class="hljs-type"> import('rollup').RollupOptions </span>}
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">input</span>: [<span class="hljs-string">"src/index.js"</span>],
+  <span class="hljs-attr">output</span>: [
+    {
+      <span class="hljs-attr">dir</span>: <span class="hljs-string">"dist/es"</span>,
+      <span class="hljs-attr">format</span>: <span class="hljs-string">"esm"</span>,
+    },
+    {
+      <span class="hljs-attr">dir</span>: <span class="hljs-string">"dist/cjs"</span>,
+      <span class="hljs-attr">format</span>: <span class="hljs-string">"cjs"</span>,
+    },
+  ],
+  <span class="hljs-comment">// 通过 plugins 参数添加插件</span>
+  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">resolve</span>(), <span class="hljs-title function_">commonjs</span>()],
+};
+</code></pre>
+<p>现在我们以<code>lodash</code>这个只有 CommonJS 产物的第三方包为例测试一下:</p>
+<pre><code class="hljs language-js">pnpm i lodash
+</code></pre>
+<p>在 <code>src/index.js</code> 加入如下的代码:</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">import</span> { merge } <span class="hljs-keyword">from</span> <span class="hljs-string">"lodash"</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(merge);
+</code></pre>
+<p>然后执行 <code>npm run build</code>，你可以发现产物已经正常生成了:</p>
+<p><img src="img\ba25e0e9-ae61-11ed-8b08-342eb7027b95.jpg" alt="image.png"></p>
+<p>在 Rollup 配置文件中，<code>plugins</code>除了可以与 <code>output</code> 配置在同一级，也可以配置在 output 参数里面，如:</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// rollup.config.js</span>
+<span class="hljs-keyword">import</span> { terser } <span class="hljs-keyword">from</span> <span class="hljs-string">'rollup-plugin-terser'</span>
+<span class="hljs-keyword">import</span> resolve <span class="hljs-keyword">from</span> <span class="hljs-string">"@rollup/plugin-node-resolve"</span>;
+<span class="hljs-keyword">import</span> commonjs <span class="hljs-keyword">from</span> <span class="hljs-string">"@rollup/plugin-commonjs"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">output</span>: {
+    <span class="hljs-comment">// 加入 terser 插件，用来压缩代码</span>
+    <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">terser</span>()]
+  },
+  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">resolve</span>(), <span class="hljs-title function_">commonjs</span>()]
+}
+</code></pre>
+<blockquote>
+<p>当然，你可以将上述的 terser 插件放到最外层的 <code>plugins</code> 配置中。</p>
+</blockquote>
+<p>需要注意的是，<code>output.plugins</code>中配置的插件是有一定限制的，只有使用<code>Output 阶段</code>相关钩子(具体内容将在下一节展开)的插件才能够放到这个配置中，大家可以去<a href="https://github.com/rollup/awesome#output" target="_blank" rel="nofollow noopener noreferrer">这个站点</a>查看 Rollup 的 Output 插件列表。</p>
+<p>另外，这里也给大家分享其它一些比较常用的 Rollup 插件库:</p>
+<ul>
+<li><a href="https://github.com/rollup/plugins/tree/master/packages/json" target="_blank" rel="nofollow noopener noreferrer">@rollup/plugin-json</a>： 支持<code>.json</code>的加载，并配合<code>rollup</code>的<code>Tree Shaking</code>机制去掉未使用的部分，进行按需打包。</li>
+<li><a href="https://github.com/rollup/plugins/tree/master/packages/babel" target="_blank" rel="nofollow noopener noreferrer">@rollup/plugin-babel</a>：在 Rollup 中使用 Babel 进行 JS 代码的语法转译。</li>
+<li><a href="https://github.com/rollup/plugins/tree/master/packages/typescript" target="_blank" rel="nofollow noopener noreferrer">@rollup/plugin-typescript</a>: 支持使用 TypeScript 开发。</li>
+<li><a href="https://github.com/rollup/plugins/tree/master/packages/alias" target="_blank" rel="nofollow noopener noreferrer">@rollup/plugin-alias</a>：支持别名配置。</li>
+<li><a href="https://github.com/rollup/plugins/tree/master/packages/replace" target="_blank" rel="nofollow noopener noreferrer">@rollup/plugin-replace</a>：在 Rollup 进行变量字符串的替换。</li>
+<li><a href="https://github.com/btd/rollup-plugin-visualizer" target="_blank" rel="nofollow noopener noreferrer">rollup-plugin-visualizer</a>: 对 Rollup 打包产物进行分析，自动生成产物体积可视化分析图。</li>
+</ul>
+<h2>JavaScript API 方式调用</h2>
+<p>以上我们通过<code>Rollup</code>的配置文件结合<code>rollup -c</code>完成了 Rollup 的打包过程，但有些场景下我们需要基于 Rollup 定制一些打包过程，配置文件就不够灵活了，这时候我们需要用到对应 JavaScript API 来调用 Rollup，主要分为<code>rollup.rollup</code>和<code>rollup.watch</code>两个 API，接下来我们以具体的例子来学习一下。</p>
+<p>首先是 <code>rollup.rollup</code>，用来一次性地进行 Rollup 打包，你可以新建<code>build.js</code>，内容如下:</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// build.js</span>
+<span class="hljs-keyword">const</span> rollup = <span class="hljs-built_in">require</span>(<span class="hljs-string">"rollup"</span>);
+
+<span class="hljs-comment">// 常用 inputOptions 配置</span>
+<span class="hljs-keyword">const</span> inputOptions = {
+  <span class="hljs-attr">input</span>: <span class="hljs-string">"./src/index.js"</span>,
+  <span class="hljs-attr">external</span>: [],
+  <span class="hljs-attr">plugins</span>:[]
+};
+
+<span class="hljs-keyword">const</span> outputOptionsList = [
+  <span class="hljs-comment">// 常用 outputOptions 配置</span>
+  {
+    <span class="hljs-attr">dir</span>: <span class="hljs-string">'dist/es'</span>,
+    <span class="hljs-attr">entryFileNames</span>: <span class="hljs-string">`[name].[hash].js`</span>,
+    <span class="hljs-attr">chunkFileNames</span>: <span class="hljs-string">'chunk-[hash].js'</span>,
+    <span class="hljs-attr">assetFileNames</span>: <span class="hljs-string">'assets/[name]-[hash][extname]'</span>,
+    <span class="hljs-attr">format</span>: <span class="hljs-string">'es'</span>,
+    <span class="hljs-attr">sourcemap</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">globals</span>: {
+      <span class="hljs-attr">lodash</span>: <span class="hljs-string">'_'</span>
+    }
+  }
+  <span class="hljs-comment">// 省略其它的输出配置</span>
+];
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">build</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">let</span> bundle;
+  <span class="hljs-keyword">let</span> buildFailed = <span class="hljs-literal">false</span>;
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-comment">// 1. 调用 rollup.rollup 生成 bundle 对象</span>
+    bundle = <span class="hljs-keyword">await</span> rollup.<span class="hljs-title function_">rollup</span>(inputOptions);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> outputOptions <span class="hljs-keyword">of</span> outputOptionsList) {
+      <span class="hljs-comment">// 2. 拿到 bundle 对象，根据每一份输出配置，调用 generate 和 write 方法分别生成和写入产物</span>
+      <span class="hljs-keyword">const</span> { output } = <span class="hljs-keyword">await</span> bundle.<span class="hljs-title function_">generate</span>(outputOptions);
+      <span class="hljs-keyword">await</span> bundle.<span class="hljs-title function_">write</span>(outputOptions);
+    }
+  } <span class="hljs-keyword">catch</span> (error) {
+    buildFailed = <span class="hljs-literal">true</span>;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(error);
+  }
+  <span class="hljs-keyword">if</span> (bundle) {
+    <span class="hljs-comment">// 最后调用 bundle.close 方法结束打包</span>
+    <span class="hljs-keyword">await</span> bundle.<span class="hljs-title function_">close</span>();
+  }
+  process.<span class="hljs-title function_">exit</span>(buildFailed ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>);
+}
+
+<span class="hljs-title function_">build</span>();
+</code></pre>
+<p>主要的执行步骤如下:</p>
+<ul>
+<li>
+<ol>
+<li>通过 <code>rollup.rollup</code>方法，传入 <code>inputOptions</code>，生成 bundle 对象；</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>调用 bundle 对象的 generate 和 write 方法，传入<code>outputOptions</code>，分别完成产物和生成和磁盘写入。</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>调用 bundle 对象的 close 方法来结束打包。</li>
+</ol>
+</li>
+</ul>
+<p>接着你可以执行<code>node build.js</code>，这样，我们就可以完成了以编程的方式来调用 Rollup 打包的过程。</p>
+<p>除了通过<code>rollup.rollup</code>完成一次性打包，我们也可以通过<code>rollup.watch</code>来完成<code>watch</code>模式下的打包，即每次源文件变动后自动进行重新打包。你可以新建<code>watch.js</code>文件，内容入下:</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// watch.js</span>
+<span class="hljs-keyword">const</span> rollup = <span class="hljs-built_in">require</span>(<span class="hljs-string">"rollup"</span>);
+
+<span class="hljs-keyword">const</span> watcher = rollup.<span class="hljs-title function_">watch</span>({
+  <span class="hljs-comment">// 和 rollup 配置文件中的属性基本一致，只不过多了`watch`配置</span>
+  <span class="hljs-attr">input</span>: <span class="hljs-string">"./src/index.js"</span>,
+  <span class="hljs-attr">output</span>: [
+    {
+      <span class="hljs-attr">dir</span>: <span class="hljs-string">"dist/es"</span>,
+      <span class="hljs-attr">format</span>: <span class="hljs-string">"esm"</span>,
+    },
+    {
+      <span class="hljs-attr">dir</span>: <span class="hljs-string">"dist/cjs"</span>,
+      <span class="hljs-attr">format</span>: <span class="hljs-string">"cjs"</span>,
+    },
+  ],
+  <span class="hljs-attr">watch</span>: {
+    <span class="hljs-attr">exclude</span>: [<span class="hljs-string">"node_modules/**"</span>],
+    <span class="hljs-attr">include</span>: [<span class="hljs-string">"src/**"</span>],
+  },
+});
+
+<span class="hljs-comment">// 监听 watch 各种事件</span>
+watcher.<span class="hljs-title function_">on</span>(<span class="hljs-string">"restart"</span>, <span class="hljs-function">() =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"重新构建..."</span>);
+});
+
+watcher.<span class="hljs-title function_">on</span>(<span class="hljs-string">"change"</span>, <span class="hljs-function">(<span class="hljs-params">id</span>) =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"发生变动的模块id: "</span>, id);
+});
+
+watcher.<span class="hljs-title function_">on</span>(<span class="hljs-string">"event"</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+  <span class="hljs-keyword">if</span> (e.<span class="hljs-property">code</span> === <span class="hljs-string">"BUNDLE_END"</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"打包信息:"</span>, e);
+  }
+});
+</code></pre>
+<p>现在你可以通过执行<code>node watch.js</code>开启 Rollup 的 watch 打包模式，当你改动一个文件后可以看到如下的日志，说明 Rollup 自动进行了重新打包，并触发相应的事件回调函数:</p>
+<pre><code class="hljs language-js">
+发生生变动的模块<span class="hljs-attr">id</span>: <span class="hljs-regexp">/xxx/</span>src/index.<span class="hljs-property">js</span>
+重新构建...
+打包信息: {
+  <span class="hljs-attr">code</span>: <span class="hljs-string">'BUNDLE_END'</span>,
+  <span class="hljs-attr">duration</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">input</span>: <span class="hljs-string">'./src/index.js'</span>,
+  <span class="hljs-attr">output</span>: [
+    <span class="hljs-comment">// 输出产物路径</span>
+  ],
+  <span class="hljs-attr">result</span>: {
+    <span class="hljs-attr">cache</span>: { <span class="hljs-comment">/* 产物具体信息 */</span> },
+    <span class="hljs-attr">close</span>: [<span class="hljs-title class_">AsyncFunction</span>: close],
+    <span class="hljs-attr">closed</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">generate</span>: [<span class="hljs-title class_">AsyncFunction</span>: generate],
+    <span class="hljs-attr">watchFiles</span>: [
+      <span class="hljs-comment">// 监听文件列表</span>
+    ],
+    <span class="hljs-attr">write</span>: [<span class="hljs-title class_">AsyncFunction</span>: write]
+  }
+}
+</code></pre>
+<p>基于如上的两个 JavaScript API 我们可以很方便地在代码中调用 Rollup 的打包流程，相比于配置文件有了更多的操作空间，你可以在代码中通过这些 API 对 Rollup 打包过程进行定制，甚至是二次开发。</p>
+<h2>小结</h2>
+<p>好，本文的内容就到这里了。恭喜你，学习了完了 Rollup 基础使用篇的内容，在本小节中，你需要重点掌握 <strong>Rollup 基本配置项的含义</strong>和 <strong>JavaScript API 的使用</strong>。</p>
+<p>首先，我们通过一个简单的示例学习了 Rollup 一般的使用方法，用 Rollup 打包出了第一份产物，然后我们针对 Rollup 中常用的配置项进行介绍，包括<code>input</code>、<code>output</code>、<code>external</code>、<code>plugins</code>等核心配置，并以一个实际的打包场景为例带你在 Rollup 中接入插件功能。接着，我给你介绍了 Rollup 更高级的使用姿势——通过 JavaScript API 使用，分别介绍了两个经典的 API: <code>rollup.rollup</code>和<code>rollup.watch</code>，并带你在实战中使用这些 API，完成了更为复杂的打包操作。</p>
+<p>在下一小节中，我们将继续深入 Rollup 的学习，一起剖析 Rollup 优秀的插件机制并进行代码实战，大家加油！</p>
+</div>
+</body>
+</html>

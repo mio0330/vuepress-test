@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <p>上一小节，我们使用 Vite 初始化了一个 Web 项目，迈出了使用 Vite 的第一步。但在实际工作中，仅用 Vite 官方的脚手架项目是不够的，往往还需要考虑诸多的工程化因素，借助 Vite 本身的配置以及业界的各种生态，才能搭建一个名副其实的脚手架工程。</p>
+<p>那在接下来的几个小节内容中，我们将以<code>实战</code>的方式逐个击破项目工程化的要素。你可以跟着我一起进行编码，从0搭建一个完整的 Vite 项目架构。不仅如此，在实战的过程中，你也会对 Vite 本身的功能有全面了解，能够熟练地将它应用到实际项目。</p>
+<p>样式方案是前端工程化离不开的一个话题，也是本节要具体探讨的内容。在最原始的开发阶段大家都是手写原生的 CSS，但原生 CSS 存在着诸多问题。本小节，我们通过引入现代的各种 CSS 样式方案，一起动手实践，让你学会如何在 Vite 中落地这些样式方案。</p>
+<h2>样式方案的意义</h2>
+<p>对初学者来说，谈到开发前端的样式，首先想到的便是直接写原生 CSS。但时间一长，难免会发现原生 CSS 开发的各种问题。那么，如果我们不用任何 CSS 工程方案，又会出现哪些问题呢？</p>
+<ol>
+<li><strong>开发体验</strong>欠佳。比如原生 CSS 不支持选择器的嵌套:</li>
+</ol>
+<pre><code class="hljs language-css">// 选择器只能平铺，不能嵌套
+<span class="hljs-selector-class">.container</span> <span class="hljs-selector-class">.header</span> <span class="hljs-selector-class">.nav</span> <span class="hljs-selector-class">.title</span> <span class="hljs-selector-class">.text</span> {
+  <span class="hljs-attribute">color</span>: blue;
+}
+
+<span class="hljs-selector-class">.container</span> <span class="hljs-selector-class">.header</span> <span class="hljs-selector-class">.nav</span> <span class="hljs-selector-class">.box</span> {
+  <span class="hljs-attribute">color</span>: blue;
+  <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid grey;
+}
+</code></pre>
+<ol start="2">
+<li><strong>样式污染</strong>问题。如果出现同样的类名，很容易造成不同的样式互相覆盖和污染。</li>
+</ol>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// a.css</span>
+.<span class="hljs-property">container</span> {
+  <span class="hljs-attr">color</span>: red;
+}
+
+<span class="hljs-comment">// b.css</span>
+<span class="hljs-comment">// 很有可能覆盖 a.css 的样式！</span>
+.<span class="hljs-property">container</span> {
+  <span class="hljs-attr">color</span>: blue;
+}
+</code></pre>
+<ol start="3">
+<li><strong>浏览器兼容</strong>问题。为了兼容不同的浏览器，我们需要对一些属性(如<code>transition</code>)加上不同的浏览器前缀，比如 <code>-webkit-</code>、<code>-moz-</code>、<code>-ms-</code>、<code>-o-</code>，意味着开发者要针对同一个样式属性写很多的冗余代码。</li>
+<li>打包后的<strong>代码体积</strong>问题。如果不用任何的 CSS 工程化方案，所有的 CSS 代码都将打包到产物中，即使有部分样式并没有在代码中使用，导致产物体积过大。</li>
+</ol>
+<p>针对如上原生 CSS 的痛点，社区中诞生了不少解决方案，常见的有 5 类。</p>
+<ol>
+<li><code>CSS 预处理器</code>：主流的包括<code>Sass/Scss</code>、<code>Less</code>和<code>Stylus</code>。这些方案各自定义了一套语法，让 CSS 也能使用嵌套规则，甚至能像编程语言一样定义变量、写条件判断和循环语句，大大增强了样式语言的灵活性，解决原生 CSS 的<strong>开发体验问题</strong>。</li>
+<li><code>CSS Modules</code>：能将 CSS 类名处理成哈希值，这样就可以避免同名的情况下<strong>样式污染</strong>的问题。</li>
+<li>CSS 后处理器<code>PostCSS</code>，用来解析和处理 CSS 代码，可以实现的功能非常丰富，比如将 <code>px</code> 转换为 <code>rem</code>、根据目标浏览器情况自动加上类似于<code>--moz--</code>、<code>-o-</code>的属性前缀等等。</li>
+<li><code>CSS in JS</code> 方案，主流的包括<code>emotion</code>、<code>styled-components</code>等等，顾名思义，这类方案可以实现直接在 JS 中写样式代码，基本包含<code>CSS 预处理器</code>和 <code>CSS Modules</code> 的各项优点，非常灵活，解决了开发体验和全局样式污染的问题。</li>
+<li>CSS 原子化框架，如<code>Tailwind CSS</code>、<code>Windi CSS</code>，通过类名来指定样式，大大简化了样式写法，提高了样式开发的效率，主要解决了原生 CSS <strong>开发体验</strong>的问题。</li>
+</ol>
+<p>不过，各种方案没有孰优孰劣，各自解决的方案有重叠的部分，但也有一定的差异，大家可以根据自己项目的痛点来引入。接下来，我们进入实战阶段，在 Vite 中应用上述常见的 CSS 方案。</p>
+<h3>CSS 预处理器</h3>
+<p>Vite 本身对 CSS 各种预处理器语言(<code>Sass/Scss</code>、<code>Less</code>和<code>Stylus</code>)做了内置支持。也就是说，即使你不经过任何的配置也可以直接使用各种 CSS 预处理器。我们以 <code>Sass/Scss</code> 为例，来具体感受一下 Vite 的<code>零配置</code>给我们带来的便利。</p>
+<p>由于 Vite 底层会调用 CSS 预处理器的官方库进行编译，而 Vite 为了实现按需加载，并没有内置这些工具库，而是让用户根据需要安装。因此，我们首先安装 Sass 的官方库，安装命令如下:</p>
+<pre><code class="hljs language-bash">pnpm i sass -D
+</code></pre>
+<p>然后，在上一节初始化后的项目中新建 <code>src/components/Header</code> 目录，并且分别新建<code>index.tsx</code> 和 <code>index.scss</code>文件，代码如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// index.tsx</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'./index.scss'</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Header</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">p</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"header"</span>></span>This is Header<span class="hljs-tag">&#x3C;/<span class="hljs-name">p</span>></span></span>
+};
+
+<span class="hljs-comment">// index.scss</span>
+.<span class="hljs-property">header</span> {
+  <span class="hljs-attr">color</span>: red;
+}
+</code></pre>
+<p>这样就完成了一个最简单的 demo 组件。接着我们在 <code>App.tsx</code> 应用这个组件:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Header</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"./components/Header"</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">Header</span> /></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  );
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">App</span>;
+</code></pre>
+<p>现在你可以执行<code>pnpm run dev</code>，然后到浏览器上查看效果:</p>
+<p><img src="img\b33703f3-ae61-11ed-946f-342eb7027b95.jpg" alt="image.png"></p>
+<p>内容比较简单，如果页面出现红色的文字部分，就说明 <code>scss</code> 文件中的样式已经成功生效。好，现在我们封装一个全局的主题色，新建<code>src/variable.scss</code>文件，内容如下:</p>
+<pre><code class="hljs language-scss"><span class="hljs-comment">// variable.scss</span>
+<span class="hljs-variable">$theme-color</span>: red;
+</code></pre>
+<p>然后，我们在原来 Header 组件的样式中应用这个变量:</p>
+<pre><code class="hljs language-scss"><span class="hljs-keyword">@import</span> <span class="hljs-string">"../../variable"</span>;
+
+<span class="hljs-selector-class">.header</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-variable">$theme-color</span>;
+}
+</code></pre>
+<p>回到浏览器访问页面，可以看到样式依然生效。你可能会注意到，每次要使用<code>$theme-color</code>属性的时候我们都需要手动引入<code>variable.scss</code>文件，那有没有自动引入的方案呢？这就需要在 Vite 中进行一些自定义配置了，在配置文件中增加如下的内容:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// vite.config.ts</span>
+<span class="hljs-keyword">import</span> { normalizePath } <span class="hljs-keyword">from</span> <span class="hljs-string">'vite'</span>;
+<span class="hljs-comment">// 如果类型报错，需要安装 @types/node: pnpm i @types/node -D</span>
+<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">'path'</span>;
+
+<span class="hljs-comment">// 全局 scss 文件的路径</span>
+<span class="hljs-comment">// 用 normalizePath 解决 window 下的路径问题</span>
+<span class="hljs-keyword">const</span> variablePath = <span class="hljs-title function_">normalizePath</span>(path.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">'./src/variable.scss'</span>));
+
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-comment">// css 相关的配置</span>
+  <span class="hljs-attr">css</span>: {
+    <span class="hljs-attr">preprocessorOptions</span>: {
+      <span class="hljs-attr">scss</span>: {
+        <span class="hljs-comment">// additionalData 的内容会在每个 scss 文件的开头自动注入</span>
+        <span class="hljs-attr">additionalData</span>: <span class="hljs-string">`@import "<span class="hljs-subst">${variablePath}</span>";`</span>
+      }
+    }
+  }
+})
+</code></pre>
+<p>现在你可以直接在文件中使用全局文件的变量，相当于之前手动引入的方式显然方便了许多:</p>
+<pre><code class="hljs language-scss"><span class="hljs-selector-class">.header</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-variable">$theme-color</span>;
+}
+</code></pre>
+<p>同样的，你可以对 <code>less</code>和<code>stylus</code>进行一些能力的配置，如果有需要你可以去下面的官方文档中查阅更多的配置项:</p>
+<ul>
+<li><a href="https://sass-lang.com/documentation/js-api/modules#render" target="_blank" rel="nofollow noopener noreferrer">Sass</a></li>
+<li><a href="https://lesscss.org/usage/#less-options" target="_blank" rel="nofollow noopener noreferrer">Less</a></li>
+<li><a href="https://stylus-lang.com/docs/js.html" target="_blank" rel="nofollow noopener noreferrer">Stylus</a></li>
+</ul>
+<h3>CSS Modules</h3>
+<p>CSS Modules 在 Vite 也是一个开箱即用的能力，Vite 会对后缀带有<code>.module</code>的样式文件自动应用 CSS Modules。接下来我们通过一个简单的例子来使用这个功能。</p>
+<p>首先，将 Header 组件中的<code>index.scss</code>更名为<code>index.module.scss</code>，然后稍微改动一下<code>index.tsx</code>的内容，如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// index.tsx</span>
+<span class="hljs-keyword">import</span> styles <span class="hljs-keyword">from</span> <span class="hljs-string">'./index.module.scss'</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Header</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">p</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{styles.header}</span>></span>This is Header<span class="hljs-tag">&#x3C;/<span class="hljs-name">p</span>></span></span>
+};
+</code></pre>
+<p>现在打开浏览器，可以看见 p 标签的类名已经被处理成了哈希值的形式:</p>
+<p><img src="img\b3538599-ae61-11ed-82f2-342eb7027b95.jpg" alt="image.png"></p>
+<p>说明现在 CSS Modules 已经正式生效了！同样的，你也可以在配置文件中的<code>css.modules</code>选项来配置 CSS Modules 的功能，比如下面这个例子:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// vite.config.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">css</span>: {
+    <span class="hljs-attr">modules</span>: {
+      <span class="hljs-comment">// 一般我们可以通过 generateScopedName 属性来对生成的类名进行自定义</span>
+      <span class="hljs-comment">// 其中，name 表示当前文件名，local 表示类名</span>
+      <span class="hljs-attr">generateScopedName</span>: <span class="hljs-string">"[name]__[local]___[hash:base64:5]"</span>
+    },
+    <span class="hljs-attr">preprocessorOptions</span>: {
+      <span class="hljs-comment">// 省略预处理器配置</span>
+    }
+
+  }
+}
+</code></pre>
+<p>再次访问页面，我们可以发现刚才的类名已经变成了我们自定义的形式:</p>
+<p><img src="img\b366a09e-ae61-11ed-9fc9-342eb7027b95.jpg" alt="image.png"></p>
+<p>这是一个 CSS Modules 中很常见的配置，对开发时的调试非常有用。其它的一些配置项不太常用，大家可以去这个<a href="https://github.com/madyankin/postcss-modules" target="_blank" rel="nofollow noopener noreferrer">地址</a>进行查阅。</p>
+<h3>PostCSS</h3>
+<p>一般你可以通过 <code>postcss.config.js</code> 来配置 postcss ，不过在 Vite 配置文件中已经提供了 PostCSS 的配置入口，我们可以直接在 Vite 配置文件中进行操作。</p>
+<p>首先，我们来安装一个常用的 PostCSS 插件——<code>autoprefixer</code>:</p>
+<pre><code class="hljs language-bash">pnpm i autoprefixer -D
+</code></pre>
+<p>这个插件主要用来自动为不同的目标浏览器添加样式前缀，解决的是浏览器兼容性的问题。接下来让我们在 Vite 中接入这个插件:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// vite.config.ts 增加如下的配置</span>
+<span class="hljs-keyword">import</span> autoprefixer <span class="hljs-keyword">from</span> <span class="hljs-string">'autoprefixer'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">css</span>: {
+    <span class="hljs-comment">// 进行 PostCSS 配置</span>
+    <span class="hljs-attr">postcss</span>: {
+      <span class="hljs-attr">plugins</span>: [
+        <span class="hljs-title function_">autoprefixer</span>({
+          <span class="hljs-comment">// 指定目标浏览器</span>
+          <span class="hljs-attr">overrideBrowserslist</span>: [<span class="hljs-string">'Chrome > 40'</span>, <span class="hljs-string">'ff > 31'</span>, <span class="hljs-string">'ie 11'</span>]
+        })
+      ]
+    }
+  }
+}
+</code></pre>
+<p>配置完成后，我们回到 Header 组件的样式文件中添加一个新的 CSS 属性:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.header</span> {
+  &#x3C;!-- 前面的样式省略 -->
+  <span class="hljs-attribute">text-decoration</span>: dashed;
+}
+</code></pre>
+<p>你可以执行<code>pnpm run build</code>命令进行打包，可以看到产物中自动补上了浏览器前缀，如:</p>
+<pre><code class="hljs language-css">._header_kcvt0_1 {
+  &#x3C;!-- 前面的样式省略 -->
+  -webkit-<span class="hljs-attribute">text-decoration</span>: dashed;
+  -moz-<span class="hljs-attribute">text-decoration</span>: dashed;
+  <span class="hljs-attribute">text-decoration</span>: dashed;
+}
+</code></pre>
+<p>由于有 CSS 代码的 AST (抽象语法树)解析能力，PostCSS 可以做的事情非常多，甚至能实现 CSS 预处理器语法和 CSS Modules，社区当中也有不少的 PostCSS 插件，除了刚刚提到的<code>autoprefixer</code>插件，常见的插件还包括:</p>
+<ul>
+<li><a href="https://github.com/cuth/postcss-pxtorem" target="_blank" rel="nofollow noopener noreferrer">postcss-pxtorem</a>： 用来将 px 转换为 rem 单位，在适配移动端的场景下很常用。</li>
+<li><a href="https://github.com/csstools/postcss-preset-env" target="_blank" rel="nofollow noopener noreferrer">postcss-preset-env</a>: 通过它，你可以编写最新的 CSS 语法，不用担心兼容性问题。</li>
+<li><a href="https://github.com/cssnano/cssnano" target="_blank" rel="nofollow noopener noreferrer">cssnano</a>: 主要用来压缩 CSS 代码，跟常规的代码压缩工具不一样，它能做得更加智能，比如提取一些公共样式进行复用、缩短一些常见的属性值等等。</li>
+</ul>
+<p>关于 PostCSS 插件，这里还给大家推荐一个站点：<a href="https://www.postcss.parts/" target="_blank" rel="nofollow noopener noreferrer">https://www.postcss.parts/</a> ，你可以去里面探索更多的内容。</p>
+<h3>CSS In JS</h3>
+<p>社区中有两款主流的<code>CSS In JS</code> 方案: <code>styled-components</code>和<code>emotion</code>。</p>
+<p>对于 CSS In JS 方案，在构建侧我们需要考虑<code>选择器命名问题</code>、<code>DCE</code>(Dead Code Elimination 即无用代码删除)、<code>代码压缩</code>、<code>生成 SourceMap</code>、<code>服务端渲染(SSR)</code>等问题，而<code>styled-components</code>和<code>emotion</code>已经提供了对应的 babel 插件来解决这些问题，我们在 Vite 中要做的就是集成这些 babel 插件。</p>
+<p>具体来说，上述的两种主流 CSS in JS 方案在 Vite 中集成方式如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// vite.config.ts</span>
+<span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">'vite'</span>
+<span class="hljs-keyword">import</span> react <span class="hljs-keyword">from</span> <span class="hljs-string">'@vitejs/plugin-react'</span>
+
+<span class="hljs-comment">// https://vitejs.dev/config/</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">plugins</span>: [
+    <span class="hljs-title function_">react</span>({
+      <span class="hljs-attr">babel</span>: {
+        <span class="hljs-comment">// 加入 babel 插件</span>
+        <span class="hljs-comment">// 以下插件包都需要提前安装</span>
+        <span class="hljs-comment">// 当然，通过这个配置你也可以添加其它的 Babel 插件</span>
+        <span class="hljs-attr">plugins</span>: [
+          <span class="hljs-comment">// 适配 styled-component</span>
+          <span class="hljs-string">"babel-plugin-styled-components"</span>
+          <span class="hljs-comment">// 适配 emotion</span>
+          <span class="hljs-string">"@emotion/babel-plugin"</span>
+        ]
+      },
+      <span class="hljs-comment">// 注意: 对于 emotion，需要单独加上这个配置</span>
+      <span class="hljs-comment">// 通过 `@emotion/react` 包编译 emotion 中的特殊 jsx 语法</span>
+      <span class="hljs-attr">jsxImportSource</span>: <span class="hljs-string">"@emotion/react"</span>
+    })
+  ]
+})
+</code></pre>
+<h3>CSS 原子化框架</h3>
+<p>在目前的社区当中，CSS 原子化框架主要包括<code>Tailwind CSS</code> 和 <code>Windi CSS</code>。Windi CSS 作为前者的替换方案，实现了按需生成 CSS 类名的功能，开发环境下的 CSS 产物体积大大减少，速度上比<code>Tailwind CSS v2</code>快 20~100 倍！当然，Tailwind CSS 在 v3 版本也引入 <a href="https://v2.tailwindcss.com/docs/just-in-time-mode" target="_blank" rel="nofollow noopener noreferrer">JIT(即时编译)</a> 的功能，解决了开发环境下 CSS 产物体积庞大的问题。接下来我们将这两个方案分别接入到 Vite 中，在实际的项目中你只需要使用其中一种就可以了。我个人比较喜欢 Windi CSS 本身的<code>attributify</code>、<code>shortcuts</code>等独有的特性，因此首先从 windicss 开始说起。</p>
+<h4>1. Windi CSS 接入</h4>
+<p>首先安装 <code>windicss</code> 及对应的 Vite 插件:</p>
+<pre><code class="hljs language-css">pnpm <span class="hljs-selector-tag">i</span> windicss vite-plugin-windicss -D
+</code></pre>
+<p>随后我们在配置文件中来使用它:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// vite.config.ts</span>
+<span class="hljs-keyword">import</span> windi <span class="hljs-keyword">from</span> <span class="hljs-string">"vite-plugin-windicss"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">plugins</span>: [
+    <span class="hljs-comment">// 省略其它插件</span>
+    <span class="hljs-title function_">windi</span>()
+  ]
+}
+</code></pre>
+<p>接着要注意在<code>src/main.tsx</code>中引入一个必需的 import 语句:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// main.tsx</span>
+<span class="hljs-comment">// 用来注入 Windi CSS 所需的样式，一定要加上！</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">"virtual:windi.css"</span>;
+</code></pre>
+<p>这样我们就完成了 Windi CSS 在 Vite 中的接入，接下来我们在 Header 组件中来测试，组件代码修改如下:</p>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// src/components/Header/index.tsx</span>
+<span class="hljs-keyword">import</span> { devDependencies } <span class="hljs-keyword">from</span> <span class="hljs-string">"../../../package.json"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Header</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"p-20px text-center"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">h1</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"font-bold text-2xl mb-2"</span>></span>
+        vite version: {devDependencies.vite}
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">h1</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  );
+}
+</code></pre>
+<p>启动项目可以看到如下的效果，说明样式已经正常生效:</p>
+<p><img src="img\b3817a00-ae61-11ed-97d9-342eb7027b95.jpg" alt="image.png"></p>
+<p>除了本身的原子化 CSS 能力，Windi CSS 还有一些非常好用的高级功能，在此我给大家推荐自己常用的两个能力: <strong>attributify</strong> 和 <strong>shortcuts</strong>。</p>
+<p>要开启这两个功能，我们需要在项目根目录新建<code>windi.config.ts</code>，配置如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">"vite-plugin-windicss"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-comment">// 开启 attributify</span>
+  <span class="hljs-attr">attributify</span>: <span class="hljs-literal">true</span>,
+});
+</code></pre>
+<p>首先我们来看看<code>attributify</code>，翻译过来就是<code>属性化</code>，也就是说我们可以用 props 的方式去定义样式属性，如下所示:</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">button</span> 
+  <span class="hljs-attr">bg</span>=<span class="hljs-string">"blue-400 hover:blue-500 dark:blue-500 dark:hover:blue-600"</span>
+  <span class="hljs-attr">text</span>=<span class="hljs-string">"sm white"</span>
+  <span class="hljs-attr">font</span>=<span class="hljs-string">"mono light"</span>
+  <span class="hljs-attr">p</span>=<span class="hljs-string">"y-2 x-4"</span>
+  <span class="hljs-attr">border</span>=<span class="hljs-string">"2 rounded blue-200"</span>
+></span>
+  Button
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">button</span>></span>
+</code></pre>
+<p>这样的开发方式不仅省去了繁琐的 className 内容，还加强了语义化，让代码更易维护，大大提升了开发体验。</p>
+<p>不过使用<code>attributify</code>的时候需要注意类型问题，你需要添加<code>types/shim.d.ts</code>来增加类型声明，以防类型报错:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">AttributifyAttributes</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'windicss/types/jsx'</span>;
+
+<span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">'react'</span> {
+  <span class="hljs-keyword">type</span> <span class="hljs-title class_">HTMLAttributes</span>&#x3C;T> = <span class="hljs-title class_">AttributifyAttributes</span>;
+}
+</code></pre>
+<p><code>shortcuts</code> 用来封装一系列的原子化能力，尤其是一些常见的类名集合，我们在 <code>windi.config.ts</code>来配置它:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">//windi.config.ts</span>
+<span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">"vite-plugin-windicss"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">attributify</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">shortcuts</span>: {
+    <span class="hljs-string">"flex-c"</span>: <span class="hljs-string">"flex justify-center items-center"</span>,
+  }
+});
+</code></pre>
+<p>比如这里封装了<code>flex-c</code>的类名，接下来我们可以在业务代码直接使用这个类名:</p>
+<pre><code class="hljs language-HTML"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex-c"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-comment">&#x3C;!-- 等同于下面这段 --></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex justify-center items-center"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<p>如果你也有过 Windi CSS 的开发经历，欢迎把你用到的高级功能分享到评论区，让大家一起来见识见识。</p>
+<h4>2. Tailwind CSS</h4>
+<p>接下来我们来接入 Tailwind CSS 方案，为了避免和之前的 Windi CSS 混淆，这里我建议你新起一个 Vite 项目。</p>
+<blockquote>
+<p>小册中对应的 GitHub <a href="https://github.com/sanyuan0704/juejin-book-vite/tree/main/other/tailwind-demo" target="_blank" rel="nofollow noopener noreferrer">代码地址</a>。</p>
+</blockquote>
+<p>首先安装 <code>tailwindcss</code> 及其必要的依赖:</p>
+<pre><code class="hljs language-ts">pnpm install -D tailwindcss postcss autoprefixer
+</code></pre>
+<p>然后新建两个配置文件<code>tailwind.config.js</code>和<code>postcss.config.js</code>:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// tailwind.config.js</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  <span class="hljs-attr">content</span>: [
+    <span class="hljs-string">"./index.html"</span>,
+    <span class="hljs-string">"./src/**/*.{vue,js,ts,jsx,tsx}"</span>,
+  ],
+  <span class="hljs-attr">theme</span>: {
+    <span class="hljs-attr">extend</span>: {},
+  },
+  <span class="hljs-attr">plugins</span>: [],
+}
+
+<span class="hljs-comment">// postcss.config.js</span>
+<span class="hljs-comment">// 从中你可以看到，Tailwind CSS 的编译能力是通过 PostCSS 插件实现的</span>
+<span class="hljs-comment">// 而 Vite 本身内置了 PostCSS，因此可以通过 PostCSS 配置接入 Tailwind CSS </span>
+<span class="hljs-comment">// 注意: Vite 配置文件中如果有 PostCSS 配置的情况下会覆盖掉 post.config.js 的内容!</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  <span class="hljs-attr">plugins</span>: {
+    <span class="hljs-attr">tailwindcss</span>: {},
+    <span class="hljs-attr">autoprefixer</span>: {},
+  },
+}
+</code></pre>
+<p>接着在项目的入口 CSS 中引入必要的样板代码:</p>
+<pre><code class="hljs language-css"><span class="hljs-keyword">@tailwind</span> base;
+<span class="hljs-keyword">@tailwind</span> components;
+<span class="hljs-keyword">@tailwind</span> utilities;
+</code></pre>
+<p>现在，你就可以在项目中安心地使用 Tailwind 样式了，如下所示:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// App.tsx</span>
+
+<span class="hljs-keyword">import</span> logo <span class="hljs-keyword">from</span> <span class="hljs-string">"./logo.svg"</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">"./App.css"</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">header</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"App-header"</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">{logo}</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"w-20"</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">"logo"</span> /></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">p</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"bg-red-400"</span>></span>Hello Vite + React!<span class="hljs-tag">&#x3C;/<span class="hljs-name">p</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">header</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  );
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">App</span>;
+</code></pre>
+<p>当你启动项目之后可以看到 Tailwind CSS 的样式已经正常生效:</p>
+<p><img src="img\b394ea9b-ae61-11ed-af72-342eb7027b95.jpg" alt="image.png"></p>
+<h2>小结</h2>
+<p>OK，本小节的内容到这里就结束了。这一节我们完成了脚手架项目样式部分的搭建，你需要重点掌握前端工程中各种样式方案在 Vite 的接入方法。这些样式方案包括，包括<code>CSS 预处理器</code>、<code>CSS Modules</code>、<code>PostCSS</code>、<code>CSS In JS</code>和 <code>CSS 原子化框架(Windi CSS)</code>。与此同时，你应该明白了各种样式方案的含义以及背后所解决的问题。接下来，我们将会进入项目规范搭建的部分，让我们下一节再见！</p>
+</div>
+</body>
+</html>

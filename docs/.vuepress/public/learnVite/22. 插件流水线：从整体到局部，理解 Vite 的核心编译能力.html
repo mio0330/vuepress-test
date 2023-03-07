@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <p>我们知道，Vite 在开发阶段实现了一个按需加载的服务器，每一个文件请求进来都会经历一系列的编译流程，然后 Vite 会将编译结果响应给浏览器。在生产环境下，Vite 同样会执行一系列编译过程，将编译结果交给 Rollup 进行模块打包。这一系列的编译过程指的就是 Vite 的插件工作流水线(Pipeline)，而插件功能又是 Vite 构建能力的核心，因此谈到阅读 Vite 源码，我们永远绕不开插件的作用与实现原理。</p>
+<p>接下来，我就和你一起分析 Vite 插件流水线的顶层架构，也就是各个插件如何被调度和组织起来的，详细说说 Vite 插件容器(<code>PluginContainer</code>)机制的实现，同时带你一起梳理开发阶段和生产环境各自会用到的插件，并分析各自的功能与实现原理，让你能够全面、准确地认识 Vite 的插件流水线！</p>
+<h2>插件容器</h2>
+<p>从<a href="https://juejin.cn/book/7050063811973218341/section/7060398408430780431" target="_blank" rel="nofollow noopener noreferrer">《双引擎架构》</a>小节中我们知道 Vite 的插件机制是与 Rollup 兼容的，但它在开发和生产环境下的实现稍有差别，你可以回顾一下这张架构图:</p>
+<p><img src="img\c8cb567c-ae61-11ed-b8f8-342eb7027b95.jpg" alt="image.png"></p>
+<p>我们可以看到:</p>
+<ul>
+<li>在生产环境中 Vite 直接调用 Rollup 进行打包，所以 Rollup 可以调度各种插件；</li>
+<li>在开发环境中，Vite 模拟了 Rollup 的插件机制，设计了一个<code>PluginContainer</code> 对象来调度各个插件。</li>
+</ul>
+<p><code>PluginContainer</code>(插件容器)对象非常重要，前两节我们也多次提到了它，接下来我们就把目光集中到这个对象身上，看看 Vite 的插件容器机制究竟是如何实现的。</p>
+<p><code>PluginContainer</code> 的 <a href="https://github.com/vitejs/vite/blob/main/packages/vite/src/node/server/pluginContainer.ts" target="_blank" rel="nofollow noopener noreferrer">实现</a> 基于借鉴于 WMR 中的<code>rollup-plugin-container.js</code>，主要分为 2 个部分:</p>
+<ol>
+<li>实现 Rollup 插件钩子的调度</li>
+<li>实现插件钩子内部的 Context 上下文对象</li>
+</ol>
+<p>首先，你可以通过 <a href="https://github.com/vitejs/vite/blob/main/packages/vite/src/node/server/pluginContainer.ts#L463" target="_blank" rel="nofollow noopener noreferrer">container 的定义</a> 来看看各个 Rollup 钩子的实现方式，代码精简后如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> container = {
+  <span class="hljs-comment">// 异步串行钩子</span>
+  <span class="hljs-attr">options</span>: <span class="hljs-keyword">await</span> (<span class="hljs-keyword">async</span> () => {
+    <span class="hljs-keyword">let</span> options = rollupOptions
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> plugin <span class="hljs-keyword">of</span> plugins) {
+      <span class="hljs-keyword">if</span> (!plugin.<span class="hljs-property">options</span>) <span class="hljs-keyword">continue</span>
+      options =
+        (<span class="hljs-keyword">await</span> plugin.<span class="hljs-property">options</span>.<span class="hljs-title function_">call</span>(minimalContext, options)) || options
+    }
+    <span class="hljs-keyword">return</span> options;
+  })(),
+  <span class="hljs-comment">// 异步并行钩子</span>
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">buildStart</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(
+      plugins.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">plugin</span>) =></span> {
+        <span class="hljs-keyword">if</span> (plugin.<span class="hljs-property">buildStart</span>) {
+          <span class="hljs-keyword">return</span> plugin.<span class="hljs-property">buildStart</span>.<span class="hljs-title function_">call</span>(
+            <span class="hljs-keyword">new</span> <span class="hljs-title class_">Context</span>(plugin) <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>,
+            container.<span class="hljs-property">options</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">NormalizedInputOptions</span>
+          )
+        }
+      })
+    )
+  },
+  <span class="hljs-comment">// 异步优先钩子</span>
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">resolveId</span>(<span class="hljs-params">rawId, importer</span>) {
+    <span class="hljs-comment">// 上下文对象，后文介绍</span>
+    <span class="hljs-keyword">const</span> ctx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Context</span>()
+
+    <span class="hljs-keyword">let</span> <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">partial</span>: <span class="hljs-title class_">Partial</span>&#x3C;<span class="hljs-title class_">PartialResolvedId</span>> = {}
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> plugin <span class="hljs-keyword">of</span> plugins) {
+      <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> plugin.<span class="hljs-property">resolveId</span>.<span class="hljs-title function_">call</span>(
+        ctx <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>,
+        rawId,
+        importer,
+        { ssr }
+      )
+      <span class="hljs-keyword">if</span> (!result) <span class="hljs-keyword">continue</span>;
+      <span class="hljs-keyword">return</span> result;
+    }
+  }
+  <span class="hljs-comment">// 异步优先钩子</span>
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">load</span>(<span class="hljs-params">id, options</span>) {
+    <span class="hljs-keyword">const</span> ctx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Context</span>()
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> plugin <span class="hljs-keyword">of</span> plugins) {
+      <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> plugin.<span class="hljs-property">load</span>.<span class="hljs-title function_">call</span>(ctx <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>, id, { ssr })
+      <span class="hljs-keyword">if</span> (result != <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> result
+      }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>
+  },
+  <span class="hljs-comment">// 异步串行钩子</span>
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">transform</span>(<span class="hljs-params">code, id, options</span>) {
+    <span class="hljs-keyword">const</span> ssr = options?.<span class="hljs-property">ssr</span>
+    <span class="hljs-comment">// 每次 transform 调度过程会有专门的上下文对象，用于合并 SourceMap，后文会介绍</span>
+    <span class="hljs-keyword">const</span> ctx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TransformContext</span>(id, code, inMap <span class="hljs-keyword">as</span> <span class="hljs-title class_">SourceMap</span>)
+    ctx.<span class="hljs-property">ssr</span> = !!ssr
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> plugin <span class="hljs-keyword">of</span> plugins) {
+      <span class="hljs-keyword">let</span> <span class="hljs-attr">result</span>: <span class="hljs-title class_">TransformResult</span> | <span class="hljs-built_in">string</span> | <span class="hljs-literal">undefined</span>
+      <span class="hljs-keyword">try</span> {
+        result = <span class="hljs-keyword">await</span> plugin.<span class="hljs-property">transform</span>.<span class="hljs-title function_">call</span>(ctx <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>, code, id, { ssr })
+      } <span class="hljs-keyword">catch</span> (e) {
+        ctx.<span class="hljs-title function_">error</span>(e)
+      }
+      <span class="hljs-keyword">if</span> (!result) <span class="hljs-keyword">continue</span>;
+      <span class="hljs-comment">// 省略 SourceMap 合并的逻辑 </span>
+      code = result;
+    }
+    <span class="hljs-keyword">return</span> {
+      code,
+      <span class="hljs-attr">map</span>: ctx.<span class="hljs-title function_">_getCombinedSourcemap</span>()
+    }
+  },
+  <span class="hljs-comment">// close 钩子实现省略</span>
+}
+</code></pre>
+<p>在 <a href="https://juejin.cn/book/7050063811973218341/section/7061854307863232547" target="_blank" rel="nofollow noopener noreferrer">《Vite 构建基石(下)——深入理解 Rollup 的插件机制》</a> 中，我们已经系统学习过 Rollup 中异步、串行、并行等钩子类型的执行原理了，现在再来阅读这部分 <code>PluginContainer</code> 的实现代码应该并不困难。</p>
+<p>不过值得注意的是，在各种钩子被调用的时候，Vite 会强制将钩子函数的 <code>this</code> 绑定为一个上下文对象，如:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> ctx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Context</span>()
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> plugin.<span class="hljs-property">load</span>.<span class="hljs-title function_">call</span>(ctx <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>, id, { ssr })
+</code></pre>
+<p>这个对象究竟是用来干什么的呢？</p>
+<p>我们知道，在 Rollup 钩子函数中，我们可以调用<code>this.emitFile</code>、<code>this.resolve</code> 等诸多的上下文方法(<a href="https://rollupjs.org/guide/en/#plugin-context" target="_blank" rel="nofollow noopener noreferrer">详情地址</a>)，因此，Vite 除了要模拟各个插件的执行流程，还需要模拟插件执行的上下文对象，代码中的 <code>Context</code> 对象就是用来完成这件事情的。我们来看看 Context 对象的具体实现:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">RollupPluginContext</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'rollup'</span>;
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">PluginContext</span> = <span class="hljs-title class_">Omit</span>&#x3C;
+  <span class="hljs-title class_">RollupPluginContext</span>,
+  <span class="hljs-comment">// not documented</span>
+  | <span class="hljs-string">'cache'</span>
+  <span class="hljs-comment">// deprecated</span>
+  | <span class="hljs-string">'emitAsset'</span>
+  | <span class="hljs-string">'emitChunk'</span>
+  | <span class="hljs-string">'getAssetFileName'</span>
+  | <span class="hljs-string">'getChunkFileName'</span>
+  | <span class="hljs-string">'isExternal'</span>
+  | <span class="hljs-string">'moduleIds'</span>
+  | <span class="hljs-string">'resolveId'</span>
+  | <span class="hljs-string">'load'</span>
+>
+
+<span class="hljs-keyword">const</span> watchFiles = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>&#x3C;<span class="hljs-built_in">string</span>>()
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Context</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">PluginContext</span> {
+  <span class="hljs-comment">// 实现各种上下文方法</span>
+  <span class="hljs-comment">// 解析模块 AST(调用 acorn)</span>
+  <span class="hljs-title function_">parse</span>(<span class="hljs-params">code: <span class="hljs-built_in">string</span>, opts: <span class="hljs-built_in">any</span> = {}</span>) {
+    <span class="hljs-keyword">return</span> parser.<span class="hljs-title function_">parse</span>(code, {
+      <span class="hljs-attr">sourceType</span>: <span class="hljs-string">'module'</span>,
+      <span class="hljs-attr">ecmaVersion</span>: <span class="hljs-string">'latest'</span>,
+      <span class="hljs-attr">locations</span>: <span class="hljs-literal">true</span>,
+      ...opts
+    })
+  }
+  <span class="hljs-comment">// 解析模块路径</span>
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">resolve</span>(<span class="hljs-params">
+    id: <span class="hljs-built_in">string</span>,
+    importer?: <span class="hljs-built_in">string</span>,
+    options?: { skipSelf?: <span class="hljs-built_in">boolean</span> }
+  </span>) {
+    <span class="hljs-keyword">let</span> <span class="hljs-attr">skip</span>: <span class="hljs-title class_">Set</span>&#x3C;<span class="hljs-title class_">Plugin</span>> | <span class="hljs-literal">undefined</span>
+    <span class="hljs-keyword">if</span> (options?.<span class="hljs-property">skipSelf</span> &#x26;&#x26; <span class="hljs-variable language_">this</span>.<span class="hljs-property">_activePlugin</span>) {
+      skip = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_resolveSkips</span>)
+      skip.<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_activePlugin</span>)
+    }
+    <span class="hljs-keyword">let</span> out = <span class="hljs-keyword">await</span> container.<span class="hljs-title function_">resolveId</span>(id, importer, { skip, <span class="hljs-attr">ssr</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">ssr</span> })
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> out === <span class="hljs-string">'string'</span>) out = { <span class="hljs-attr">id</span>: out }
+    <span class="hljs-keyword">return</span> out <span class="hljs-keyword">as</span> <span class="hljs-title class_">ResolvedId</span> | <span class="hljs-literal">null</span>
+  }
+
+  <span class="hljs-comment">// 以下两个方法均从 Vite 的模块依赖图中获取相关的信息</span>
+  <span class="hljs-comment">// 我们将在下一节详细介绍模块依赖图，本节不做展开</span>
+  <span class="hljs-title function_">getModuleInfo</span>(<span class="hljs-params">id: <span class="hljs-built_in">string</span></span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">getModuleInfo</span>(id)
+  }
+
+  <span class="hljs-title function_">getModuleIds</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> moduleGraph
+      ? moduleGraph.<span class="hljs-property">idToModuleMap</span>.<span class="hljs-title function_">keys</span>()
+      : <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>[<span class="hljs-title class_">Symbol</span>.<span class="hljs-property">iterator</span>]()
+  }
+  
+  <span class="hljs-comment">// 记录开发阶段 watch 的文件</span>
+  <span class="hljs-title function_">addWatchFile</span>(<span class="hljs-params">id: <span class="hljs-built_in">string</span></span>) {
+    watchFiles.<span class="hljs-title function_">add</span>(id)
+    ;(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_addedImports</span> || (<span class="hljs-variable language_">this</span>.<span class="hljs-property">_addedImports</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>())).<span class="hljs-title function_">add</span>(id)
+    <span class="hljs-keyword">if</span> (watcher) <span class="hljs-title function_">ensureWatchedFile</span>(watcher, id, root)
+  }
+
+  <span class="hljs-title function_">getWatchFiles</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> [...watchFiles]
+  }
+  
+  <span class="hljs-title function_">warn</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-comment">// 打印 warning 信息</span>
+  }
+  
+  <span class="hljs-title function_">error</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-comment">// 打印 error 信息</span>
+  }
+  
+  <span class="hljs-comment">// 其它方法只是声明，并没有具体实现，这里就省略了</span>
+}
+</code></pre>
+<p>很显然，Vite 将 Rollup 的<code>PluginContext</code>对象重新实现了一遍，因为只是开发阶段用到，所以去除了一些打包相关的方法实现。同时，上下文对象与 Vite 开发阶段的 ModuleGraph 即模块依赖图相结合，是为了实现开发时的 HMR。 HMR 实现的细节，我们将在下一节展开介绍。</p>
+<p>另外，transform 钩子也会绑定一个插件上下文对象，不过这个对象和其它钩子不同，实现代码精简如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TransformContext</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Context</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">filename: <span class="hljs-built_in">string</span>, code: <span class="hljs-built_in">string</span>, inMap?: SourceMap | <span class="hljs-built_in">string</span></span>) {
+    <span class="hljs-variable language_">super</span>()
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">filename</span> = filename
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">originalCode</span> = code
+    <span class="hljs-keyword">if</span> (inMap) {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">sourcemapChain</span>.<span class="hljs-title function_">push</span>(inMap)
+    }
+  }
+
+  <span class="hljs-title function_">_getCombinedSourcemap</span>(<span class="hljs-params">createIfNull = <span class="hljs-literal">false</span></span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">combinedMap</span>
+  }
+
+  <span class="hljs-title function_">getCombinedSourcemap</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_getCombinedSourcemap</span>(<span class="hljs-literal">true</span>) <span class="hljs-keyword">as</span> <span class="hljs-title class_">SourceMap</span>
+  }
+}
+</code></pre>
+<p>可以看到，<code>TransformContext</code>继承自之前所说的<code>Context</code>对象，也就是说 transform 钩子的上下文对象相比其它钩子只是做了一些扩展，增加了 sourcemap 合并的功能，将不同插件的 transform 钩子执行后返回的 sourcemap 进行合并，以保证 sourcemap 的准确性和完整性。</p>
+<h2>插件工作流概览</h2>
+<p>在分析配置解析服务的小节中，我们提到过生成插件流水线即<code>resolvePlugins</code>的逻辑，但没有具体展开，这里我们就来详细拆解一下 Vite 在这一步究竟做了啥。</p>
+<p>让我们把目光集中在<code>resolvePlugins</code>的<a href="https://github.com/vitejs/vite/blob/main/packages/vite/src/node/plugins/index.ts#L22" target="_blank" rel="nofollow noopener noreferrer">实现</a>上，Vite 所有的插件就是在这里被收集起来的。具体实现如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">resolvePlugins</span>(<span class="hljs-params">
+  config: ResolvedConfig,
+  prePlugins: Plugin[],
+  normalPlugins: Plugin[],
+  postPlugins: Plugin[]
+</span>): <span class="hljs-title class_">Promise</span>&#x3C;<span class="hljs-title class_">Plugin</span>[]> {
+  <span class="hljs-keyword">const</span> isBuild = config.<span class="hljs-property">command</span> === <span class="hljs-string">'build'</span>
+  <span class="hljs-comment">// 收集生产环境构建的插件，后文会介绍</span>
+  <span class="hljs-keyword">const</span> buildPlugins = isBuild
+    ? (<span class="hljs-keyword">await</span> <span class="hljs-title function_">import</span>(<span class="hljs-string">'../build'</span>)).<span class="hljs-title function_">resolveBuildPlugins</span>(config)
+    : { <span class="hljs-attr">pre</span>: [], <span class="hljs-attr">post</span>: [] }
+
+  <span class="hljs-keyword">return</span> [
+    <span class="hljs-comment">// 1. 别名插件</span>
+    isBuild ? <span class="hljs-literal">null</span> : <span class="hljs-title function_">preAliasPlugin</span>(),
+    <span class="hljs-title function_">aliasPlugin</span>({ <span class="hljs-attr">entries</span>: config.<span class="hljs-property">resolve</span>.<span class="hljs-property">alias</span> }),
+    <span class="hljs-comment">// 2. 用户自定义 pre 插件(带有`enforce: "pre"`属性)</span>
+    ...prePlugins,
+    <span class="hljs-comment">// 3. Vite 核心构建插件</span>
+    <span class="hljs-comment">// 数量比较多，暂时省略代码</span>
+    <span class="hljs-comment">// 4. 用户插件（不带有 `enforce` 属性）</span>
+    ...normalPlugins,
+    <span class="hljs-comment">// 5. Vite 生产环境插件 &#x26; 用户插件(带有 `enforce: "post"`属性)</span>
+    <span class="hljs-title function_">definePlugin</span>(config),
+    <span class="hljs-title function_">cssPostPlugin</span>(config),
+    ...buildPlugins.<span class="hljs-property">pre</span>,
+    ...postPlugins,
+    ...buildPlugins.<span class="hljs-property">post</span>,
+    <span class="hljs-comment">// 6. 一些开发阶段特有的插件</span>
+    ...(isBuild
+      ? []
+      : [<span class="hljs-title function_">clientInjectionsPlugin</span>(config), <span class="hljs-title function_">importAnalysisPlugin</span>(config)])
+  ].<span class="hljs-title function_">filter</span>(<span class="hljs-title class_">Boolean</span>) <span class="hljs-keyword">as</span> <span class="hljs-title class_">Plugin</span>[]
+}
+</code></pre>
+<p>从上述代码中我们可以总结出 Vite 插件的具体执行顺序。</p>
+<ol>
+<li>
+<p><strong>别名插件</strong>包括 <code>vite:pre-alias</code>和<code>@rollup/plugin-alias</code>，用于路径别名替换。</p>
+</li>
+<li>
+<p>用户自定义 pre 插件，也就是带有<code>enforce: "pre"</code>属性的自定义插件。</p>
+</li>
+<li>
+<p>Vite 核心构建插件，这部分插件为 Vite 的核心编译插件，数量比较多，我们在下部分一一拆解。</p>
+</li>
+<li>
+<p>用户自定义的普通插件，即不带有 <code>enforce</code> 属性的自定义插件。</p>
+</li>
+<li>
+<p><code>Vite 生产环境插件</code>和用户插件中带有<code>enforce: "post"</code>属性的插件。</p>
+</li>
+<li>
+<p>一些开发阶段特有的插件，包括环境变量注入插件<code>clientInjectionsPlugin</code>和 import 语句分析及重写插件<code>importAnalysisPlugin</code>。</p>
+</li>
+</ol>
+<p>那么，在执行过程中 Vite 到底应用了哪些插件，以及这些插件内部究竟做了什么？我们来一一梳理一下。</p>
+<h2>插件功能梳理</h2>
+<blockquote>
+<p>这一节，我们主要围绕实现原理展开，并不会详细介绍所有插件的代码实现细节，不过相应的源码链接我都会放到文章当中，感兴趣的同学可以在课后进一步阅读。</p>
+</blockquote>
+<p>除用户自定义插件之外，我们需要梳理的 Vite 内置插件有下面这几类:</p>
+<ul>
+<li>别名插件</li>
+<li>核心构建插件</li>
+<li>生产环境特有插件</li>
+<li>开发环境特有插件</li>
+</ul>
+<h3>1. 别名插件</h3>
+<p>别名插件有两个，分别是 <a href="https://github.com/vitejs/vite/blob/72cb33e947e7aa72d27ed0c5eacb2457d523dfbf/packages/vite/src/node/plugins/preAlias.ts" target="_blank" rel="nofollow noopener noreferrer">vite:pre-alias</a> 和 <a href="https://github.com/vitejs/vite/blob/72cb33e947e7aa72d27ed0c5eacb2457d523dfbf/packages/vite/src/node/plugins/index.ts#L3" target="_blank" rel="nofollow noopener noreferrer">@rollup/plugin-alias</a>。
+前者主要是为了将 bare import 路径重定向到预构建依赖的路径，如:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 假设 React 已经过 Vite 预构建</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-comment">// 会被重定向到预构建产物的路径</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'/node_modules/.vite/react.js'</span>
+</code></pre>
+<p>后者则是实现了比较通用的路径别名(即<code>resolve.alias</code>配置)的功能，使用的是 <a href="https://github.com/rollup/plugins/tree/master/packages/alias#rollupplugin-alias" target="_blank" rel="nofollow noopener noreferrer">Rollup 官方 Alias 插件</a>。</p>
+<h3>2. 核心构建插件</h3>
+<h4>2.1 module preload 特性的 Polyfill</h4>
+<p>当你在 Vite 配置文件中开启下面这个配置时:</p>
+<pre><code class="hljs language-ts">{
+  <span class="hljs-attr">build</span>: {
+    <span class="hljs-attr">polyfillModulePreload</span>: <span class="hljs-literal">true</span>
+  }
+}
+</code></pre>
+<p>Vite 会自动应用 <code>modulePreloadPolyfillPlugin</code> 插件，在产物中注入 module preload 的 Polyfill 代码，<a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/modulePreloadPolyfill.ts#L7" target="_blank" rel="nofollow noopener noreferrer">具体实现</a> 摘自之前我们提到过的 <code>es-module-shims</code>这个库，实现原理如下:</p>
+<ol>
+<li>
+<p>扫描出当前所有的 modulepreload 标签，拿到 link 标签对应的地址，通过执行 fetch 实现预加载；</p>
+</li>
+<li>
+<p>同时通过 MutationObserver 监听 DOM 的变化，一旦发现包含 modulepreload 属性的 link 标签，则同样通过 fetch 请求实现预加载。</p>
+</li>
+</ol>
+<blockquote>
+<p>由于部分支持原生 ESM 的浏览器并不支持 module preload，因此某些情况下需要注入相应的 polyfill 进行降级。</p>
+</blockquote>
+<h4>2.2 路径解析插件</h4>
+<p>路径解析插件(即<code>vite:resolve</code>)是 Vite 中比较核心的插件，几乎所有重要的 Vite 特性都离不开这个插件的实现，诸如依赖预构建、HMR、SSR 等等。同时它也是实现相当复杂的插件，一方面实现了 <a href="https://nodejs.org/api/modules.html#modules_all_together" target="_blank" rel="nofollow noopener noreferrer">Node.js 官方的 resolve 算法</a>，另一方面需要支持前面所说的各项特性，可以说是专门给 Vite 实现了一套路径解析算法。</p>
+<p>这个插件的实现细节足以再开一个小节专门分析了，所以本节我们就不展开了，你初步了解就可以了。</p>
+<h4>2.3 内联脚本加载插件</h4>
+<p>对于 HTML 中的内联脚本，Vite 会通过<code>vite:html-inline-script-proxy</code> 插件来进行加载。比如下面这个 script 标签:</p>
+<pre><code class="hljs language-ts">&#x3C;script <span class="hljs-keyword">type</span>=<span class="hljs-string">"module"</span>>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">React</span>)
+&#x3C;/script>
+</code></pre>
+<p>这些内容会在后续的<code>build-html</code>插件从 HTML 代码中剔除，并且变成下面的这一行代码插入到项目入口模块的代码中:</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">import</span> <span class="hljs-string">'/User/xxx/vite-app/index.html?http-proxy&#x26;index=0.js'</span>
+</code></pre>
+<p>而 <code>vite:html-inline-script-proxy</code> 就是用来加载这样的模块，实现如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> htmlProxyRE = <span class="hljs-regexp">/\?html-proxy&#x26;index=(\d+)\.js$/</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">htmlInlineScriptProxyPlugin</span>(<span class="hljs-params">config: ResolvedConfig</span>): <span class="hljs-title class_">Plugin</span> {
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'vite:html-inline-script-proxy'</span>,
+    <span class="hljs-title function_">load</span>(<span class="hljs-params">id</span>) {
+      <span class="hljs-keyword">const</span> proxyMatch = id.<span class="hljs-title function_">match</span>(htmlProxyRE)
+      <span class="hljs-keyword">if</span> (proxyMatch) {
+        <span class="hljs-keyword">const</span> index = <span class="hljs-title class_">Number</span>(proxyMatch[<span class="hljs-number">1</span>])
+        <span class="hljs-keyword">const</span> file = <span class="hljs-title function_">cleanUrl</span>(id)
+        <span class="hljs-keyword">const</span> url = file.<span class="hljs-title function_">replace</span>(<span class="hljs-title function_">normalizePath</span>(config.<span class="hljs-property">root</span>), <span class="hljs-string">''</span>)
+        <span class="hljs-comment">// 内联脚本的内容会被记录在 htmlProxyMap 这个表中</span>
+        <span class="hljs-keyword">const</span> result = htmlProxyMap.<span class="hljs-title function_">get</span>(config)!.<span class="hljs-title function_">get</span>(url)![index]
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> result === <span class="hljs-string">'string'</span>) {
+          <span class="hljs-comment">// 加载脚本的具体内容</span>
+          <span class="hljs-keyword">return</span> result
+        } <span class="hljs-keyword">else</span> {
+          <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`No matching HTML proxy module found from <span class="hljs-subst">${id}</span>`</span>)
+        }
+      }
+    }
+  }
+}
+
+</code></pre>
+<h4>2.4 CSS 编译插件</h4>
+<p>即名为<code>vite:css</code>的<a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/css.ts#L137" target="_blank" rel="nofollow noopener noreferrer">插件</a>，主要实现下面这些功能:</p>
+<ul>
+<li><code>CSS 预处理器的编译</code></li>
+<li><code>CSS Modules</code></li>
+<li><code>Postcss 编译</code></li>
+<li>通过 @import <code>记录依赖</code>，便于 HMR</li>
+</ul>
+<p>这个插件的核心在于<code>compileCSS</code>函数的实现，感兴趣的同学可以阅读一下<a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/css.ts#L568" target="_blank" rel="nofollow noopener noreferrer">这部分的源码</a>。</p>
+<h4>2.5 Esbuild 转译插件</h4>
+<p>即名为<code>vite:esbuild</code>的<a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/esbuild.ts" target="_blank" rel="nofollow noopener noreferrer">插件</a>，用来进行 <code>.js</code>、<code>.ts</code>、<code>.jsx</code>和<code>tsx</code>，代替了传统的 Babel 或者 TSC 的功能，这也是 Vite 开发阶段性能强悍的一个原因。插件中主要的逻辑是<code>transformWithEsbuild</code>函数，顾名思义，你可以通过这个函数进行代码转译。当然，Vite 本身也导出了这个函数，作为一种通用的 transform 能力，你可以这样来使用:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { transformWithEsbuild } <span class="hljs-keyword">from</span> <span class="hljs-string">'vite'</span>;
+
+<span class="hljs-comment">// 传入两个参数: code, filename</span>
+<span class="hljs-title function_">transformWithEsbuild</span>(<span class="hljs-string">'&#x3C;h1>hello&#x3C;/h1>'</span>, <span class="hljs-string">'./index.tsx'</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =></span> {
+  <span class="hljs-comment">// {</span>
+  <span class="hljs-comment">//   warnings: [],</span>
+  <span class="hljs-comment">//   code: '/* @__PURE__ */ React.createElement("h1", null, "hello");\n',</span>
+  <span class="hljs-comment">//   map: {/* sourcemap 信息 */}</span>
+  <span class="hljs-comment">// }</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res);
+})
+</code></pre>
+<h4>2.6 静态资源加载插件</h4>
+<p>静态资源加载插件包括如下几个:</p>
+<ul>
+<li>
+<p><strong>vite:json</strong> 用来加载 JSON 文件，通过<code>@rollup/pluginutils</code>的<code>dataToEsm</code>方法可实现 JSON 的按名导入，具体实现见<a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/json.ts#L30" target="_blank" rel="nofollow noopener noreferrer">链接</a>；</p>
+</li>
+<li>
+<p><strong>vite:wasm</strong> 用来加载 <code>.wasm</code> 格式的文件，具体实现见<a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/wasm.ts#L45" target="_blank" rel="nofollow noopener noreferrer">链接</a>；</p>
+</li>
+<li>
+<p><strong>vite:worker</strong> 用来 Web Worker 脚本，插件内部会使用 Rollup 对 Worker 脚本进行打包，具体实现见<a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/worker.ts" target="_blank" rel="nofollow noopener noreferrer">链接</a>；</p>
+</li>
+<li>
+<p><strong>vite:asset</strong>，开发阶段实现了其他格式静态资源的加载，而生产环境会通过 <code>renderChunk</code> 钩子将静态资源地址重写为产物的文件地址，如<code>./img.png</code> 重写为 <code>https://cdn.xxx.com/assets/img.91ee297e.png</code>。</p>
+</li>
+</ul>
+<p>值得注意的是，Rollup 本身存在 <a href="https://bundlers.tooling.report/hashing/asset-cascade/" target="_blank" rel="nofollow noopener noreferrer">asset cascade</a> 问题，即静态资源哈希更新，引用它的 JS 的哈希并没有更新(<a href="https://github.com/rollup/rollup/issues/3415" target="_blank" rel="nofollow noopener noreferrer">issue 链接</a>)。因此 Vite 在静态资源处理的时候，并没有交给 Rollup 生成资源哈希，而是自己根据资源内容生成哈希(<a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/asset.ts#L306" target="_blank" rel="nofollow noopener noreferrer">源码实现</a>)，并手动进行路径重写，以此避免 <code>asset-cascade</code> 问题。</p>
+<h3>3. 生产环境特有插件</h3>
+<h4>3.1 全局变量替换插件</h4>
+<p>提供全局变量替换功能，如下面的这个配置:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// vite.config.ts</span>
+<span class="hljs-keyword">const</span> version = <span class="hljs-string">'2.0.0'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">define</span>: {
+    <span class="hljs-attr">__APP_VERSION__</span>: <span class="hljs-string">`JSON.stringify(<span class="hljs-subst">${version}</span>)`</span>
+  }
+}
+</code></pre>
+<p>全局变量替换的功能和我们之前在 Rollup 插件小节中提到的<a href="https://github.com/rollup/plugins/tree/master/packages/replace" target="_blank" rel="nofollow noopener noreferrer">@rollup/plugin-replace</a> 差不多，当然在实现上 Vite 会有所区别:</p>
+<ul>
+<li>开发环境下，Vite 会通过将所有的全局变量挂载到<code>window</code>对象，而不用经过 define 插件的处理，节省编译开销；</li>
+<li>生产环境下，Vite 会使用 <a href="https://github.com/vitejs/vite/blob/main/packages/vite/src/node/plugins/define.ts" target="_blank" rel="nofollow noopener noreferrer">define 插件</a>，进行字符串替换以及 sourcemap 生成。</li>
+</ul>
+<blockquote>
+<p>特殊情况: SSR 构建会在开发环境经过这个插件，仅替换字符串。</p>
+</blockquote>
+<h4>3.2 CSS 后处理插件</h4>
+<p>CSS 后处理插件即<code>name</code>为<code>vite:css-post</code>的插件，它的功能包括<code>开发阶段 CSS 响应结果处理</code>和<code>生产环境 CSS 文件生成</code>。</p>
+<p>首先，在开发阶段，这个插件会将之前的 CSS 编译插件处理后的结果，包装成一个 ESM 模块，返回给浏览器，<a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/css.ts#L284" target="_blank" rel="nofollow noopener noreferrer">点击查看实现代码</a>。</p>
+<p>其次，生产环境中，Vite 默认会通过这个插件进行 CSS 的 code splitting，即对于每个异步 chunk，Vite 会将其依赖的 CSS 代码单独打包成一个文件，关键代码如下(<a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/css.ts#L400" target="_blank" rel="nofollow noopener noreferrer">源码链接</a>):</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> fileHandle = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">emitFile</span>({
+  <span class="hljs-attr">name</span>: chunk.<span class="hljs-property">name</span> + <span class="hljs-string">'.css'</span>,
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'asset'</span>,
+  <span class="hljs-attr">source</span>: chunkCSS
+});
+</code></pre>
+<p>如果 CSS 的 code splitting 功能被关闭(通过<code>build.cssCodeSplit</code>配置)，那么 Vite 会将所有的 CSS 代码打包到同一个 CSS 文件中，<a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/css.ts#L433" target="_blank" rel="nofollow noopener noreferrer">点击查看实现</a>。</p>
+<p>最后，插件会调用 Esbuild 对 CSS 进行压缩，实现在 <code>minifyCSS</code> 函数中，<a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/css.ts#L905" target="_blank" rel="nofollow noopener noreferrer">点击查看实现</a>。</p>
+<h4>3.3 HTML 构建插件</h4>
+<p><code>HTML</code> 构建插件 即<code>build-html</code>插件。之前我们在<code>内联脚本加载插件</code>中提到过，项目根目录下的<code>html</code>会转换为一段 JavaScript 代码，如下面的这个例子:</p>
+<pre><code class="hljs language-html"><span class="hljs-meta">&#x3C;!DOCTYPE <span class="hljs-keyword">html</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">head</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">"X-UA-Compatible"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"IE=edge"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">title</span>></span>Document<span class="hljs-tag">&#x3C;/<span class="hljs-name">title</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">head</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  // 普通方式引入
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"./index.ts"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+  // 内联脚本
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"module"</span>></span><span class="javascript">
+    <span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">React</span>)
+  </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">html</span>></span>
+</code></pre>
+<p>首先，当 Vite 在生产环境<code>transform</code>这段入口 HTML 时，会做 3 件事情:</p>
+<ol>
+<li>对 HTML 执行各个插件中带有 <code>enforce: "pre"</code> 属性的 transformIndexHtml 钩子；</li>
+</ol>
+<blockquote>
+<p>我们知道插件本身可以带有 <code>enforce: "pre"|"post"</code> 属性，而 transformIndexHtml 本身也可以带有这个属性，用于在不同的阶段进行 HTML 转换。后文会介绍 transformIndexHtml 钩子带有 <code>enforce: "post"</code> 时的执行时机。</p>
+</blockquote>
+<ol start="2">
+<li>将其中的 script 标签内容删除，并将其转换为 <code>import 语句</code>如<code>import './index.ts'</code>，并记录下来；</li>
+<li>在 transform 钩子中返回记录下来的 import 内容，将 import 语句作为模块内容进行加载。也就是说，虽然 Vite 处理的是一个 HTML 文件，但最后进行打包的内容却是一段 JS 的内容，<a href="https://github.com/vitejs/vite/blob/main/packages/vite/src/node/plugins/html.ts#L233" target="_blank" rel="nofollow noopener noreferrer">点击查看具体实现</a>。代码简化后如下所示:</li>
+</ol>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">buildHtmlPlugin</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'vite:build'</span>,
+  <span class="hljs-title function_">transform</span>(<span class="hljs-params">html, id</span>) {
+    <span class="hljs-keyword">if</span> (id.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">'.html'</span>)) {
+      <span class="hljs-keyword">let</span> js = <span class="hljs-string">''</span>;
+      <span class="hljs-comment">// 省略 HTML AST 遍历过程(通过 @vue/compiler-dom 实现)</span>
+      <span class="hljs-comment">// 收集 script 标签，转换成 import 语句，拼接到 js 字符串中</span>
+      <span class="hljs-keyword">return</span> js;
+    }
+  }
+}
+</code></pre>
+<p>其次，在生成产物的最后一步即<code>generateBundle</code>钩子中，拿到入口 Chunk，分析入口 Chunk 的内容, 分情况进行处理。</p>
+<p>如果只有 import 语句，先通过 Rollup 提供的 <code>chunk</code> 和 <code>bundle</code> 对象获取入口 chunk 所有的依赖 chunk，并将这些 chunk 进行后序排列，如 <code>a 依赖 b，b 依赖 c</code>，最后的依赖数组就是<code>[c, b, a]</code>。然后依次将 c，b, a 生成三个 script 标签，插入 HTML 中。最后，Vite 会将入口 chunk 的内容从 bundle 产物中移除，因此它的内容只要 import 语句，而它 import 的 chunk 已经作为 script 标签插入到了 HTML 中，那入口 Chunk 的存在也就没有意义了。</p>
+<p>如果除了 import 语句，还有其它内容， Vite 就会将入口 Chunk 单独生成一个 <code>script 标签</code>，分析出依赖的后序排列(和上一种情况分析手段一样)，然后通过注入 <code>&#x3C;link rel="modulepreload"> 标签</code>对入口文件的依赖 chunk 进行预加载。</p>
+<p>最后，插件会调用用户插件中带有 <code>enforce: "post"</code> 属性的 transformIndexHtml 钩子，对 HTML 进行进一步的处理。<a href="https://github.com/vitejs/vite/blob/main/packages/vite/src/node/plugins/html.ts#L471" target="_blank" rel="nofollow noopener noreferrer">点击查看具体实现</a>。</p>
+<h4>3.3 Commonjs 转换插件</h4>
+<p>我们知道，在开发环境中，Vite 使用 Esbuild 将 Commonjs 转换为 ESM，而生产环境中，Vite 会直接使用 Rollup 的官方插件 <a href="https://github.com/rollup/plugins/tree/master/packages/commonjs" target="_blank" rel="nofollow noopener noreferrer">@rollup/plugin-commonjs</a>。</p>
+<h4>3.4 date-uri 插件</h4>
+<p>date-uri 插件用来支持 import 模块中含有 Base64 编码的情况，如:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> batman <span class="hljs-keyword">from</span> <span class="hljs-string">'data:application/json;base64, eyAiYmF0bWFuIjogInRydWUiIH0='</span>;
+</code></pre>
+<p><a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/dataUri.ts#L14" target="_blank" rel="nofollow noopener noreferrer">点击查看实现</a>。</p>
+<h4>3.5 dynamic-import-vars 插件</h4>
+<p>用于支持在动态 import 中使用变量的功能，如下示例代码:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">importLocale</span>(<span class="hljs-params">locale</span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">import</span>(<span class="hljs-string">`./locales/<span class="hljs-subst">${locale}</span>.js`</span>);
+}
+</code></pre>
+<p>内部使用的是 Rollup 的官方插件 <a href="https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars" target="_blank" rel="nofollow noopener noreferrer">@rollup/plugin-dynamic-import-vars</a>。</p>
+<h4>3.6 import-meta-url 支持插件</h4>
+<p>用来转换如下格式的资源 URL:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(<span class="hljs-string">'./foo.png'</span>, <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">url</span>)
+</code></pre>
+<p>将其转换为生产环境的 URL 格式，如:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 使用 self.location 来保证低版本浏览器和 Web Worker 环境的兼容性</span>
+<span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(<span class="hljs-string">'./assets.a4b3d56d.png, self.location)
+</span></code></pre>
+<p>同时，对于动态 import 的情况也能进行支持，如下面的这种写法:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">getImageUrl</span>(<span class="hljs-params">name</span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(<span class="hljs-string">`./dir/<span class="hljs-subst">${name}</span>.png`</span>, <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">url</span>).<span class="hljs-property">href</span>
+}
+</code></pre>
+<p>Vite 识别到<code>./dir/${name}.png</code>这样的模板字符串，会将整行代码转换成下面这样:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">getImageUrl</span>(<span class="hljs-params">name</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-title function_">globEager</span>(<span class="hljs-string">'./dir/**.png'</span>)[<span class="hljs-string">`./dir/<span class="hljs-subst">${name}</span>.png`</span>].<span class="hljs-property">default</span>;
+}
+</code></pre>
+<p><a href="https://github.com/vitejs/vite/blob/2b7e836f84b56b5f3dc81e0f5f161a9b5f9154c0/packages/vite/src/node/plugins/assetImportMetaUrl.ts#L18" target="_blank" rel="nofollow noopener noreferrer">点击查看具体实现</a></p>
+<h4>3.7 生产环境 import 分析插件</h4>
+<p><code>vite:build-import-analysis</code> 插件会在生产环境打包时用作 import 语句分析和重写，主要目的是对动态 import 的模块进行预加载处理。</p>
+<p>对含有动态 import 的 chunk 而言，会在插件的<code>tranform</code>钩子中被添加这样一段工具代码用来进行模块预加载，逻辑并不复杂，你可以参考<a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/plugins/importAnalysisBuild.ts#L43" target="_blank" rel="nofollow noopener noreferrer">源码实现</a>。关键代码简化后如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">preload</span>(<span class="hljs-params">importModule, deps</span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(
+    deps.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">dep</span> =></span> {
+      <span class="hljs-comment">// 如果异步模块的依赖还没有加载</span>
+      <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">alreadyLoaded</span>(dep)) { 
+        <span class="hljs-comment">// 创建 link 标签加载，包括 JS 或者 CSS</span>
+        <span class="hljs-variable language_">document</span>.<span class="hljs-property">head</span>.<span class="hljs-title function_">appendChild</span>(<span class="hljs-title function_">createLink</span>(dep))  
+        <span class="hljs-comment">// 如果是 CSS，进行特殊处理，后文会介绍</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isCss</span>(dep)) {
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =></span> {
+            link.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'load'</span>, resolve)
+            link.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'error'</span>, reject)
+          })
+        }
+      }
+    })
+  ).<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> <span class="hljs-title function_">importModule</span>())
+}
+</code></pre>
+<p>我们知道，Vite 内置了 CSS 代码分割的能力，当一个模块通过动态 import 引入的时候，这个模块会被单独打包成一个 chunk，与此同时这个模块中的样式代码也会打包成单独的 CSS 文件。如果异步模块的 CSS 和 JS 同时进行预加载，那么在某些浏览器下(如 IE)就会出现 <a href="https://en.wikipedia.org/wiki/Flash_of_unstyled_content#:~:text=A%20flash%20of%20unstyled%20content,before%20all%20information%20is%20retrieved." target="_blank" rel="nofollow noopener noreferrer">FOUC 问题</a>，页面样式会闪烁，影响用户体验。但 Vite 通过监听 link 标签 <code>load</code> 事件的方式来保证 CSS 在 JS 之前加载完成，从而解决了 FOUC 问题。你可以注意下面这段关键代码:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">if</span> (isCss) {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">res, rej</span>) =></span> {
+    link.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'load'</span>, res)
+    link.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'error'</span>, rej)
+  })
+}
+</code></pre>
+<p>现在，我们已经知道了预加载的实现方法，那么 Vite 是如何将动态 import 编译成预加载的代码的呢？</p>
+<p>从源码的<code>transform</code>钩子<a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/plugins/importAnalysisBuild.ts#L111" target="_blank" rel="nofollow noopener noreferrer">实现</a>中，不难发现 Vite 会将动态 import 的代码进行转换，如下代码所示:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 转换前</span>
+<span class="hljs-title function_">import</span>(<span class="hljs-string">'a'</span>)
+<span class="hljs-comment">// 转换后</span>
+<span class="hljs-title function_">__vitePreload</span>(<span class="hljs-function">() =></span> <span class="hljs-string">'a'</span>, __VITE_IS_MODERN__ ?<span class="hljs-string">"__VITE_PRELOAD__"</span>:<span class="hljs-built_in">void</span>)
+</code></pre>
+<p>其中，<code>__vitePreload</code> 会被加载为前文中的 <code>preload</code> 工具函数，<code>__VITE_IS_MODERN__</code> 会在 <a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/plugins/importAnalysisBuild.ts#L208" target="_blank" rel="nofollow noopener noreferrer">renderChunk</a> 中被替换成 true 或者 false，表示是否为 Modern 模式打包，而对于<code>"__VITE_PRELOAD__"</code>，Vite 会在 <a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/plugins/importAnalysisBuild.ts#L208" target="_blank" rel="nofollow noopener noreferrer">generateBundle</a> 阶段，分析出 a 模块所有依赖文件(包括 CSS)，将依赖文件名的数组作为 preload 工具函数的第二个参数。</p>
+<p>同时，对于 Vite 独有的 import.meta.glob 语法，也会在这个插件中进行编译，如:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> modules = <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-title function_">glob</span>(<span class="hljs-string">'./dir/*.js'</span>)
+</code></pre>
+<p>会通过插件转换成下面这段代码:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> modules = {
+  <span class="hljs-string">'./dir/foo.js'</span>: <span class="hljs-function">() =></span> <span class="hljs-title function_">import</span>(<span class="hljs-string">'./dir/foo.js'</span>),
+  <span class="hljs-string">'./dir/bar.js'</span>: <span class="hljs-function">() =></span> <span class="hljs-title function_">import</span>(<span class="hljs-string">'./dir/bar.js'</span>)
+}
+</code></pre>
+<p>具体的实现在 <a href="https://github.com/vitejs/vite/blob/075128a8dd0a2680540179dad2277a797f793199/packages/vite/src/node/importGlob.ts#L11" target="_blank" rel="nofollow noopener noreferrer">transformImportGlob</a> 函数中，除了被该插件使用外，这个函数被还依赖预构建、开发环境 import 分析等核心流程使用，属于一类比较底层的逻辑，感兴趣的同学可以精读一下这部分的实现源码。</p>
+<h4>3.8 JS 压缩插件</h4>
+<p>Vite 中提供了两种 JS 代码压缩的工具，即 Esbuild 和 Terser，分别由两个插件插件实现:</p>
+<ul>
+<li>
+<p><strong>vite:esbuild-transpile</strong> (<a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/plugins/esbuild.ts#L219" target="_blank" rel="nofollow noopener noreferrer">点击查看实现</a>)。在 renderChunk 阶段，调用 Esbuild 的 transform API，并指定 minify 参数，从而实现 JS 的压缩。</p>
+</li>
+<li>
+<p><strong>vite:terser</strong>(<a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/plugins/terser.ts#L23" target="_blank" rel="nofollow noopener noreferrer">点击查看实现</a>)。同样也在 renderChunk 阶段，Vite 会单独的 Worker 进程中调用 Terser 进行 JS 代码压缩。</p>
+</li>
+</ul>
+<h4>3.9 构建报告插件</h4>
+<p>主要由三个插件输出构建报告:</p>
+<ul>
+<li><strong>vite:manifest</strong>(<a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/plugins/manifest.ts" target="_blank" rel="nofollow noopener noreferrer">点击查看实现</a>)。提供打包后的各种资源文件及其关联信息，如下内容所示:</li>
+</ul>
+<pre><code class="hljs language-json"><span class="hljs-comment">// manifest.json</span>
+<span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"index.html"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"file"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"assets/index.8edffa56.js"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"src"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"index.html"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"isEntry"</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">true</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"imports"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-comment">// JS 引用</span>
+      <span class="hljs-string">"_vendor.71e8fac3.js"</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"css"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-comment">// 样式文件应用</span>
+      <span class="hljs-string">"assets/index.458f9883.css"</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"assets"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-comment">// 静态资源引用</span>
+      <span class="hljs-string">"assets/img.9f0de7da.png"</span>
+    <span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"_vendor.71e8fac3.js"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"file"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"assets/vendor.71e8fac3.js"</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<ul>
+<li><strong>vite:ssr-manifest</strong>(<a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/plugins/manifest.ts" target="_blank" rel="nofollow noopener noreferrer">点击查看实现</a>)。提供每个模块与 chunk 之间的映射关系，方便 SSR 时期通过渲染的组件来确定哪些 chunk 会被使用，从而按需进行预加载。最后插件输出的内容如下:</li>
+</ul>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// ssr-manifest.json</span>
+{
+  <span class="hljs-string">"node_modules/object-assign/index.js"</span>: [
+    <span class="hljs-string">"/assets/vendor.71e8fac3.js"</span>
+  ],
+  <span class="hljs-string">"node_modules/object-assign/index.js?commonjs-proxy"</span>: [
+    <span class="hljs-string">"/assets/vendor.71e8fac3.js"</span>
+  ],
+  <span class="hljs-comment">// 省略其它模块信息</span>
+}
+</code></pre>
+<ul>
+<li><strong>vite:reporter</strong>(<a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/plugins/reporter.ts" target="_blank" rel="nofollow noopener noreferrer">点击查看实现</a>)。主要提供打包时的命令行构建日志:</li>
+</ul>
+<p><img src="img\c8fd9cc7-ae61-11ed-a896-342eb7027b95.jpg" alt="image.png"></p>
+<h3>4. 开发环境特有插件</h3>
+<h4>4.1 客户端环境变量注入插件</h4>
+<p>在开发环境中，Vite 会自动往 HTML 中注入一段 client 的脚本(<a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/server/middlewares/indexHtml.ts#L159" target="_blank" rel="nofollow noopener noreferrer">点击查看实现</a>):</p>
+<pre><code class="hljs language-ts">&#x3C;script <span class="hljs-keyword">type</span>=<span class="hljs-string">"module"</span> src=<span class="hljs-string">"/@vite/client"</span>>&#x3C;/script>
+</code></pre>
+<p>这段脚本主要提供<code>注入环境变量</code>、<code>处理 HMR 更新逻辑</code>、<code>构建出现错误时提供报错界面</code>等功能，而我们这里要介绍的<code>vite:client-inject</code>就是来完成时环境变量的注入，将 client 脚本中的<code>__MODE__</code>、<code>__BASE__</code>、<code>__DEFINE__</code>等等字符串替换为运行时的变量，实现环境变量以及 HMR 相关上下文信息的注入，<a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/plugins/clientInjections.ts" target="_blank" rel="nofollow noopener noreferrer">点击查看插件实现</a>。</p>
+<h4>4.2 开发阶段 import 分析插件</h4>
+<p>最后，Vite 会在开发阶段加入 import 分析插件，即<code>vite:import-analysis</code>。与之前所介绍的<code>vite:build-import-analysis</code>相对应，主要处理 import 语句相关的解析和重写，但<code>vite:import-analysis</code> 插件的关注点会不太一样，主要围绕 Vite 开发阶段的各项特性来实现，我们可以来梳理一下这个插件需要做哪些事情:</p>
+<ul>
+<li>对 bare import，将路径名转换为真实的文件路径，如:</li>
+</ul>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 转换前</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'foo'</span>
+<span class="hljs-comment">// 转换后</span>
+<span class="hljs-comment">// tip: 如果是预构建的依赖，则会转换为预构建产物的路径</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'/@fs/project/node_modules/foo/dist/foo.js'</span>
+</code></pre>
+<p>主要调用 <code>PluginContainer</code>的上下文对象方法即<code>this.resolve</code>实现，这个方法会调用所有插件的 resolveId 方法，包括之前介绍的<code>vite:pre-alias</code>和<code>vite:resolve</code>，完成路径解析的核心逻辑，<a>点击查看实现</a>。</p>
+<ul>
+<li>
+<p>对于 HMR 的客户端 API，即 <code>import.meta.hot</code>，Vite 在识别到这样的 import 语句后，一方面会注入 import.meta.hot 的实现，因为浏览器原生并不具备这样的 API，<a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/plugins/importAnalysis.ts#L502" target="_blank" rel="nofollow noopener noreferrer">点击查看注入代码</a>；另一方面会识别 accept 方法，并判断 accept 是否为<code>接受自身更新</code>的类型(如果对 HMR 更新类型还不了解，可以回顾一下<a href="https://juejin.cn/book/7050063811973218341/section/7065976180020609032" target="_blank" rel="nofollow noopener noreferrer">第十三节</a>的内容)，如果是，则标记为上<code>isSelfAccepting</code> 的 flag，便于 HMR 在服务端进行更新时进行<code>HMR Boundary</code>的查找。对于具体的查找过程，下一节会详细介绍。</p>
+</li>
+<li>
+<p>对于全局环境变量读取语句，即 <code>import.meta.env</code>，Vite 会注入 <code>import.meta.env</code> 的实现，也就是如下的<code>env</code>字符串:</p>
+</li>
+</ul>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// config 即解析完的配置</span>
+<span class="hljs-keyword">let</span> env = <span class="hljs-string">`import.meta.env = <span class="hljs-subst">${<span class="hljs-built_in">JSON</span>.stringify({
+  ...config.env,
+  SSR: !!ssr
+})}</span>;`</span>
+<span class="hljs-comment">// 对用户配置的 define 对象中，将带有 import.meta.env 前缀的全局变量挂到 import.meta.env 对象上</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> config.<span class="hljs-property">define</span>) {
+  <span class="hljs-keyword">if</span> (key.<span class="hljs-title function_">startsWith</span>(<span class="hljs-string">`import.meta.env.`</span>)) {
+    <span class="hljs-keyword">const</span> val = config.<span class="hljs-property">define</span>[key]
+    env += <span class="hljs-string">`<span class="hljs-subst">${key}</span> = <span class="hljs-subst">${
+      <span class="hljs-keyword">typeof</span> val === <span class="hljs-string">'string'</span> ? val : <span class="hljs-built_in">JSON</span>.stringify(val)
+    }</span>;`</span>
+  }
+}
+</code></pre>
+<ul>
+<li>对于<code>import.meta.glob</code>语法，Vite 同样会调用之前提到的<code>transformImportGlob</code> 函数来进行语法转换，但与生产环境的处理不同，在转换之后，Vite 会将该模块通过 glob 导入的依赖模块记录在 server 实例上，以便于 HMR 更新的时候能得到更准确的模块依赖信息，<a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/plugins/importAnalysis.ts#L324" target="_blank" rel="nofollow noopener noreferrer">点击查看实现</a>。</li>
+</ul>
+<h2>小结</h2>
+<p>好，本小节的内容讲完了。</p>
+<p>这一节我们介绍了 Vite 的插件机制实现以及各个编译插件的作用和实现，信息密度比较大，需要你对照着官方的代码好好梳理一遍。其中，你需要重点掌握<strong>PluginContainer 的实现机制</strong>和 <strong>Vite 内置插件各自的作用</strong>。</p>
+<p>首先，PluginContainer 主要由两部分实现，包括 Rollup 插件钩子的调度和插件钩子内部的 Context 上下文对象实现，总体上模拟了 Rollup 的插件机制。</p>
+<p>其次，Vite 内置的插件包括四大类: <strong>别名插件</strong>、<strong>核心构建插件</strong>、<strong>生产环境特有插件</strong>和<strong>开发环境特有插件</strong>。这些插件包含了 Vite 核心的编译逻辑，可以说是 Vite 作为构建工具的命脉所在，希望你能对照本小节的内容及其对应的源码链接，了解各个插件的作用。</p>
+<p>此外，在学习这些插件的过程中，我们切忌扎到众多繁琐的实现细节中，要尽可能抓关键的实现思路，来高效理解插件背后的原理，这样学习效率会更高。进一步来讲，在你理解了各个插件的实现原理之后，如果遇到某些场景下需要调试某些插件的代码，你也可以做到有的放矢。</p>
+<p>最后，欢迎大家在评论区记录自己的学习收获和心得，也欢迎大家来一起讨论，把这部分的难点啃下来，让你对 Vite 底层的理解更上一层楼！</p>
+</div>
+</body>
+</html>

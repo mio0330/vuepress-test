@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <p>上一小节，我们介绍了 Vite 的双引擎架构。不可否认，作为 Vite 的双引擎之一，Esbuild 在很多关键的构建阶段(如<code>依赖预编译</code>、<code>TS 语法转译</code>、<code>代码压缩</code>)让 Vite 获得了相当优异的性能，是 Vite 高性能的得力助手。无论是在 Vite 的配置项还是源码实现中，都包含了不少 Esbuild 本身的基本概念和高阶用法。因此，要深入掌握 Vite，学习 Esbuild 必不可少。</p>
+<p>本小节，我们将专注于 Esbuild 本身，一起学习它的基本概念和功能使用，同时实战开发一个完整的 Esbuild 插件。</p>
+<h2>为什么 Esbuild 性能极高？</h2>
+<p>Esbuild 是由 Figma 的 CTO 「Evan Wallace」基于 Golang 开发的一款打包工具，相比传统的打包工具，主打性能优势，在构建速度上可以比传统工具快 <code>10~100</code> 倍。那么，它是如何达到这样超高的构建性能的呢？主要原因可以概括为 4 点。</p>
+<ol>
+<li>
+<p><strong>使用 Golang 开发</strong>，构建逻辑代码直接被编译为原生机器码，而不用像 JS 一样先代码解析为字节码，然后转换为机器码，大大节省了程序运行时间。</p>
+</li>
+<li>
+<p><strong>多核并行</strong>。内部打包算法充分利用多核 CPU 优势，所有的步骤尽可能并行，这也是得益于 Go 当中多线程共享内存的优势。</p>
+</li>
+<li>
+<p><strong>从零造轮子</strong>。 几乎没有使用任何第三方库，所有逻辑自己编写，大到 AST 解析，小到字符串的操作，保证极致的代码性能。</p>
+</li>
+<li>
+<p><strong>高效的内存利用</strong>。Esbuild 中从头到尾尽可能地复用一份 AST 节点数据，而不用像 JS 打包工具中频繁地解析和传递 AST 数据（如 string -> TS -> JS -> string)，造成内存的大量浪费。</p>
+</li>
+</ol>
+<h2>Esbuild 功能使用</h2>
+<p>接下来我们正式学习 Esbuild 的功能使用。首先我们执行<code>pnpm init -y</code>新建一个项目, 然后通过如下的命令完成 Esbuild 的安装:</p>
+<pre><code class="hljs language-ts">pnpm i esbuild
+</code></pre>
+<p>使用 Esbuild 有 2 种方式，分别是 <strong>命令行调用</strong>和<strong>代码调用</strong>。</p>
+<h3>1. 命令行调用</h3>
+<p>命令行方式调用也是最简单的使用方式。我们先来写一些示例代码，新建<code>src/index.jsx</code>文件，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/index.jsx</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Server</span> <span class="hljs-keyword">from</span> <span class="hljs-string">"react-dom/server"</span>;
+
+<span class="hljs-keyword">let</span> <span class="hljs-title function_">Greet</span> = (<span class="hljs-params"></span>) => <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">h1</span>></span>Hello, juejin!<span class="hljs-tag">&#x3C;/<span class="hljs-name">h1</span>></span></span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Server</span>.<span class="hljs-title function_">renderToString</span>(<span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">Greet</span> /></span></span>));
+</code></pre>
+<p>注意安装一下所需的依赖，在终端执行如下的命令:</p>
+<pre><code class="hljs language-ts">pnpm install react react-dom
+</code></pre>
+<p>接着到<code>package.json</code>中添加<code>build</code>脚本:</p>
+<pre><code class="hljs language-json"> <span class="hljs-attr">"scripts"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"build"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"./node_modules/.bin/esbuild src/index.jsx --bundle --outfile=dist/out.js"</span>
+ <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+</code></pre>
+<p>现在，你可以在终端执行<code>pnpm run build</code>，可以发现如下的日志信息:</p>
+<p><img src="img\b861a6c3-ae61-11ed-9254-342eb7027b95.jpg" alt="image.png"></p>
+<p>说明我们已经成功通过命令行完成了 Esbuild 打包！但命令行的使用方式不够灵活，只能传入一些简单的命令行参数，稍微复杂的场景就不适用了，所以一般情况下我们还是会用代码调用的方式。</p>
+<h3>2. 代码调用</h3>
+<p>Esbuild 对外暴露了一系列的 API，主要包括两类: <code>Build API</code>和<code>Transform API</code>，我们可以在 Nodejs 代码中通过调用这些 API 来使用 Esbuild 的各种功能。</p>
+<h4>项目打包——Build API</h4>
+<p><code>Build API</code>主要用来进行项目打包，包括<code>build</code>、<code>buildSync</code>和<code>serve</code>三个方法。</p>
+<p>首先我们来试着在 Node.js 中使用<code>build</code> 方法。你可以在项目根目录新建<code>build.js</code>文件，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> { build, buildSync, serve } = <span class="hljs-built_in">require</span>(<span class="hljs-string">"esbuild"</span>);
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">runBuild</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">// 异步方法，返回一个 Promise</span>
+  <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> <span class="hljs-title function_">build</span>({
+    <span class="hljs-comment">// ----  如下是一些常见的配置  --- </span>
+    <span class="hljs-comment">// 当前项目根目录</span>
+    <span class="hljs-attr">absWorkingDir</span>: process.<span class="hljs-title function_">cwd</span>(),
+    <span class="hljs-comment">// 入口文件列表，为一个数组</span>
+    <span class="hljs-attr">entryPoints</span>: [<span class="hljs-string">"./src/index.jsx"</span>],
+    <span class="hljs-comment">// 打包产物目录</span>
+    <span class="hljs-attr">outdir</span>: <span class="hljs-string">"dist"</span>,
+    <span class="hljs-comment">// 是否需要打包，一般设为 true</span>
+    <span class="hljs-attr">bundle</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-comment">// 模块格式，包括`esm`、`commonjs`和`iife`</span>
+    <span class="hljs-attr">format</span>: <span class="hljs-string">"esm"</span>,
+    <span class="hljs-comment">// 需要排除打包的依赖列表</span>
+    <span class="hljs-attr">external</span>: [],
+    <span class="hljs-comment">// 是否开启自动拆包</span>
+    <span class="hljs-attr">splitting</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-comment">// 是否生成 SourceMap 文件</span>
+    <span class="hljs-attr">sourcemap</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-comment">// 是否生成打包的元信息文件</span>
+    <span class="hljs-attr">metafile</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-comment">// 是否进行代码压缩</span>
+    <span class="hljs-attr">minify</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-comment">// 是否开启 watch 模式，在 watch 模式下代码变动则会触发重新打包</span>
+    <span class="hljs-attr">watch</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-comment">// 是否将产物写入磁盘</span>
+    <span class="hljs-attr">write</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-comment">// Esbuild 内置了一系列的 loader，包括 base64、binary、css、dataurl、file、js(x)、ts(x)、text、json</span>
+    <span class="hljs-comment">// 针对一些特殊的文件，调用不同的 loader 进行加载</span>
+    <span class="hljs-attr">loader</span>: {
+      <span class="hljs-string">'.png'</span>: <span class="hljs-string">'base64'</span>,
+    }
+  });
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result);
+}
+
+<span class="hljs-title function_">runBuild</span>();
+</code></pre>
+<p>随后，你在命令行执行<code>node build.js</code>，就能在控制台发现如下日志信息:</p>
+<p><img src="img\b881a37b-ae61-11ed-8678-342eb7027b95.jpg" alt="image.png"></p>
+<p>以上就是 Esbuild 打包的元信息，这对我们编写插件扩展 Esbuild 能力非常有用。</p>
+<p>接着，我们再观察一下 dist 目录，发现打包产物和相应的 SourceMap 文件也已经成功写入磁盘:</p>
+<p><img src="img\b89869f7-ae61-11ed-80ca-342eb7027b95.jpg" alt="image.png"></p>
+<p>其实<code>buildSync</code>方法的使用几乎相同，如下代码所示:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">runBuild</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">// 同步方法</span>
+  <span class="hljs-keyword">const</span> result = <span class="hljs-title function_">buildSync</span>({
+    <span class="hljs-comment">// 省略一系列的配置</span>
+  });
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result);
+}
+
+<span class="hljs-title function_">runBuild</span>();
+</code></pre>
+<p>但我并不推荐大家使用 <code>buildSync</code> 这种同步的 API，它们会导致两方面不良后果。一方面容易使 Esbuild 在当前线程阻塞，丧失<code>并发任务处理</code>的优势。另一方面，Esbuild 所有插件中都不能使用任何异步操作，这给<code>插件开发</code>增加了限制。</p>
+<p>因此我更推荐大家使用<code>build</code>这个异步 API，它可以很好地避免上述问题。</p>
+<p>在项目打包方面，除了<code>build</code>和<code>buildSync</code>，Esbuild 还提供了另外一个比较强大的 API——<code>serve</code>。这个 API 有 3 个特点。</p>
+<ol>
+<li>开启 serve 模式后，将在指定的端口和目录上搭建一个<code>静态文件服务</code>，这个服务器用原生 Go 语言实现，性能比 Nodejs 更高。</li>
+<li>类似 webpack-dev-server，所有的产物文件都默认不会写到磁盘，而是放在内存中，通过请求服务来访问。</li>
+<li><strong>每次请求</strong>到来时，都会进行重新构建(<code>rebuild</code>)，永远返回新的产物。</li>
+</ol>
+<blockquote>
+<p>值得注意的是，触发 rebuild 的条件并不是代码改动，而是新的请求到来。</p>
+</blockquote>
+<p>下面，我们通过一个具体例子来感受一下。</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// build.js</span>
+<span class="hljs-keyword">const</span> { build, buildSync, serve } = <span class="hljs-built_in">require</span>(<span class="hljs-string">"esbuild"</span>);
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">runBuild</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-title function_">serve</span>(
+    {
+      <span class="hljs-attr">port</span>: <span class="hljs-number">8000</span>,
+      <span class="hljs-comment">// 静态资源目录</span>
+      <span class="hljs-attr">servedir</span>: <span class="hljs-string">'./dist'</span>
+    },
+    {
+      <span class="hljs-attr">absWorkingDir</span>: process.<span class="hljs-title function_">cwd</span>(),
+      <span class="hljs-attr">entryPoints</span>: [<span class="hljs-string">"./src/index.jsx"</span>],
+      <span class="hljs-attr">bundle</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">format</span>: <span class="hljs-string">"esm"</span>,
+      <span class="hljs-attr">splitting</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">sourcemap</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">ignoreAnnotations</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">metafile</span>: <span class="hljs-literal">true</span>,
+    }
+  ).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">server</span>) =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"HTTP Server starts at port"</span>, server.<span class="hljs-property">port</span>);
+  });
+}
+
+<span class="hljs-title function_">runBuild</span>();
+</code></pre>
+<p>我们在浏览器访问<code>localhost:8000</code>可以看到 Esbuild 服务器返回的编译产物如下所示：</p>
+<p><img src="img\b8b387ea-ae61-11ed-8e49-342eb7027b95.jpg" alt="image.png"></p>
+<p>后续每次在浏览器请求都会触发 Esbuild 重新构建，而每次重新构建都是一个增量构建的过程，耗时也会比首次构建少很多(一般能减少 70% 左右)。</p>
+<blockquote>
+<p>Serve API 只适合在开发阶段使用，不适用于生产环境。</p>
+</blockquote>
+<h4>单文件转译——Transform API</h4>
+<p>除了项目的打包功能之后，Esbuild 还专门提供了单文件编译的能力，即<code>Transform API</code>，与 <code>Build API</code> 类似，它也包含了同步和异步的两个方法，分别是<code>transformSync</code>和<code>transform</code>。下面，我们具体使用下这些方法。</p>
+<p>首先，在项目根目录新建<code>transform.js</code>，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// transform.js</span>
+<span class="hljs-keyword">const</span> { transform, transformSync } = <span class="hljs-built_in">require</span>(<span class="hljs-string">"esbuild"</span>);
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">runTransform</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">// 第一个参数是代码字符串，第二个参数为编译配置</span>
+  <span class="hljs-keyword">const</span> content = <span class="hljs-keyword">await</span> <span class="hljs-title function_">transform</span>(
+    <span class="hljs-string">"const isNull = (str: string): boolean => str.length > 0;"</span>,
+    {
+      <span class="hljs-attr">sourcemap</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">loader</span>: <span class="hljs-string">"tsx"</span>,
+    }
+  );
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(content);
+}
+
+<span class="hljs-title function_">runTransform</span>();
+</code></pre>
+<p><code>transformSync</code> 的用法类似，换成同步的调用方式即可。</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">function</span> runTransform {
+  <span class="hljs-keyword">const</span> content = <span class="hljs-keyword">await</span> <span class="hljs-title function_">transformSync</span>(<span class="hljs-comment">/* 参数和 transform 相同 */</span>)
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(content);
+}
+</code></pre>
+<p>不过由于同步的 API 会使 Esbuild 丧失<code>并发任务处理</code>的优势（<code>Build API</code>的部分已经分析过），我同样也不推荐大家使用<code>transformSync</code>。出于性能考虑，Vite 的底层实现也是采用 <code>transform</code>这个异步的 API 进行 TS 及 JSX 的单文件转译的。</p>
+<h2>Esbuild 插件开发</h2>
+<p>我们在使用 Esbuild 的时候难免会遇到一些需要加上自定义插件的场景，并且 Vite 依赖预编译的实现中大量应用了 Esbuild 插件的逻辑。因此，插件开发是 Esbuild 中非常重要的内容，</p>
+<p>接下来，我们就一起来完成 Esbuild 的插件开发，带你掌握若干个关键的钩子使用。</p>
+<h3>基本概念</h3>
+<p>插件开发其实就是基于原有的体系结构中进行<code>扩展</code>和<code>自定义</code>。 Esbuild 插件也不例外，通过 Esbuild 插件我们可以扩展 Esbuild 原有的路径解析、模块加载等方面的能力，并在 Esbuild 的构建过程中执行一系列自定义的逻辑。</p>
+<p><code>Esbuild</code> 插件结构被设计为一个对象，里面有<code>name</code>和<code>setup</code>两个属性，<code>name</code>是插件的名称，<code>setup</code>是一个函数，其中入参是一个 <code>build</code> 对象，这个对象上挂载了一些钩子可供我们自定义一些钩子函数逻辑。以下是一个简单的<code>Esbuild</code>插件示例:</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">let</span> envPlugin = {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'env'</span>,
+  <span class="hljs-title function_">setup</span>(<span class="hljs-params">build</span>) {
+    build.<span class="hljs-title function_">onResolve</span>({ <span class="hljs-attr">filter</span>: <span class="hljs-regexp">/^env$/</span> }, <span class="hljs-function"><span class="hljs-params">args</span> =></span> ({
+      <span class="hljs-attr">path</span>: args.<span class="hljs-property">path</span>,
+      <span class="hljs-attr">namespace</span>: <span class="hljs-string">'env-ns'</span>,
+    }))
+
+    build.<span class="hljs-title function_">onLoad</span>({ <span class="hljs-attr">filter</span>: <span class="hljs-regexp">/.*/</span>, <span class="hljs-attr">namespace</span>: <span class="hljs-string">'env-ns'</span> }, <span class="hljs-function">() =></span> ({
+      <span class="hljs-attr">contents</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(process.<span class="hljs-property">env</span>),
+      <span class="hljs-attr">loader</span>: <span class="hljs-string">'json'</span>,
+    }))
+  },
+}
+
+<span class="hljs-built_in">require</span>(<span class="hljs-string">'esbuild'</span>).<span class="hljs-title function_">build</span>({
+  <span class="hljs-attr">entryPoints</span>: [<span class="hljs-string">'src/index.jsx'</span>],
+  <span class="hljs-attr">bundle</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">outfile</span>: <span class="hljs-string">'out.js'</span>,
+  <span class="hljs-comment">// 应用插件</span>
+  <span class="hljs-attr">plugins</span>: [envPlugin],
+}).<span class="hljs-title function_">catch</span>(<span class="hljs-function">() =></span> process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>))
+
+</code></pre>
+<p>使用插件后效果如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 应用了 env 插件后，构建时将会被替换成 process.env 对象</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-variable constant_">PATH</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'env'</span>
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`PATH is <span class="hljs-subst">${PATH}</span>`</span>)
+</code></pre>
+<p>那么，<code>build</code>对象上的各种钩子函数是如何使用的呢？</p>
+<h3>钩子函数的使用</h3>
+<h4>1. <code>onResolve</code> 钩子 和 <code>onLoad</code>钩子</h4>
+<p>在 Esbuild 插件中，<code>onResolve</code> 和 <code>onload</code>是两个非常重要的钩子，分别控制路径解析和模块内容加载的过程。</p>
+<p>首先，我们来说说上面插件示例中的两个钩子该如何使用。</p>
+<pre><code class="hljs language-js">build.<span class="hljs-title function_">onResolve</span>({ <span class="hljs-attr">filter</span>: <span class="hljs-regexp">/^env$/</span> }, <span class="hljs-function"><span class="hljs-params">args</span> =></span> ({
+  <span class="hljs-attr">path</span>: args.<span class="hljs-property">path</span>,
+  <span class="hljs-attr">namespace</span>: <span class="hljs-string">'env-ns'</span>,
+}));
+build.<span class="hljs-title function_">onLoad</span>({ <span class="hljs-attr">filter</span>: <span class="hljs-regexp">/.*/</span>, <span class="hljs-attr">namespace</span>: <span class="hljs-string">'env-ns'</span> }, <span class="hljs-function">() =></span> ({
+  <span class="hljs-attr">contents</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(process.<span class="hljs-property">env</span>),
+  <span class="hljs-attr">loader</span>: <span class="hljs-string">'json'</span>,
+}));
+</code></pre>
+<p>可以发现这两个钩子函数中都需要传入两个参数: <code>Options</code>  和 <code>Callback</code>。</p>
+<p>先说说<code>Options</code>。它是一个对象，对于<code>onResolve</code> 和 <code>onload</code> 都一样，包含<code>filter</code>和<code>namespace</code>两个属性，类型定义如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Options</span> {
+  <span class="hljs-attr">filter</span>: <span class="hljs-title class_">RegExp</span>;
+  <span class="hljs-keyword">namespace</span>?: string;
+}
+</code></pre>
+<p><code>filter</code> 为必传参数，是一个正则表达式，它决定了要过滤出的特征文件。</p>
+<blockquote>
+<p>📢 注意: 插件中的 <code>filter</code> 正则是使用 Go 原生正则实现的，为了不使性能过于劣化，规则应该尽可能严格。同时它本身和 JS 的正则也有所区别，不支持前瞻(?&#x3C;=)、后顾(?=)和反向引用(\1)这三种规则。</p>
+</blockquote>
+<p><code>namespace</code> 为选填参数，一般在 <code>onResolve</code> 钩子中的回调参数返回<code>namespace</code>属性作为标识，我们可以在<code>onLoad</code>钩子中通过 <code>namespace</code> 将模块过滤出来。如上述插件示例就在<code>onLoad</code>钩子通过<code>env-ns</code>这个 namespace 标识过滤出了要处理的<code>env</code>模块。</p>
+<p>除了 Options 参数，还有一个回调参数 <code>Callback</code>，它的类型根据不同的钩子会有所不同。相比于 Options，Callback 函数入参和返回值的结构复杂得多，涉及很多属性。不过，我们也不需要看懂每个属性的细节，先了解一遍即可，常用的一些属性会在插件实战部分讲解来讲。</p>
+<p>在 onResolve 钩子中函数参数和返回值梳理如下:</p>
+<pre><code class="hljs language-js">build.<span class="hljs-title function_">onResolve</span>({ <span class="hljs-attr">filter</span>: <span class="hljs-regexp">/^env$/</span> }, (<span class="hljs-attr">args</span>: onResolveArgs): <span class="hljs-function"><span class="hljs-params">onResolveResult</span> =></span> {
+  <span class="hljs-comment">// 模块路径</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(args.<span class="hljs-property">path</span>)
+  <span class="hljs-comment">// 父模块路径</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(args.<span class="hljs-property">importer</span>)
+  <span class="hljs-comment">// namespace 标识</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(args.<span class="hljs-property">namespace</span>)
+  <span class="hljs-comment">// 基准路径</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(args.<span class="hljs-property">resolveDir</span>)
+  <span class="hljs-comment">// 导入方式，如 import、require</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(args.<span class="hljs-property">kind</span>)
+  <span class="hljs-comment">// 额外绑定的插件数据</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(args.<span class="hljs-property">pluginData</span>)
+  
+  <span class="hljs-keyword">return</span> {
+      <span class="hljs-comment">// 错误信息</span>
+      <span class="hljs-attr">errors</span>: [],
+      <span class="hljs-comment">// 是否需要 external</span>
+      <span class="hljs-attr">external</span>: <span class="hljs-literal">false</span>;
+      <span class="hljs-comment">// namespace 标识</span>
+      <span class="hljs-attr">namespace</span>: <span class="hljs-string">'env-ns'</span>;
+      <span class="hljs-comment">// 模块路径</span>
+      <span class="hljs-attr">path</span>: args.<span class="hljs-property">path</span>,
+      <span class="hljs-comment">// 额外绑定的插件数据</span>
+      <span class="hljs-attr">pluginData</span>: <span class="hljs-literal">null</span>,
+      <span class="hljs-comment">// 插件名称</span>
+      <span class="hljs-attr">pluginName</span>: <span class="hljs-string">'xxx'</span>,
+      <span class="hljs-comment">// 设置为 false，如果模块没有被用到，模块代码将会在产物中会删除。否则不会这么做</span>
+      <span class="hljs-attr">sideEffects</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-comment">// 添加一些路径后缀，如`?xxx`</span>
+      <span class="hljs-attr">suffix</span>: <span class="hljs-string">'?xxx'</span>,
+      <span class="hljs-comment">// 警告信息</span>
+      <span class="hljs-attr">warnings</span>: [],
+      <span class="hljs-comment">// 仅仅在 Esbuild 开启 watch 模式下生效</span>
+      <span class="hljs-comment">// 告诉 Esbuild 需要额外监听哪些文件/目录的变化</span>
+      <span class="hljs-attr">watchDirs</span>: [],
+      <span class="hljs-attr">watchFiles</span>: []
+  }
+}
+</code></pre>
+<p>在 onLoad 钩子中函数参数和返回值梳理如下:</p>
+<pre><code class="hljs language-js">build.<span class="hljs-title function_">onLoad</span>({ <span class="hljs-attr">filter</span>: <span class="hljs-regexp">/.*/</span>, <span class="hljs-attr">namespace</span>: <span class="hljs-string">'env-ns'</span> }, (<span class="hljs-attr">args</span>: <span class="hljs-title class_">OnLoadArgs</span>): <span class="hljs-function"><span class="hljs-params">OnLoadResult</span> =></span> {
+  <span class="hljs-comment">// 模块路径</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(args.<span class="hljs-property">path</span>);
+  <span class="hljs-comment">// namespace 标识</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(args.<span class="hljs-property">namespace</span>);
+  <span class="hljs-comment">// 后缀信息</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(args.<span class="hljs-property">suffix</span>);
+  <span class="hljs-comment">// 额外的插件数据</span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(args.<span class="hljs-property">pluginData</span>);
+  
+  <span class="hljs-keyword">return</span> {
+      <span class="hljs-comment">// 模块具体内容</span>
+      <span class="hljs-attr">contents</span>: <span class="hljs-string">'省略内容'</span>,
+      <span class="hljs-comment">// 错误信息</span>
+      <span class="hljs-attr">errors</span>: [],
+      <span class="hljs-comment">// 指定 loader，如`js`、`ts`、`jsx`、`tsx`、`json`等等</span>
+      <span class="hljs-attr">loader</span>: <span class="hljs-string">'json'</span>,
+      <span class="hljs-comment">// 额外的插件数据</span>
+      <span class="hljs-attr">pluginData</span>: <span class="hljs-literal">null</span>,
+      <span class="hljs-comment">// 插件名称</span>
+      <span class="hljs-attr">pluginName</span>: <span class="hljs-string">'xxx'</span>,
+      <span class="hljs-comment">// 基准路径</span>
+      <span class="hljs-attr">resolveDir</span>: <span class="hljs-string">'./dir'</span>,
+      <span class="hljs-comment">// 警告信息</span>
+      <span class="hljs-attr">warnings</span>: [],
+      <span class="hljs-comment">// 同上</span>
+      <span class="hljs-attr">watchDirs</span>: [],
+      <span class="hljs-attr">watchFiles</span>: []
+  }
+});
+</code></pre>
+<h4>2. 其他钩子</h4>
+<p>在 build 对象中，除了<code>onResolve</code>和<code>onLoad</code>，还有<code>onStart</code>和<code>onEnd</code>两个钩子用来在构建开启和结束时执行一些自定义的逻辑，使用上比较简单，如下面的例子所示:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">let</span> examplePlugin = {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'example'</span>,
+  <span class="hljs-title function_">setup</span>(<span class="hljs-params">build</span>) {
+    build.<span class="hljs-title function_">onStart</span>(<span class="hljs-function">() =></span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'build started'</span>)
+    });
+    build.<span class="hljs-title function_">onEnd</span>(<span class="hljs-function">(<span class="hljs-params">buildResult</span>) =></span> {
+      <span class="hljs-keyword">if</span> (buildResult.<span class="hljs-property">errors</span>.<span class="hljs-property">length</span>) {
+        <span class="hljs-keyword">return</span>;
+      }
+      <span class="hljs-comment">// 构建元信息</span>
+      <span class="hljs-comment">// 获取元信息后做一些自定义的事情，比如生成 HTML</span>
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(buildResult.<span class="hljs-property">metafile</span>)
+    })
+  },
+}
+</code></pre>
+<p>在使用这些钩子的时候，有 2 点需要注意。</p>
+<ol>
+<li>onStart 的执行时机是在每次 build 的时候，包括触发 <code>watch</code> 或者 <code>serve</code>模式下的重新构建。</li>
+<li>onEnd 钩子中如果要拿到 <code>metafile</code>，必须将 Esbuild 的构建配置中<code>metafile</code>属性设为 <code>true</code>。</li>
+</ol>
+<p>接下来我们进入插件实战，通过编写一些特定功能的插件来熟悉 Esbuild 插件的开发流程和技巧。</p>
+<h3>实战 1: CDN 依赖拉取插件</h3>
+<p>Esbuild 原生不支持通过 HTTP 从 CDN 服务上拉取对应的第三方依赖资源，如下代码所示:</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// src/index.jsx</span>
+<span class="hljs-comment">// react-dom 的内容全部从 CDN 拉取</span>
+<span class="hljs-comment">// 这段代码目前是无法运行的</span>
+<span class="hljs-keyword">import</span> { render } <span class="hljs-keyword">from</span> <span class="hljs-string">"https://cdn.skypack.dev/react-dom"</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'https://cdn.skypack.dev/react'</span>
+
+<span class="hljs-keyword">let</span> <span class="hljs-title function_">Greet</span> = (<span class="hljs-params"></span>) => <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">h1</span>></span>Hello, juejin!<span class="hljs-tag">&#x3C;/<span class="hljs-name">h1</span>></span></span>;
+
+<span class="hljs-title function_">render</span>(<span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">Greet</span> /></span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"root"</span>));
+</code></pre>
+<p>示例代码中我们用到了 <code>Skypack</code> 这个提供 npm 第三方包 ESM 产物的 <code>CDN 服务</code>，我们可以通过 url 访问第三方包的资源，如下图所示:</p>
+<p><img src="img\b8dde9ce-ae61-11ed-8521-342eb7027b95.jpg" alt="image.png"></p>
+<p>现在我们需要通过 Esbuild 插件来识别这样的 url 路径，然后从网络获取模块内容并让 Esbuild 进行加载，甚至不再需要<code>npm install</code>安装依赖了，这看上去是不是很酷呢？</p>
+<blockquote>
+<p>顺便提一句，ESM CDN 作为面向未来的前端基础设施，对 Vite 的影响也至关重大，可以极大提升 Vite 在生产环境下的构建性能。这部分内容我们将在<strong>高级应用</strong>这一章展开介绍。</p>
+</blockquote>
+<p>我们先从最简单的版本开始写起:</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// http-import-plugin.js</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-function">() =></span> ({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">"esbuild:http"</span>,
+  <span class="hljs-title function_">setup</span>(<span class="hljs-params">build</span>) {
+    <span class="hljs-keyword">let</span> https = <span class="hljs-built_in">require</span>(<span class="hljs-string">"https"</span>);
+    <span class="hljs-keyword">let</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">"http"</span>);
+
+    <span class="hljs-comment">// 1. 拦截 CDN 请求</span>
+    build.<span class="hljs-title function_">onResolve</span>({ <span class="hljs-attr">filter</span>: <span class="hljs-regexp">/^https?:\/\//</span> }, <span class="hljs-function">(<span class="hljs-params">args</span>) =></span> ({
+      <span class="hljs-attr">path</span>: args.<span class="hljs-property">path</span>,
+      <span class="hljs-attr">namespace</span>: <span class="hljs-string">"http-url"</span>,
+    }));
+
+    <span class="hljs-comment">// 2. 通过 fetch 请求加载 CDN 资源</span>
+    build.<span class="hljs-title function_">onLoad</span>({ <span class="hljs-attr">filter</span>: <span class="hljs-regexp">/.*/</span>, <span class="hljs-attr">namespace</span>: <span class="hljs-string">"http-url"</span> }, <span class="hljs-keyword">async</span> (args) => {
+      <span class="hljs-keyword">let</span> contents = <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =></span> {
+        <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-params">url</span>) {
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Downloading: <span class="hljs-subst">${url}</span>`</span>);
+          <span class="hljs-keyword">let</span> lib = url.<span class="hljs-title function_">startsWith</span>(<span class="hljs-string">"https"</span>) ? https : http;
+          <span class="hljs-keyword">let</span> req = lib
+            .<span class="hljs-title function_">get</span>(url, <span class="hljs-function">(<span class="hljs-params">res</span>) =></span> {
+              <span class="hljs-keyword">if</span> ([<span class="hljs-number">301</span>, <span class="hljs-number">302</span>, <span class="hljs-number">307</span>].<span class="hljs-title function_">includes</span>(res.<span class="hljs-property">statusCode</span>)) {
+                <span class="hljs-comment">// 重定向</span>
+                <span class="hljs-title function_">fetch</span>(<span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(res.<span class="hljs-property">headers</span>.<span class="hljs-property">location</span>, url).<span class="hljs-title function_">toString</span>());
+                req.<span class="hljs-title function_">abort</span>();
+              } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (res.<span class="hljs-property">statusCode</span> === <span class="hljs-number">200</span>) {
+                <span class="hljs-comment">// 响应成功</span>
+                <span class="hljs-keyword">let</span> chunks = [];
+                res.<span class="hljs-title function_">on</span>(<span class="hljs-string">"data"</span>, <span class="hljs-function">(<span class="hljs-params">chunk</span>) =></span> chunks.<span class="hljs-title function_">push</span>(chunk));
+                res.<span class="hljs-title function_">on</span>(<span class="hljs-string">"end"</span>, <span class="hljs-function">() =></span> <span class="hljs-title function_">resolve</span>(<span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">concat</span>(chunks)));
+              } <span class="hljs-keyword">else</span> {
+                <span class="hljs-title function_">reject</span>(
+                  <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`GET <span class="hljs-subst">${url}</span> failed: status <span class="hljs-subst">${res.statusCode}</span>`</span>)
+                );
+              }
+            })
+            .<span class="hljs-title function_">on</span>(<span class="hljs-string">"error"</span>, reject);
+        }
+        <span class="hljs-title function_">fetch</span>(args.<span class="hljs-property">path</span>);
+      });
+      <span class="hljs-keyword">return</span> { contents };
+    });
+  },
+});
+</code></pre>
+<p>然后我们新建<code>build.js</code>文件，内容如下:</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> { build } = <span class="hljs-built_in">require</span>(<span class="hljs-string">"esbuild"</span>);
+<span class="hljs-keyword">const</span> httpImport = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./http-import-plugin"</span>);
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">runBuild</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-title function_">build</span>({
+    <span class="hljs-attr">absWorkingDir</span>: process.<span class="hljs-title function_">cwd</span>(),
+    <span class="hljs-attr">entryPoints</span>: [<span class="hljs-string">"./src/index.jsx"</span>],
+    <span class="hljs-attr">outdir</span>: <span class="hljs-string">"dist"</span>,
+    <span class="hljs-attr">bundle</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">format</span>: <span class="hljs-string">"esm"</span>,
+    <span class="hljs-attr">splitting</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">sourcemap</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">metafile</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">httpImport</span>()],
+  }).<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"🚀 Build Finished!"</span>);
+  });
+}
+
+<span class="hljs-title function_">runBuild</span>();
+</code></pre>
+<p>通过<code>node build.js</code>执行打包脚本，发现插件不能 work，抛出了这样一个错误:</p>
+<p><img src="img\b90b2e71-ae61-11ed-8607-342eb7027b95.jpg" alt="image.png"></p>
+<p>这是为什么呢？你可以回过头观察一下第三方包的响应内容:</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">'/-/react-dom@v17.0.1-oZ1BXZ5opQ1DbTh7nu9r/dist=es2019,mode=imports/optimized/react-dom.js'</span>;
+<span class="hljs-keyword">export</span> {<span class="hljs-keyword">default</span>} <span class="hljs-keyword">from</span> <span class="hljs-string">'/-/react-dom@v17.0.1-oZ1BXZ5opQ1DbTh7nu9r/dist=es2019,mode=imports/optimized/react-dom.js'</span>;
+</code></pre>
+<p>进一步查看还有更多的模块内容:</p>
+<p><img src="img\b92a942f-ae61-11ed-bd00-342eb7027b95.jpg" alt="image.png"></p>
+<p>因此我们可以得出一个结论：除了要解析 react-dom 这种直接依赖的路径，还要解析它依赖的路径，也就是间接依赖的路径。</p>
+<p>那如何来实现这个效果呢？我们不妨加入这样一段<code>onResolve</code>钩子逻辑:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 拦截间接依赖的路径，并重写路径</span>
+<span class="hljs-comment">// tip: 间接依赖同样会被自动带上 `http-url`的 namespace</span>
+build.<span class="hljs-title function_">onResolve</span>({ <span class="hljs-attr">filter</span>: <span class="hljs-regexp">/.*/</span>, <span class="hljs-attr">namespace</span>: <span class="hljs-string">"http-url"</span> }, <span class="hljs-function">(<span class="hljs-params">args</span>) =></span> ({
+  <span class="hljs-comment">// 重写路径</span>
+  <span class="hljs-attr">path</span>: <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(args.<span class="hljs-property">path</span>, args.<span class="hljs-property">importer</span>).<span class="hljs-title function_">toString</span>(),
+  <span class="hljs-attr">namespace</span>: <span class="hljs-string">"http-url"</span>,
+}));
+</code></pre>
+<p>加了这段逻辑后，Esbuild 路径解析的流程如下:</p>
+<p><img src="img\b9410f67-ae61-11ed-861f-342eb7027b95.jpg" alt="image.png"></p>
+<p>现在我们再次执行<code>node build.js</code>，发现依赖已经成功下载并打包了。</p>
+<p><img src="img\b9710629-ae61-11ed-a156-342eb7027b95.jpg" alt="image.png"></p>
+<h3>实战 2: 实现 HTML 构建插件</h3>
+<p>Esbuild 作为一个前端打包工具，本身并不具备 HTML 的构建能力。也就是说，当它把 js/css 产物打包出来的时候，并不意味着前端的项目可以直接运行了，我们还需要一份对应的入口 HTML 文件。而这份 HTML 文件当然可以手写一个，但手写显得比较麻烦，尤其是产物名称带哈希值的时候，每次打包完都要替换路径。那么，我们能不能通过 Esbuild 插件的方式来自动化地生成 HTML 呢？</p>
+<p>刚才我们说了，在 Esbuild 插件的 <code>onEnd</code> 钩子中可以拿到 <code>metafile</code> 对象的信息。那么，这个对象究竟什么样呢？</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"inputs"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-comment">/* 省略内容 */</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"output"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"dist/index.js"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      imports<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      exports<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      entryPoint<span class="hljs-punctuation">:</span> 'src/index.jsx'<span class="hljs-punctuation">,</span>
+      inputs<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        'http-url<span class="hljs-punctuation">:</span>https<span class="hljs-punctuation">:</span><span class="hljs-comment">//cdn.skypack.dev/-/object-assign@v4.1.1-LbCnB3r2y2yFmhmiCfPn/dist=es2019,mode=imports/optimized/object-assign.js': { bytesInOutput: 1792 },</span>
+        'http-url<span class="hljs-punctuation">:</span>https<span class="hljs-punctuation">:</span><span class="hljs-comment">//cdn.skypack.dev/-/react@v17.0.1-yH0aYV1FOvoIPeKBbHxg/dist=es2019,mode=imports/optimized/react.js': { bytesInOutput: 10396 },</span>
+        'http-url<span class="hljs-punctuation">:</span>https<span class="hljs-punctuation">:</span><span class="hljs-comment">//cdn.skypack.dev/-/scheduler@v0.20.2-PAU9F1YosUNPKr7V4s0j/dist=es2019,mode=imports/optimized/scheduler.js': { bytesInOutput: 9084 },</span>
+        'http-url<span class="hljs-punctuation">:</span>https<span class="hljs-punctuation">:</span><span class="hljs-comment">//cdn.skypack.dev/-/react-dom@v17.0.1-oZ1BXZ5opQ1DbTh7nu9r/dist=es2019,mode=imports/optimized/react-dom.js': { bytesInOutput: 183229 },</span>
+        'http-url<span class="hljs-punctuation">:</span>https<span class="hljs-punctuation">:</span><span class="hljs-comment">//cdn.skypack.dev/react-dom': { bytesInOutput: 0 },</span>
+        'src/index.jsx'<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> bytesInOutput<span class="hljs-punctuation">:</span> <span class="hljs-number">178</span> <span class="hljs-punctuation">}</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      bytes<span class="hljs-punctuation">:</span> <span class="hljs-number">205284</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"dist/index.js.map"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-comment">/* 省略内容 */</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>从<code>outputs</code>属性中我们可以看到产物的路径，这意味着我们可以在插件中拿到所有 js 和 css 产物，然后自己组装、生成一个 HTML，实现自动化生成 HTML 的效果。</p>
+<p>我们接着来实现一下这个插件的逻辑，首先新建<code>html-plugin.js</code>，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">"fs/promises"</span>);
+<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">"path"</span>);
+<span class="hljs-keyword">const</span> { createScript, createLink, generateHTML } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./util'</span>);
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-function">() =></span> {
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">"esbuild:html"</span>,
+    <span class="hljs-title function_">setup</span>(<span class="hljs-params">build</span>) {
+      build.<span class="hljs-title function_">onEnd</span>(<span class="hljs-keyword">async</span> (buildResult) => {
+        <span class="hljs-keyword">if</span> (buildResult.<span class="hljs-property">errors</span>.<span class="hljs-property">length</span>) {
+          <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">const</span> { metafile } = buildResult;
+        <span class="hljs-comment">// 1. 拿到 metafile 后获取所有的 js 和 css 产物路径</span>
+        <span class="hljs-keyword">const</span> scripts = [];
+        <span class="hljs-keyword">const</span> links = [];
+        <span class="hljs-keyword">if</span> (metafile) {
+          <span class="hljs-keyword">const</span> { outputs } = metafile;
+          <span class="hljs-keyword">const</span> assets = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(outputs);
+
+          assets.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">asset</span>) =></span> {
+            <span class="hljs-keyword">if</span> (asset.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">".js"</span>)) {
+              scripts.<span class="hljs-title function_">push</span>(<span class="hljs-title function_">createScript</span>(asset));
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (asset.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">".css"</span>)) {
+              links.<span class="hljs-title function_">push</span>(<span class="hljs-title function_">createLink</span>(asset));
+            }
+          });
+        }
+        <span class="hljs-comment">// 2. 拼接 HTML 内容</span>
+        <span class="hljs-keyword">const</span> templateContent = <span class="hljs-title function_">generateHTML</span>(scripts, links);
+        <span class="hljs-comment">// 3. HTML 写入磁盘</span>
+        <span class="hljs-keyword">const</span> templatePath = path.<span class="hljs-title function_">join</span>(process.<span class="hljs-title function_">cwd</span>(), <span class="hljs-string">"index.html"</span>);
+        <span class="hljs-keyword">await</span> fs.<span class="hljs-title function_">writeFile</span>(templatePath, templateContent);
+      });
+    },
+  };
+}
+  
+<span class="hljs-comment">// util.js</span>
+<span class="hljs-comment">// 一些工具函数的实现</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">createScript</span> = (<span class="hljs-params">src</span>) => <span class="hljs-string">`&#x3C;script type="module" src="<span class="hljs-subst">${src}</span>">&#x3C;/script>`</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">createLink</span> = (<span class="hljs-params">src</span>) => <span class="hljs-string">`&#x3C;link rel="stylesheet" href="<span class="hljs-subst">${src}</span>">&#x3C;/link>`</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">generateHTML</span> = (<span class="hljs-params">scripts, links</span>) => <span class="hljs-string">`
+&#x3C;!DOCTYPE html>
+&#x3C;html lang="en">
+
+&#x3C;head>
+  &#x3C;meta charset="UTF-8" />
+  &#x3C;meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  &#x3C;title>Esbuild App&#x3C;/title>
+  <span class="hljs-subst">${links.join(<span class="hljs-string">"\n"</span>)}</span>
+&#x3C;/head>
+
+&#x3C;body>
+  &#x3C;div id="root">&#x3C;/div>
+  <span class="hljs-subst">${scripts.join(<span class="hljs-string">"\n"</span>)}</span>
+&#x3C;/body>
+
+&#x3C;/html>
+`</span>;
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = { createLink, createScript, generateHTML };
+</code></pre>
+<p>现在我们在 <code>build.js</code> 中引入 html 插件:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> html = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./html-plugin"</span>);
+
+<span class="hljs-comment">// esbuild 配置</span>
+<span class="hljs-attr">plugins</span>: [
+  <span class="hljs-comment">// 省略其它插件</span>
+  <span class="hljs-title function_">html</span>()
+],
+</code></pre>
+<p>然后执行<code>node build.js</code>对项目进行打包，你就可以看到 <code>index.html</code> 已经成功输出到根目录。接着，我们通过 <code>serve</code> 起一个本地静态文件服务器:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 1. 全局安装 serve</span>
+npm i -g serve
+<span class="hljs-comment">// 2. 在项目根目录执行</span>
+serve .
+</code></pre>
+<p>可以看到如下的界面:</p>
+<p><img src="img\b9850934-ae61-11ed-aa20-342eb7027b95.jpg" alt="image.png"></p>
+<p>再访问<code>localhost:3000</code>，会默认访问到 index.html 的内容：</p>
+<p><img src="img\b9b08a3a-ae61-11ed-92b6-342eb7027b95.jpg" alt="image.png"></p>
+<p>这样一来，应用的内容就成功显示了，也说明 HTML 插件正常生效了。当然，如果要做一个足够通用的 HTML 插件，还需要考虑诸多的因素，比如<code>自定义 HTML 内容</code>、<code>自定义公共前缀(publicPath)</code>、<code>自定义 script 标签类型</code>以及 <code>多入口打包</code>等等，大家感兴趣的话可以自行扩展。(可参考<a href="https://github.com/sanyuan0704/ewas/blob/main/packages/esbuild-plugin-html/src/index.ts" target="_blank" rel="nofollow noopener noreferrer">这个开源插件</a>)</p>
+<h2>小结</h2>
+<p>恭喜你，学习完了本节的内容！这一节，我们要重点掌握 Esbuild 的基础使用和插件开发。</p>
+<p>首先你可以通过<code>命令行方式</code>和<code>代码调用方式</code>两种方式来使用 Esbuild。对后者而言，我们需要使用到 Esbuild 中两个重要的 API，分别是<code>Build API</code>和<code>Transform API</code>，为了避免同步方法所导致的性能问题，我推荐你使用异步方式进行调用。</p>
+<p>其次，我用一个简单的<code>env</code>插件示例带你学习了 Esbuild 插件的代码结构和基本概念，并进行了插件开发实战，开发了两个复杂度比较高的插件，分别是 <code>CDN 依赖拉取插件</code>和<code>HTML 构建插件</code>。希望你能通过这些经典的例子好好体会插件的编写方式，并多多实践，提升自己对 Esbuild 的理解。</p>
+<p>本文的内容到此就结束了，感谢你的阅读，我们下一节再见！</p>
+</div>
+</body>
+</html>

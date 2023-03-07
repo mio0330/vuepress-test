@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <p>静态资源处理是前端工程经常遇到的问题，在真实的工程中不仅仅包含了动态执行的代码，也不可避免地要引入各种静态资源，如<code>图片</code>、<code>JSON</code>、<code>Worker 文件</code>、<code>Web Assembly 文件</code>等等。</p>
+<p>而静态资源本身并不是标准意义上的模块，因此对它们的处理和普通的代码是需要区别对待的。一方面我们需要解决<strong>资源加载</strong>的问题，对 Vite 来说就是如何将静态资源解析并加载为一个 ES 模块的问题；另一方面在<strong>生产环境</strong>下我们还需要考虑静态资源的部署问题、体积问题、网络性能问题，并采取相应的方案来进行优化。</p>
+<p>在本小节，我将与你就这两方面的问题展开探讨，结合 Vite 自身的能力及其生态，来解决项目中静态资源处理的各个疑难点，同时也能继续完善目前的 Vite 脚手架工程。</p>
+<h2>图片加载</h2>
+<p>图片是项目中最常用的静态资源之一，本身包括了非常多的格式，诸如 png、jpeg、webp、avif、gif，当然，也包括经常用作图标的 svg 格式。这一部分我们主要讨论的是如何加载图片，也就是说怎么让图片在页面中<strong>正常显示</strong>。</p>
+<h3>1. 使用场景</h3>
+<p>在日常的项目开发过程中，我们一般会遇到三种加载图片的场景:</p>
+<ol>
+<li>在 HTML 或者 JSX 中，通过 img 标签来加载图片，如:</li>
+</ol>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"../../assets/a.png"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">img</span>></span>
+</code></pre>
+<ol start="2">
+<li>在 CSS 中通过 background 属性加载图片，如:</li>
+</ol>
+<pre><code class="hljs language-css"><span class="hljs-attribute">background</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">'../../assets/b.png'</span>) norepeat;
+</code></pre>
+<ol start="3">
+<li>在 JavaScript 中，通过脚本的方式动态指定图片的<code>src</code>属性，如:</li>
+</ol>
+<pre><code class="hljs language-ts"><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'hero-img'</span>).<span class="hljs-property">src</span> = <span class="hljs-string">'../../assets/c.png'</span>
+</code></pre>
+<p>当然，大家一般还会有别名路径的需求，比如地址前缀直接换成<code>@assets</code>，这样就不用开发人员手动寻址，降低开发时的心智负担。</p>
+<h3>2. 在 Vite 中使用</h3>
+<p>接下来让我们在目前的脚手架项目来进行实际的编码，你可以在 Vite 的配置文件中配置一下别名，方便后续的图片引入:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// vite.config.ts</span>
+<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">'path'</span>;
+
+{
+  <span class="hljs-attr">resolve</span>: {
+    <span class="hljs-comment">// 别名配置</span>
+    <span class="hljs-attr">alias</span>: {
+      <span class="hljs-string">'@assets'</span>: path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">'src/assets'</span>)
+    }
+  }
+}
+</code></pre>
+<p>这样 Vite 在遇到<code>@assets</code>路径的时候，会自动帮我们定位至根目录下的<code>src/assets</code>目录。值得注意的是，alias 别名配置不仅在 JavaScript 的 import 语句中生效，在 CSS 代码的 <code>@import</code> 和 <code>url</code>导入语句中也同样生效。</p>
+<p>现在 <code>src/assets</code> 目录的内容如下:</p>
+<pre><code class="hljs language-bash">.
+├── icons
+│   ├── favicon.svg
+│   ├── logo-1.svg
+│   ├── logo-2.svg
+│   ├── logo-3.svg
+│   ├── logo-4.svg
+│   ├── logo-5.svg
+│   └── logo.svg
+└── imgs
+    ├── background.png
+    └── vite.png
+</code></pre>
+<p>接下来我们在 Header 组件中引入 <code>vite.png</code>这张图片:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// Header/index.tsx</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, { useEffect } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> { devDependencies } <span class="hljs-keyword">from</span> <span class="hljs-string">'../../../package.json'</span>;
+<span class="hljs-keyword">import</span> styles <span class="hljs-keyword">from</span> <span class="hljs-string">'./index.module.scss'</span>;
+<span class="hljs-comment">// 1. 导入图片</span>
+<span class="hljs-keyword">import</span> logoSrc <span class="hljs-keyword">from</span> <span class="hljs-string">'@assets/imgs/vite.png'</span>;
+
+<span class="hljs-comment">// 方式一</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Header</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">p-20px</span> <span class="hljs-attr">text-center</span> ${<span class="hljs-attr">styles.header</span>}`}></span>
+      <span class="hljs-comment">&#x3C;!-- 省略前面的组件内容 --></span>
+      <span class="hljs-comment">&#x3C;!-- 使用图片 --></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"m-auto mb-4"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">{logoSrc}</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">""</span> /></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  );
+}
+
+<span class="hljs-comment">// 方式二</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Header</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-keyword">const</span> img = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'logo'</span>) <span class="hljs-keyword">as</span> <span class="hljs-title class_">HTMLImageElement</span>;
+    img.<span class="hljs-property">src</span> = logoSrc;
+  }, []);
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">p-20px</span> <span class="hljs-attr">text-center</span> ${<span class="hljs-attr">styles.header</span>}`}></span>
+      <span class="hljs-comment">&#x3C;!-- 省略前面的组件内容 --></span>
+      <span class="hljs-comment">&#x3C;!-- 使用图片 --></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"logo"</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"m-auto mb-4"</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">""</span> /></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  );
+}
+</code></pre>
+<p>可以发现图片能够正常显示:</p>
+<p><img src="img\b42cbf54-ae61-11ed-bba5-342eb7027b95.jpg" alt="image.png"></p>
+<p>而图片路径也被解析为了正确的格式(<code>/</code>表示项目根路径):</p>
+<p><img src="img\b44b1ca9-ae61-11ed-be56-342eb7027b95.jpg" alt="image.png"></p>
+<p>OK，现在让我们进入 Header 组件的样式文件中添加<code>background</code>属性:</p>
+<pre><code class="hljs language-scss"><span class="hljs-selector-class">.header</span> {
+  <span class="hljs-comment">// 前面的样式代码省略</span>
+  <span class="hljs-attribute">background</span>: url(<span class="hljs-string">'@assets/imgs/background.png'</span>) no-repeat;
+}
+</code></pre>
+<p>再次回到浏览器，可以看到生效后的背景如下:</p>
+<p><img src="img\b464f322-ae61-11ed-b989-342eb7027b95.jpg" alt="image.png"></p>
+<h3>3. SVG 组件方式加载</h3>
+<p>刚才我们成功地在 Vite 中实现了图片的加载，上述这些加载的方式对于 svg 格式来说依然是适用的。不过，我们通常也希望能将 svg 当做一个组件来引入，这样我们可以很方便地修改 svg 的各种属性，而且比 img 标签的引入方式更加优雅。</p>
+<p>SVG 组件加载在不同的前端框架中的实现不太相同，社区中也已经了有了对应的插件支持:</p>
+<ul>
+<li>Vue2 项目中可以使用 <a href="https://github.com/pakholeung37/vite-plugin-vue2-svg" target="_blank" rel="nofollow noopener noreferrer">vite-plugin-vue2-svg</a>插件。</li>
+<li>Vue3 项目中可以引入 <a href="https://github.com/jpkleemans/vite-svg-loader" target="_blank" rel="nofollow noopener noreferrer">vite-svg-loader</a>。</li>
+<li>React 项目使用 <a href="https://github.com/pd4d10/vite-plugin-svgr" target="_blank" rel="nofollow noopener noreferrer">vite-plugin-svgr</a>插件。</li>
+</ul>
+<p>现在让我们在 React 脚手架项目中安装对应的依赖:</p>
+<pre><code class="hljs language-ts">pnpm i vite-plugin-svgr -D
+</code></pre>
+<p>然后需要在 vite 配置文件添加这个插件:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// vite.config.ts</span>
+<span class="hljs-keyword">import</span> svgr <span class="hljs-keyword">from</span> <span class="hljs-string">'vite-plugin-svgr'</span>;
+
+{
+  <span class="hljs-attr">plugins</span>: [
+    <span class="hljs-comment">// 其它插件省略</span>
+    <span class="hljs-title function_">svgr</span>()
+  ]
+}
+</code></pre>
+<p>随后注意要在 <code>tsconfig.json</code> 添加如下配置，否则会有类型错误:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"compilerOptions"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-comment">// 省略其它配置</span>
+    <span class="hljs-attr">"types"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"vite-plugin-svgr/client"</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>接下来让我们在项目中使用 svg 组件:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ReactComponent</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">ReactLogo</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@assets/icons/logo.svg'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Header</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="hljs-comment">// 其他组件内容省略</span>
+     <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">ReactLogo</span> /></span></span>
+  )
+}
+</code></pre>
+<p>回到浏览器中，你可以看到 svg 已经成功渲染:</p>
+<p><img src="img\b4855513-ae61-11ed-bfc1-342eb7027b95.jpg" alt="image.png"></p>
+<h2>JSON 加载</h2>
+<p>Vite 中已经内置了对于 JSON 文件的解析，底层使用<code>@rollup/pluginutils</code> 的 <code>dataToEsm</code>  方法将 JSON 对象转换为一个包含各种具名导出的 ES 模块，使用姿势如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { version } <span class="hljs-keyword">from</span> <span class="hljs-string">'../../../package.json'</span>;
+</code></pre>
+<p>不过你也可以在配置文件禁用按名导入的方式:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// vite.config.ts</span>
+
+{
+  <span class="hljs-attr">json</span>: {
+    <span class="hljs-attr">stringify</span>: <span class="hljs-literal">true</span>
+  }
+}
+</code></pre>
+<p>这样会将 JSON 的内容解析为<code>export default JSON.parse("xxx")</code>，这样会失去<code>按名导出</code>的能力，不过在 JSON 数据量比较大的时候，可以优化解析性能。</p>
+<h2>Web Worker 脚本</h2>
+<p>Vite 中使用 Web Worker 也非常简单，我们可以在新建<code>Header/example.js</code>文件:</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">start</span> = (<span class="hljs-params"></span>) => {
+  <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;
+  <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-comment">// 给主线程传值</span>
+    <span class="hljs-title function_">postMessage</span>(++count);
+  }, <span class="hljs-number">2000</span>);
+};
+
+<span class="hljs-title function_">start</span>();
+</code></pre>
+<p>然后在 Header 组件中引入，引入的时候注意加上<code>?worker</code>后缀，相当于告诉 Vite 这是一个 Web Worker 脚本文件:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Worker</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'./example.js?worker'</span>;
+<span class="hljs-comment">// 1. 初始化 Worker 实例</span>
+<span class="hljs-keyword">const</span> worker = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Worker</span>();
+<span class="hljs-comment">// 2. 主线程监听 worker 的信息</span>
+worker.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'message'</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(e);
+});
+</code></pre>
+<p>打开浏览器的控制面板，你可以看到 Worker 传给主线程的信息已经成功打印:</p>
+<p><img src="img\b4a97a9b-ae61-11ed-b5c4-342eb7027b95.jpg" alt="image.png"></p>
+<p>说明 Web Worker 脚本已经成功执行，也能与主线程正常通信。</p>
+<h3>Web Assembly 文件</h3>
+<p>Vite 对于 <code>.wasm</code> 文件也提供了开箱即用的支持，我们拿一个斐波拉契的 <code>.wasm</code> 文件(原文件已经放到<a href="https://github.com/sanyuan0704/juejin-book-vite/tree/main/4~7-vite-project-framework/src/components/Header" target="_blank" rel="nofollow noopener noreferrer">Github 仓库</a>中)来进行一下实际操作，对应的 JavaScript 原文件如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fib</span>(<span class="hljs-params">n</span>) {
+  <span class="hljs-keyword">var</span> a = <span class="hljs-number">0</span>,
+    b = <span class="hljs-number">1</span>;
+  <span class="hljs-keyword">if</span> (n > <span class="hljs-number">0</span>) {
+    <span class="hljs-keyword">while</span> (--n) {
+      <span class="hljs-keyword">let</span> t = a + b;
+      a = b;
+      b = t;
+    }
+    <span class="hljs-keyword">return</span> b;
+  }
+  <span class="hljs-keyword">return</span> a;
+}
+</code></pre>
+<p>让我们在组件中导入<code>fib.wasm</code>文件:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// Header/index.tsx</span>
+<span class="hljs-keyword">import</span> init <span class="hljs-keyword">from</span> <span class="hljs-string">'./fib.wasm'</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">FibFunc</span> = <span class="hljs-function">(<span class="hljs-params">num: <span class="hljs-built_in">number</span></span>) =></span> <span class="hljs-built_in">number</span>;
+
+<span class="hljs-title function_">init</span>({}).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">exports</span></span>) =></span> {
+  <span class="hljs-keyword">const</span> fibFunc = <span class="hljs-built_in">exports</span>.<span class="hljs-property">fib</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">FibFunc</span>;
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'Fib result:'</span>, <span class="hljs-title function_">fibFunc</span>(<span class="hljs-number">10</span>));
+});
+</code></pre>
+<p>Vite 会对<code>.wasm</code>文件的内容进行封装，默认导出为 init 函数，这个函数返回一个 Promise，因此我们可以在其 then 方法中拿到其导出的成员——<code>fib</code>方法。</p>
+<p>回到浏览器，我们可以查看到计算结果，说明 .wasm 文件已经被成功执行:</p>
+<p><img src="img\b4bea01c-ae61-11ed-af81-342eb7027b95.jpg" alt="image.png"></p>
+<h3>其它静态资源</h3>
+<p>除了上述的一些资源格式，Vite 也对下面几类格式提供了内置的支持:</p>
+<ul>
+<li>媒体类文件，包括<code>mp4</code>、<code>webm</code>、<code>ogg</code>、<code>mp3</code>、<code>wav</code>、<code>flac</code>和<code>aac</code>。</li>
+<li>字体类文件。包括<code>woff</code>、<code>woff2</code>、<code>eot</code>、<code>ttf</code> 和 <code>otf</code>。</li>
+<li>文本类。包括<code>webmanifest</code>、<code>pdf</code>和<code>txt</code>。</li>
+</ul>
+<p>也就是说，你可以在 Vite 将这些类型的文件当做一个 ES 模块来导入使用。如果你的项目中还存在其它格式的静态资源，你可以通过<code>assetsInclude</code>配置让 Vite 来支持加载:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// vite.config.ts</span>
+
+{
+  <span class="hljs-attr">assetsInclude</span>: [<span class="hljs-string">'.gltf'</span>]
+}
+</code></pre>
+<h3>特殊资源后缀</h3>
+<p>Vite 中引入静态资源时，也支持在路径最后加上一些特殊的 query 后缀，包括:</p>
+<ul>
+<li><code>?url</code>: 表示获取资源的路径，这在只想获取文件路径而不是内容的场景将会很有用。</li>
+<li><code>?raw</code>: 表示获取资源的字符串内容，如果你只想拿到资源的原始内容，可以使用这个后缀。</li>
+<li><code>?inline</code>: 表示资源强制内联，而不是打包成单独的文件。</li>
+</ul>
+<h2>生产环境处理</h2>
+<p>在前面的内容中，我们围绕着如何加载静态资源这个问题，在 Vite 中进行具体的编码实践，相信对于 Vite 中各种静态资源的使用你已经比较熟悉了。但另一方面，在生产环境下，我们又面临着一些新的问题。</p>
+<ul>
+<li>部署域名怎么配置？</li>
+<li>资源打包成单文件还是作为 Base64 格式内联?</li>
+<li>图片太大了怎么压缩？</li>
+<li>svg 请求数量太多了怎么优化？</li>
+</ul>
+<h3>1. 自定义部署域名</h3>
+<p>一般在我们访问线上的站点时，站点里面一些静态资源的地址都包含了相应域名的前缀，如:</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://sanyuan.cos.ap-beijing.myqcloud.com/logo.png"</span> /></span>
+</code></pre>
+<p>以上面这个地址例子，<code>https://sanyuan.cos.ap-beijing.myqcloud.com</code>是 CDN 地址前缀，<code>/logo.png</code>则是我们开发阶段使用的路径。那么，我们是不是需要在上线前把图片先上传到 CDN，然后将代码中的地址手动替换成线上地址呢？这样就太麻烦了！</p>
+<p>在 Vite 中我们可以有更加自动化的方式来实现地址的替换，只需要在配置文件中指定<code>base</code>参数即可:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// vite.config.ts</span>
+<span class="hljs-comment">// 是否为生产环境，在生产环境一般会注入 NODE_ENV 这个环境变量，见下面的环境变量文件配置</span>
+<span class="hljs-keyword">const</span> isProduction = process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">'production'</span>;
+<span class="hljs-comment">// 填入项目的 CDN 域名地址</span>
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">CDN_URL</span> = <span class="hljs-string">'xxxxxx'</span>;
+
+<span class="hljs-comment">// 具体配置</span>
+{
+  <span class="hljs-attr">base</span>: isProduction ? <span class="hljs-attr">CDN_URL</span>: <span class="hljs-string">'/'</span>
+}
+
+<span class="hljs-comment">// .env.development</span>
+<span class="hljs-variable constant_">NODE_ENV</span>=development
+
+<span class="hljs-comment">// .env.production</span>
+<span class="hljs-variable constant_">NODE_ENV</span>=production
+</code></pre>
+<p>注意在项目根目录新增的两个环境变量文件<code>.env.development</code>和<code>.env.production</code>，顾名思义，即分别在开发环境和生产环境注入一些环境变量，这里为了区分不同环境我们加上了<code>NODE_ENV</code>，你也可以根据需要添加别的环境变量。</p>
+<blockquote>
+<p>打包的时候 Vite 会自动将这些环境变量替换为相应的字符串。</p>
+</blockquote>
+<p>接着执行<code>pnpm run build</code>，可以发现产物中的静态资源地址已经自动加上了 CDN 地址前缀:</p>
+<p><img src="img\b4d76b83-ae61-11ed-abfe-342eb7027b95.jpg" alt="image.png"></p>
+<p>当然，HTML 中的一些 JS、CSS 资源链接也一起加上了 CDN 地址前缀:</p>
+<p><img src="img\b4e76a67-ae61-11ed-9732-342eb7027b95.jpg" alt="image.png"></p>
+<p>当然，有时候可能项目中的某些图片需要存放到另外的存储服务，一种直接的方案是将完整地址写死到 src 属性中，如:</p>
+<pre><code class="hljs language-ts">&#x3C;img src=<span class="hljs-string">"https://my-image-cdn.com/logo.png"</span>>
+</code></pre>
+<p>这样做显然是不太优雅的，我们可以通过定义环境变量的方式来解决这个问题，在项目根目录新增<code>.env</code>文件:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 开发环境优先级: .env.development > .env</span>
+<span class="hljs-comment">// 生产环境优先级: .env.production > .env</span>
+<span class="hljs-comment">// .env 文件</span>
+<span class="hljs-variable constant_">VITE_IMG_BASE_URL</span>=<span class="hljs-attr">https</span>:<span class="hljs-comment">//my-image-cdn.com</span>
+</code></pre>
+<p>然后进入 <code>src/vite-env.d.ts</code>增加类型声明:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">/// &#x3C;reference types="vite/client" /></span>
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ImportMetaEnv</span> {
+  <span class="hljs-keyword">readonly</span> <span class="hljs-attr">VITE_APP_TITLE</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-comment">// 自定义的环境变量</span>
+  <span class="hljs-keyword">readonly</span> <span class="hljs-attr">VITE_IMG_BASE_URL</span>: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ImportMeta</span> {
+  <span class="hljs-keyword">readonly</span> <span class="hljs-attr">env</span>: <span class="hljs-title class_">ImportMetaEnv</span>;
+}
+</code></pre>
+<p>值得注意的是，如果某个环境变量要在 Vite 中通过 <code>import.meta.env</code> 访问，那么它必须以<code>VITE_</code>开头，如<code>VITE_IMG_BASE_URL</code>。接下来我们在组件中来使用这个环境变量:</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">{new</span> <span class="hljs-attr">URL</span>('<span class="hljs-attr">.</span>/<span class="hljs-attr">logo.png</span>', <span class="hljs-attr">import.meta.env.VITE_IMG_BASE_URL</span>)<span class="hljs-attr">.href</span>} /></span>
+</code></pre>
+<p>接下来在<code>开发环境</code>启动项目或者<code>生产环境</code>打包后可以看到环境变量已经被替换，地址能够正常显示:</p>
+<p><img src="img\b4fb0682-ae61-11ed-8f9f-342eb7027b95.jpg" alt="image.png"></p>
+<p><img src="img\b5113dc4-ae61-11ed-bf8c-342eb7027b95.jpg" alt="image.png"></p>
+<p>至此，我们就彻底解决了图片资源生产环境域名替换的问题。</p>
+<h3>2. 单文件 or 内联？</h3>
+<p>在 Vite 中，所有的静态资源都有两种构建方式，一种是打包成一个单文件，另一种是通过 base64 编码的格式内嵌到代码中。</p>
+<p>这两种方案到底应该如何来选择呢？</p>
+<p>对于比较小的资源，适合内联到代码中，一方面对<code>代码体积</code>的影响很小，另一方面可以减少不必要的网络请求，<code>优化网络性能</code>。而对于比较大的资源，就推荐单独打包成一个文件，而不是内联了，否则可能导致上 MB 的 base64 字符串内嵌到代码中，导致代码体积瞬间庞大，页面加载性能直线下降。</p>
+<p><img src="img\b523c211-ae61-11ed-b11e-342eb7027b95.jpg" alt="image.png"></p>
+<p>Vite 中内置的优化方案是下面这样的:</p>
+<ul>
+<li>如果静态资源体积 >= 4KB，则提取成单独的文件</li>
+<li>如果静态资源体积 &#x3C; 4KB，则作为 base64 格式的字符串内联</li>
+</ul>
+<p>上述的<code>4 KB</code>即为提取成单文件的临界值，当然，这个临界值你可以通过<code>build.assetsInlineLimit</code>自行配置，如下代码所示:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// vite.config.ts</span>
+{
+  <span class="hljs-attr">build</span>: {
+    <span class="hljs-comment">// 8 KB</span>
+    <span class="hljs-attr">assetsInlineLimit</span>: <span class="hljs-number">8</span> * <span class="hljs-number">1024</span>
+  }
+}
+</code></pre>
+<blockquote>
+<p>svg 格式的文件不受这个临时值的影响，始终会打包成单独的文件，因为它和普通格式的图片不一样，需要动态设置一些属性</p>
+</blockquote>
+<h3>3. 图片压缩</h3>
+<p>图片资源的体积往往是项目产物体积的大头，如果能尽可能精简图片的体积，那么对项目整体打包产物体积的优化将会是非常明显的。在 JavaScript 领域有一个非常知名的图片压缩库<a href="https://www.npmjs.com/package/imagemin" target="_blank" rel="nofollow noopener noreferrer">imagemin</a>，作为一个底层的压缩工具，前端的项目中经常基于它来进行图片压缩，比如 Webpack 中大名鼎鼎的<code>image-webpack-loader</code>。社区当中也已经有了开箱即用的 Vite 插件——<code>vite-plugin-imagemin</code>，首先让我们来安装它:</p>
+<pre><code class="hljs language-ts">pnpm i vite-plugin-imagemin -D
+</code></pre>
+<p>随后在 Vite 配置文件中引入:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">//vite.config.ts</span>
+<span class="hljs-keyword">import</span> viteImagemin <span class="hljs-keyword">from</span> <span class="hljs-string">'vite-plugin-imagemin'</span>;
+
+{
+  <span class="hljs-attr">plugins</span>: [
+    <span class="hljs-comment">// 忽略前面的插件</span>
+    <span class="hljs-title function_">viteImagemin</span>({
+      <span class="hljs-comment">// 无损压缩配置，无损压缩下图片质量不会变差</span>
+      <span class="hljs-attr">optipng</span>: {
+        <span class="hljs-attr">optimizationLevel</span>: <span class="hljs-number">7</span>
+      },
+      <span class="hljs-comment">// 有损压缩配置，有损压缩下图片质量可能会变差</span>
+      <span class="hljs-attr">pngquant</span>: {
+        <span class="hljs-attr">quality</span>: [<span class="hljs-number">0.8</span>, <span class="hljs-number">0.9</span>],
+      },
+      <span class="hljs-comment">// svg 优化</span>
+      <span class="hljs-attr">svgo</span>: {
+        <span class="hljs-attr">plugins</span>: [
+          {
+            <span class="hljs-attr">name</span>: <span class="hljs-string">'removeViewBox'</span>
+          },
+          {
+            <span class="hljs-attr">name</span>: <span class="hljs-string">'removeEmptyAttrs'</span>,
+            <span class="hljs-attr">active</span>: <span class="hljs-literal">false</span>
+          }
+        ]
+      }
+    })
+  ]
+}
+</code></pre>
+<p>接下来我们可以尝试执行<code>pnpm run build</code>进行打包:</p>
+<p><img src="img\b54b792e-ae61-11ed-9271-342eb7027b95.jpg" alt="image.png"></p>
+<p>Vite 插件已经自动帮助我们调用 <code>imagemin</code> 进行项目图片的压缩，可以看到压缩的效果非常明显，强烈推荐大家在项目中使用。</p>
+<h3>4. 雪碧图优化</h3>
+<p>在实际的项目中我们还会经常用到各种各样的 svg 图标，虽然 svg 文件一般体积不大，但 Vite 中对于 svg 文件会始终打包成单文件，大量的图标引入之后会导致网络请求增加，大量的 HTTP 请求会导致网络解析耗时变长，页面加载性能直接受到影响。这个问题怎么解决呢？</p>
+<blockquote>
+<p>HTTP2 的多路复用设计可以解决大量 HTTP 的请求导致的网络加载性能问题，因此雪碧图技术在 HTTP2 并没有明显的优化效果，这个技术更适合在传统的 HTTP 1.1 场景下使用(比如本地的 Dev Server)。</p>
+</blockquote>
+<p>比如在 Header 中分别引入 5 个 svg 文件:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Logo1</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'@assets/icons/logo-1.svg'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Logo2</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'@assets/icons/logo-2.svg'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Logo3</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'@assets/icons/logo-3.svg'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Logo4</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'@assets/icons/logo-4.svg'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Logo5</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'@assets/icons/logo-5.svg'</span>;
+</code></pre>
+<p>这里顺便说一句，Vite 中提供了<code>import.meta.glob</code>的语法糖来解决这种<strong>批量导入</strong>的问题，如上述的 import 语句可以写成下面这样:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> icons = <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-title function_">glob</span>(<span class="hljs-string">'../../assets/icons/logo-*.svg'</span>);
+</code></pre>
+<p>结果如下:</p>
+<p><img src="img\b55a41bc-ae61-11ed-86fb-342eb7027b95.jpg" alt="image.png"></p>
+<p>可以看到对象的 value 都是动态 import，适合按需加载的场景。在这里我们只需要同步加载即可，可以使用 <code>import.meta.globEager</code>来完成:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> icons = <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-title function_">globEager</span>(<span class="hljs-string">'../../assets/icons/logo-*.svg'</span>);
+</code></pre>
+<p><code>icons</code>的结果打印如下:
+<img src="img\b56f9bce-ae61-11ed-8b7f-342eb7027b95.jpg" alt="image.png"></p>
+<p>接下来我们稍作解析，然后将 svg 应用到组件当中:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// Header/index.tsx</span>
+<span class="hljs-keyword">const</span> iconUrls = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">values</span>(icons).<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">mod</span> =></span> mod.<span class="hljs-property">default</span>);
+
+<span class="hljs-comment">// 组件返回内容添加如下</span>
+{iconUrls.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =></span> (
+  <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">{item}</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{item}</span> <span class="hljs-attr">width</span>=<span class="hljs-string">"50"</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">""</span> /></span></span>
+))}
+</code></pre>
+<p>回到页面中，我们发现浏览器分别发出了 5 个 svg 的请求:</p>
+<p><img src="img\b5866936-ae61-11ed-b512-342eb7027b95.jpg" alt="image.png"></p>
+<p>假设页面有 100 个 svg 图标，将会多出 100 个 HTTP 请求，依此类推。我们能不能把这些 svg 合并到一起，从而大幅减少网络请求呢？</p>
+<p>答案是可以的。这种合并图标的方案也叫<code>雪碧图</code>，我们可以通过<code>vite-plugin-svg-icons</code>来实现这个方案，首先安装一下这个插件:</p>
+<pre><code class="hljs language-ts">pnpm i vite-plugin-svg-icons -D
+</code></pre>
+<p>接着在 Vite 配置文件中增加如下内容:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// vite.config.ts</span>
+<span class="hljs-keyword">import</span> { createSvgIconsPlugin } <span class="hljs-keyword">from</span> <span class="hljs-string">'vite-plugin-svg-icons'</span>;
+
+{
+  <span class="hljs-attr">plugins</span>: [
+    <span class="hljs-comment">// 省略其它插件</span>
+    <span class="hljs-title function_">createSvgIconsPlugin</span>({
+      <span class="hljs-attr">iconDirs</span>: [path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">'src/assets/icons'</span>)]
+    })
+  ]
+}
+</code></pre>
+<p>在 <code>src/components</code>目录下新建<code>SvgIcon</code>组件:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// SvgIcon/index.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">SvgIconProps</span> {
+  name?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">prefix</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">color</span>: <span class="hljs-built_in">string</span>;
+  [<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">SvgIcon</span>(<span class="hljs-params">{
+  name,
+  prefix = <span class="hljs-string">'icon'</span>,
+  color = <span class="hljs-string">'#333'</span>,
+  ...props
+}: SvgIconProps</span>) {
+  <span class="hljs-keyword">const</span> symbolId = <span class="hljs-string">`#<span class="hljs-subst">${prefix}</span>-<span class="hljs-subst">${name}</span>`</span>;
+
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">svg</span> {<span class="hljs-attr">...props</span>} <span class="hljs-attr">aria-hidden</span>=<span class="hljs-string">"true"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">use</span> <span class="hljs-attr">href</span>=<span class="hljs-string">{symbolId}</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">{color}</span> /></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">svg</span>></span></span>
+  );
+}
+</code></pre>
+<p>现在我们回到 Header 组件中，稍作修改:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// index.tsx</span>
+<span class="hljs-keyword">const</span> icons = <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-title function_">globEager</span>(<span class="hljs-string">'../../assets/icons/logo-*.svg'</span>);
+<span class="hljs-keyword">const</span> iconUrls = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">values</span>(icons).<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">mod</span>) =></span> {
+  <span class="hljs-comment">// 如 ../../assets/icons/logo-1.svg -> logo-1</span>
+  <span class="hljs-keyword">const</span> fileName = mod.<span class="hljs-property">default</span>.<span class="hljs-title function_">split</span>(<span class="hljs-string">'/'</span>).<span class="hljs-title function_">pop</span>();
+  <span class="hljs-keyword">const</span> [svgName] = fileName.<span class="hljs-title function_">split</span>(<span class="hljs-string">'.'</span>);
+  <span class="hljs-keyword">return</span> svgName;
+});
+
+<span class="hljs-comment">// 渲染 svg 组件</span>
+{iconUrls.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =></span> (
+  <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">SvgIcon</span> <span class="hljs-attr">name</span>=<span class="hljs-string">{item}</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{item}</span> <span class="hljs-attr">width</span>=<span class="hljs-string">"50"</span> <span class="hljs-attr">height</span>=<span class="hljs-string">"50"</span> /></span></span>
+))}
+</code></pre>
+<p>最后在<code>src/main.tsx</code>文件中添加一行代码:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> <span class="hljs-string">'virtual:svg-icons-register'</span>;
+</code></pre>
+<p>现在回到浏览器的页面中，发现雪碧图已经生成:</p>
+<p><img src="img\b5975201-ae61-11ed-af6e-342eb7027b95.jpg" alt="image.png"></p>
+<p>雪碧图包含了所有图标的具体内容，而对于页面每个具体的图标，则通过 <code>use</code> 属性来引用雪碧图的对应内容:</p>
+<p><img src="img\b5ba3e67-ae61-11ed-8221-342eb7027b95.jpg" alt="image.png"></p>
+<p>如此一来，我们就能将所有的 svg 内容都内联到 HTML 中，省去了大量 svg 的网络请求。</p>
+<h2>小结</h2>
+<p>恭喜你，学习完了本节的内容。在这一节，你需要重点掌握在<strong>Vite 如何加载静态资源</strong>和<strong>如何在生产环境中对静态资源进行优化</strong>。</p>
+<p>首先是如何加载各种静态资源，如图片、svg(组件形式)、JSON、Web Worker 脚本、Web Asssembly 文件等等格式，并通过一些示例带大家进行实际的操作。</p>
+<p>其次，我们会把关注点放到<strong>生产环境</strong>，对<code>自定义部署域名</code>、<code>是否应该内联</code>、<code>图片压缩</code>、<code>svg 雪碧图</code>等问题进行了详细的探讨和实践，对于如何解决这些问题，相信你也有了自己的答案。</p>
+<p>当然，在编码实操的过程当中，我也给你穿插了一些 Vite 其他的知识点，比如如何<code>定义环境变量文件</code>、<code>如何使用 Glob 导入</code>的语法糖。相信在学习本节的过程中你能更加体会到 Vite 给项目开发带来的便利，同时也对 Vite 的掌握更深入了一步。</p>
+<p>本节的内容就到这里了，感谢你的阅读，我们下一节再见👋🏻！</p>
+</div>
+</body>
+</html>

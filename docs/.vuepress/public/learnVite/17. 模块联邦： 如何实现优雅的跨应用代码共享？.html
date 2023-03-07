@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <p>在 2020 年上半年，Webpack 提出了一项非常激动人心的特性——<code>Module Federation</code>(译为<code>模块联邦</code>)，这个特性一经推出就获得了业界的广泛关注，甚至被称为前端构建领域的<code>Game Changer</code>。实际上，这项技术确实很好地解决了多应用模块复用的问题，相比之前的各种解决方案，它的解决方式更加优雅和灵活。但从另一个角度来说，Module Federation 代表的是一种通用的解决思路，并不局限于某一个特定的构建工具，因此，在 Vite 中我们同样可以实现这个特性，并且社区已经有了比较成熟的解决方案。</p>
+<p>在接下来的文章中，首先我将和你一起深入探讨 <code>Module Federation</code>(简称 <code>MF</code>) 的核心概念，分析它到底解决了什么问题、对于这些问题原来存在哪些解决方案、为什么 <code>MF</code>的方案更优。然后我会用一个具体的项目示例带你进行代码实操，让你学会在 Vite 正确地使用 MF 特性。当然，在最后我也会给大家剖析 Module Federation 内部的实现原理，让你不仅仅停留在会用的地步，而且也能了解其深层的运作机制和实现手段。</p>
+<h2>模块共享之痛</h2>
+<p>对于一个互联网产品来说，一般会有不同的细分应用，比如<code>腾讯文档</code>可以分为<code>word</code>、<code>excel</code>、<code>ppt</code>等等品类，<code>抖音 PC 站点</code>可以分为<code>短视频站点</code>、<code>直播站点</code>、<code>搜索站点</code>等子站点，而每个子站又彼此独立，可能由不同的开发团队进行单独的开发和维护，看似没有什么问题，但实际上会经常遇到一些模块共享的问题，也就是说不同应用中总会有一些共享的代码，比如公共组件、公共工具函数、公共第三方依赖等等。对于这些共享的代码，除了通过简单的复制粘贴，还有没有更好的复用手段？</p>
+<h3>1. 发布 npm 包</h3>
+<p>发布 npm 包是一种常见的复用模块的做法，我们可以将一些公用的代码封装为一个 npm 包，具体的发布更新流程是这样的:</p>
+<ol>
+<li>公共库 lib1 改动，发布到 npm；</li>
+<li>所有的应用安装新的依赖，并进行联调。
+<img src="img\c4f20dea-ae61-11ed-be4e-342eb7027b95.jpg" alt="image.png"></li>
+</ol>
+<p>封装 npm 包可以解决模块复用的问题，但它本身又引入了新的问题:</p>
+<ol>
+<li><strong>开发效率问题</strong>。每次改动都需要发版，并所有相关的应用安装新依赖，流程比较复杂。</li>
+<li><strong>项目构建问题</strong>。引入了公共库之后，公共库的代码都需要打包到项目最后的产物后，导致产物体积偏大，构建速度相对较慢。</li>
+</ol>
+<p>因此，这种方案并不能作为最终方案，只是暂时用来解决问题的无奈之举。</p>
+<h3>2. Git Submodule</h3>
+<p>通过 <code>git submodule</code> 的方式，我们可以将代码封装成一个公共的 Git 仓库，然后复用到不同的应用中，但也需要经历如下的步骤：</p>
+<ol>
+<li>公共库 lib1 改动，提交到 Git 远程仓库；</li>
+<li>所有的应用通过<code>git submodule</code>命令更新子仓库代码，并进行联调。</li>
+</ol>
+<p>你可以看到，整体的流程其实跟发 npm 包相差无几，仍然存在 npm 包方案所存在的各种问题。</p>
+<h3>3. 依赖外部化(external)+ CDN 引入</h3>
+<p>在上一节中我们提到了<code>external</code>的概念，即对于某些第三方依赖我们并不需要让其参与构建，而是使用某一份公用的代码。按照这个思路，我们可以在构建引擎中对某些依赖声明<code>external</code>，然后在 HTML 中加入依赖的 CDN 地址:</p>
+<pre><code class="hljs language-html"><span class="hljs-meta">&#x3C;!DOCTYPE <span class="hljs-keyword">html</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">head</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span> /></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"icon"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"image/svg+xml"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/src/favicon.svg"</span> /></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span> /></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">title</span>></span>Vite App<span class="hljs-tag">&#x3C;/<span class="hljs-name">title</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">head</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"root"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+    <span class="hljs-comment">&#x3C;!-- 从 CDN 上引入第三方依赖的代码 --></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/react@17.0.2/index.min.js"</span>></span><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="xml">
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/react-dom@17.0.2/index.min.js"</span>></span><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="xml">
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">html</span>></span>
+</span></span></span></span></code></pre>
+<p>如上面的例子所示，我们可以对<code>react</code>和<code>react-dom</code>使用 CDN 的方式引入，一般使用<code>UMD</code>格式产物，这样不同的项目间就可以通过<code>window.React</code>来使用同一份依赖的代码了，从而达到模块复用的效果。不过在实际的使用场景，这种方案的局限性也很突出:</p>
+<ol>
+<li><strong>兼容性问题</strong>。并不是所有的依赖都有 UMD 格式的产物，因此这种方案不能覆盖所有的第三方 npm 包。</li>
+<li><strong>依赖顺序问题</strong>。我们通常需要考虑间接依赖的问题，如对于 antd 组件库，它本身也依赖了 react 和 moment，那么<code>react</code>和<code>moment</code> 也需要 <code>external</code>，并且在 HTML 中引用这些包，同时也要<strong>严格保证</strong>引用的顺序，比如说<code>moment</code>如果放在了<code>antd</code>后面，代码可能无法运行。而第三方包背后的间接依赖数量一般很庞大，如果逐个处理，对于开发者来说简直就是噩梦。</li>
+<li><strong>产物体积问题</strong>。由于依赖包被声明<code>external</code>之后，应用在引用其 CDN 地址时，会全量引用依赖的代码，这种情况下就没有办法通过 Tree Shaking 来去除无用代码了，会导致应用的性能有所下降。</li>
+</ol>
+<h3>4. Monorepo</h3>
+<p>作为一种新的项目管理方式，Monorepo 也可以很好地解决模块复用的问题。在 Monorepo 架构下，多个项目可以放在同一个 Git 仓库中，各个互相依赖的子项目通过软链的方式进行调试，代码复用显得非常方便，如果有依赖的代码变动，那么用到这个依赖的项目当中会立马感知到。</p>
+<p><img src="img\c52a0549-ae61-11ed-b8c7-342eb7027b95.jpg" alt="image.png"></p>
+<p>不得不承认，对于应用间模块复用的问题，Monorepo 是一种非常优秀的解决方案，但与此同时，它也给团队带来了一些挑战:</p>
+<ol>
+<li>
+<p><strong>所有的应用代码必须放到同一个仓库</strong>。如果是旧有项目，并且每个应用使用一个 Git 仓库的情况，那么使用 Monorepo 之后项目架构调整会比较大，也就是说改造成本会相对比较高。</p>
+</li>
+<li>
+<p>Monorepo 本身也存在一些天然的局限性，如项目数量多起来之后依赖安装时间会很久、项目整体构建时间会变长等等，我们也需要去解决这些局限性所带来的的开发效率问题。而这项工作一般需要投入专业的人去解决，如果没有足够的人员投入或者基建的保证，Monorepo 可能并不是一个很好的选择。</p>
+</li>
+<li>
+<p><strong>项目构建问题</strong>。跟 <code>发 npm 包</code>的方案一样，所有的公共代码都需要进入项目的构建流程中，产物体积还是会偏大。</p>
+</li>
+</ol>
+<h2>MF 核心概念</h2>
+<p>以上说了那么多业界现有的方案，并分析各自的优缺点，那么下面我们就来正式介绍<code>Module Federation</code>，即模块联邦解决方案，看看它到底是如何解决模块复用问题的。</p>
+<p>模块联邦中主要有两种模块: <code>本地模块</code>和<code>远程模块</code>。</p>
+<p>本地模块即为普通模块，是当前构建流程中的一部分，而远程模块不属于当前构建流程，在本地模块的运行时进行导入，同时本地模块和远程模块可以共享某些依赖的代码，如下图所示:</p>
+<p><img src="img\c5766901-ae61-11ed-84ad-342eb7027b95.jpg" alt="image.png"></p>
+<p>值得强调的是，在模块联邦中，每个模块既可以是<code>本地模块</code>，导入其它的<code>远程模块</code>，又可以作为远程模块，被其他的模块导入。如下面这个例子所示:</p>
+<p><img src="img\c59096b1-ae61-11ed-b8e2-342eb7027b95.jpg" alt="image.png"></p>
+<blockquote>
+<p>如图，其中 A 模块既可以作为本地模块导入 B，又可以作为远程模块被 C 导入。</p>
+</blockquote>
+<p>以上就是模块联邦的主要设计原理，现在我们来好好分析一下这种设计究竟有哪些优势:</p>
+<ol>
+<li>
+<p><strong>实现任意粒度的模块共享</strong>。这里所指的模块粒度可大可小，包括第三方 npm 依赖、业务组件、工具函数，甚至可以是整个前端应用！而整个前端应用能够共享产物，代表着各个应用单独开发、测试、部署，这也是一种<code>微前端</code>的实现。</p>
+</li>
+<li>
+<p><strong>优化构建产物体积</strong>。远程模块可以从本地模块运行时被拉取，而不用参与本地模块的构建，可以加速构建过程，同时也能减小构建产物。</p>
+</li>
+<li>
+<p><strong>运行时按需加载</strong>。远程模块导入的粒度可以很小，如果你只想使用 app1 模块的<code>add</code>函数，只需要在 app1 的构建配置中导出这个函数，然后在本地模块中按照诸如<code>import('app1/add')</code>的方式导入即可，这样就很好地实现了模块按需加载。</p>
+</li>
+<li>
+<p><strong>第三方依赖共享</strong>。通过模块联邦中的共享依赖机制，我们可以很方便地实现在模块间公用依赖代码，从而避免以往的<code>external + CDN 引入</code>方案的各种问题。</p>
+</li>
+</ol>
+<p>从以上的分析你可以看到，模块联邦近乎完美地解决了以往模块共享的问题，甚至能够实现应用级别的共享，进而达到<code>微前端</code>的效果。下面，我们就来以具体的例子来学习在 Vite 中如何使用模块联邦的能力。</p>
+<h2>MF 应用实战</h2>
+<p>社区中已经提供了一个比较成熟的 Vite 模块联邦方案: <code>vite-plugin-federation</code>，这个方案基于 Vite(或者 Rollup) 实现了完整的模块联邦能力。接下来，我们基于它来实现模块联邦应用。</p>
+<p>首先初始化两个 Vue 的脚手架项目<code>host</code>和<code>remote</code>，然后分别安装<code>vite-plugin-federation</code>插件:</p>
+<pre><code class="hljs language-ts">pnpm install <span class="hljs-meta">@originjs</span>/vite-plugin-federation -D
+</code></pre>
+<p>在配置文件中分别加入如下的配置:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 远程模块配置</span>
+<span class="hljs-comment">// remote/vite.config.ts</span>
+<span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">"vite"</span>;
+<span class="hljs-keyword">import</span> vue <span class="hljs-keyword">from</span> <span class="hljs-string">"@vitejs/plugin-vue"</span>;
+<span class="hljs-keyword">import</span> federation <span class="hljs-keyword">from</span> <span class="hljs-string">"@originjs/vite-plugin-federation"</span>;
+
+<span class="hljs-comment">// https://vitejs.dev/config/</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">plugins</span>: [
+    <span class="hljs-title function_">vue</span>(),
+    <span class="hljs-comment">// 模块联邦配置</span>
+    <span class="hljs-title function_">federation</span>({
+      <span class="hljs-attr">name</span>: <span class="hljs-string">"remote_app"</span>,
+      <span class="hljs-attr">filename</span>: <span class="hljs-string">"remoteEntry.js"</span>,
+      <span class="hljs-comment">// 导出模块声明</span>
+      <span class="hljs-attr">exposes</span>: {
+        <span class="hljs-string">"./Button"</span>: <span class="hljs-string">"./src/components/Button.js"</span>,
+        <span class="hljs-string">"./App"</span>: <span class="hljs-string">"./src/App.vue"</span>,
+        <span class="hljs-string">"./utils"</span>: <span class="hljs-string">"./src/utils.ts"</span>,
+      },
+      <span class="hljs-comment">// 共享依赖声明</span>
+      <span class="hljs-attr">shared</span>: [<span class="hljs-string">"vue"</span>],
+    }),
+  ],
+  <span class="hljs-comment">// 打包配置</span>
+  <span class="hljs-attr">build</span>: {
+    <span class="hljs-attr">target</span>: <span class="hljs-string">"esnext"</span>,
+  },
+});
+
+<span class="hljs-comment">// 本地模块配置</span>
+<span class="hljs-comment">// host/vite.config.ts</span>
+<span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">"vite"</span>;
+<span class="hljs-keyword">import</span> vue <span class="hljs-keyword">from</span> <span class="hljs-string">"@vitejs/plugin-vue"</span>;
+<span class="hljs-keyword">import</span> federation <span class="hljs-keyword">from</span> <span class="hljs-string">"@originjs/vite-plugin-federation"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">plugins</span>: [
+    <span class="hljs-title function_">vue</span>(),
+    <span class="hljs-title function_">federation</span>({
+      <span class="hljs-comment">// 远程模块声明</span>
+      <span class="hljs-attr">remotes</span>: {
+        <span class="hljs-attr">remote_app</span>: <span class="hljs-string">"http://localhost:3001/assets/remoteEntry.js"</span>,
+      },
+      <span class="hljs-comment">// 共享依赖声明</span>
+      <span class="hljs-attr">shared</span>: [<span class="hljs-string">"vue"</span>],
+    }),
+  ],
+  <span class="hljs-attr">build</span>: {
+    <span class="hljs-attr">target</span>: <span class="hljs-string">"esnext"</span>,
+  },
+});
+</code></pre>
+<p>在如上的配置中，我们完成了远程模块的模块导出及远程模块在本地模块的注册，对于远程模块的具体实现，你可以参考小册的 Github 仓库，这里就不一一赘述了。接下来我们把关注点放在如何使用远程模块上面。</p>
+<p>首先我们需要对远程模块进行打包，在 remote 路径下依赖执行:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 打包产物</span>
+pnpm run build
+<span class="hljs-comment">// 模拟部署效果，一般会在生产环境将产物上传到 CDN </span>
+npx vite preview --port=<span class="hljs-number">3001</span> --strictPort
+</code></pre>
+<p>然后我们在 <code>host</code>项目中使用远程模块:</p>
+<pre><code class="hljs language-ts">&#x3C;script setup lang=<span class="hljs-string">"ts"</span>>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">HelloWorld</span> <span class="hljs-keyword">from</span> <span class="hljs-string">"./components/HelloWorld.vue"</span>;
+<span class="hljs-keyword">import</span> { defineAsyncComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">"vue"</span>;
+<span class="hljs-comment">// 导入远程模块</span>
+<span class="hljs-comment">// 1. 组件</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">RemoteApp</span> <span class="hljs-keyword">from</span> <span class="hljs-string">"remote_app/App"</span>;
+<span class="hljs-comment">// 2. 工具函数</span>
+<span class="hljs-keyword">import</span> { add } <span class="hljs-keyword">from</span> <span class="hljs-string">"remote_app/utils"</span>;
+<span class="hljs-comment">// 3. 异步组件</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">AysncRemoteButton</span> = <span class="hljs-title function_">defineAsyncComponent</span>(
+  <span class="hljs-function">() =></span> <span class="hljs-title function_">import</span>(<span class="hljs-string">"remote_app/Button"</span>)
+);
+<span class="hljs-keyword">const</span> <span class="hljs-attr">data</span>: <span class="hljs-built_in">number</span> = <span class="hljs-title function_">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+&#x3C;/script>
+
+<span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">template</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">"Vue logo"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"./assets/logo.png"</span> /></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">HelloWorld</span> /></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">RemoteApp</span> /></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">AysncRemoteButton</span> /></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">p</span>></span>应用 2 工具函数计算结果: 1 + 2 = {{ data }}<span class="hljs-tag">&#x3C;/<span class="hljs-name">p</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">template</span>></span></span>
+
+<span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">style</span>></span><span class="css">
+<span class="hljs-selector-id">#app</span> {
+  <span class="hljs-attribute">font-family</span>: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-<span class="hljs-attribute">font-smoothing</span>: antialiased;
+  -moz-osx-<span class="hljs-attribute">font-smoothing</span>: grayscale;
+  <span class="hljs-attribute">text-align</span>: center;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#2c3e50</span>;
+  <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">60px</span>;
+}
+</span><span class="hljs-tag">&#x3C;/<span class="hljs-name">style</span>></span></span>
+</code></pre>
+<p>启动项目后你可以看到如下的结果:</p>
+<p><img src="img\c5b31543-ae61-11ed-b6e8-342eb7027b95.jpg" alt="image.png"></p>
+<p>应用 2 的组件和工具函数逻辑已经在应用 1 中生效，也就是说，我们完成了远程模块在本地模块的运行时引入。</p>
+<p>让我们来梳理一下整体的使用流程:</p>
+<ul>
+<li>
+<ol>
+<li>远程模块通过<code>exposes</code> 注册导出的模块，本地模块通过 <code>remotes</code> 注册远程模块地址。</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>远程模块进行构建，并部署到云端。</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>本地通过<code>import '远程模块名称/xxx'</code>的方式来引入远程模块，实现运行时加载。</li>
+</ol>
+</li>
+</ul>
+<p>当然，还有几个要点需要给大家补充一下:</p>
+<ol>
+<li>在模块联邦中的配置中，<code>exposes</code> 和<code>remotes</code>参数其实并不冲突，也就是说一个模块既可以作为本地模块，又可以作为远程模块。</li>
+<li>由于 Vite 的插件机制与 Rollup 兼容，<code>vite-plugin-federation</code>方案在 Rollup 中也是完全可以使用的。</li>
+</ol>
+<h2>MF 实现原理</h2>
+<p>从以上示例中大家可以看到，Module Federation 使用比较简单，对已有项目来说改造成本并不大。那么，这么强大而易用的特性是如何在 Vite 中得以实现的呢？接下来，我们来深入探究一下 MF 背后的实现原理，分析<code>vite-plugin-federation</code>这个插件背后究竟做了些什么。</p>
+<p>总体而言，实现模块联邦有三大主要的要素:</p>
+<ol>
+<li>
+<p><code>Host</code>模块: 即本地模块，用来消费远程模块。</p>
+</li>
+<li>
+<p><code>Remote</code>模块: 即远程模块，用来生产一些模块，并暴露<code>运行时容器</code>供本地模块消费。</p>
+</li>
+<li>
+<p><code>Shared</code>依赖: 即共享依赖，用来在本地模块和远程模块中实现第三方依赖的共享。</p>
+</li>
+</ol>
+<p>首先，我们来看看本地模块是如何消费远程模块的。之前，我们在本地模块中写过这样的引入语句:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> <span class="hljs-title class_">RemoteApp</span> <span class="hljs-keyword">from</span> <span class="hljs-string">"remote_app/App"</span>;
+</code></pre>
+<p>我们来看看 Vite 将这段代码编译成了什么样子:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 为了方便阅读，以下部分方法的函数名进行了简化</span>
+<span class="hljs-comment">// 远程模块表</span>
+<span class="hljs-keyword">const</span> remotesMap = {
+  <span class="hljs-string">'remote_app'</span>:{<span class="hljs-attr">url</span>:<span class="hljs-string">'http://localhost:3001/assets/remoteEntry.js'</span>,<span class="hljs-attr">format</span>:<span class="hljs-string">'esm'</span>,<span class="hljs-attr">from</span>:<span class="hljs-string">'vite'</span>},
+  <span class="hljs-string">'shared'</span>:{<span class="hljs-attr">url</span>:<span class="hljs-string">'vue'</span>,<span class="hljs-attr">format</span>:<span class="hljs-string">'esm'</span>,<span class="hljs-attr">from</span>:<span class="hljs-string">'vite'</span>}
+};
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">ensure</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> remote = remoteMap[remoteId];
+  <span class="hljs-comment">// 做一些初始化逻辑，暂时忽略</span>
+  <span class="hljs-comment">// 返回的是运行时容器</span>
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getRemote</span>(<span class="hljs-params">remoteName, componentName</span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">ensure</span>(remoteName)
+    <span class="hljs-comment">// 从运行时容器里面获取远程模块</span>
+    .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">remote</span> =></span> remote.<span class="hljs-title function_">get</span>(componentName))
+    .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">factory</span> =></span> <span class="hljs-title function_">factory</span>());
+}
+
+<span class="hljs-comment">// import 语句被编译成了这样</span>
+<span class="hljs-comment">// tip: es2020 产物语法已经支持顶层 await</span>
+<span class="hljs-keyword">const</span> __remote_appApp = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getRemote</span>(<span class="hljs-string">"remote_app"</span> , <span class="hljs-string">"./App"</span>);
+</code></pre>
+<p>除了 import 语句被编译之外，在代码中还添加了<code>remoteMap</code>和一些工具函数，它们的目的很简单，就是通过访问远端的<strong>运行时容器</strong>来拉取对应名称的模块。</p>
+<p>而运行时容器其实就是指远程模块打包产物<code>remoteEntry.js</code>的导出对象，我们来看看它的逻辑是怎样的:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// remoteEntry.js</span>
+<span class="hljs-keyword">const</span> moduleMap = {
+  <span class="hljs-string">"./Button"</span>: <span class="hljs-function">() =></span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">import</span>(<span class="hljs-string">'./__federation_expose_Button.js'</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">module</span> =></span> <span class="hljs-function">() =></span> <span class="hljs-variable language_">module</span>)
+  },
+  <span class="hljs-string">"./App"</span>: <span class="hljs-function">() =></span> {
+    <span class="hljs-title function_">dynamicLoadingCss</span>(<span class="hljs-string">'./__federation_expose_App.css'</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">import</span>(<span class="hljs-string">'./__federation_expose_App.js'</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">module</span> =></span> <span class="hljs-function">() =></span> <span class="hljs-variable language_">module</span>);
+  },
+  <span class="hljs-string">'./utils'</span>: <span class="hljs-function">() =></span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">import</span>(<span class="hljs-string">'./__federation_expose_Utils.js'</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">module</span> =></span> <span class="hljs-function">() =></span> <span class="hljs-variable language_">module</span>);
+  }
+};
+
+<span class="hljs-comment">// 加载 css</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">dynamicLoadingCss</span> = (<span class="hljs-params">cssFilePath</span>) => {
+  <span class="hljs-keyword">const</span> metaUrl = <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">url</span>;
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> metaUrl == <span class="hljs-string">'undefined'</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">'The remote style takes effect only when the build.target option in the vite.config.ts file is higher than that of "es2020".'</span>);
+    <span class="hljs-keyword">return</span>
+  }
+  <span class="hljs-keyword">const</span> curUrl = metaUrl.<span class="hljs-title function_">substring</span>(<span class="hljs-number">0</span>, metaUrl.<span class="hljs-title function_">lastIndexOf</span>(<span class="hljs-string">'remoteEntry.js'</span>));
+  <span class="hljs-keyword">const</span> element = <span class="hljs-variable language_">document</span>.<span class="hljs-property">head</span>.<span class="hljs-title function_">appendChild</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'link'</span>));
+  element.<span class="hljs-property">href</span> = curUrl + cssFilePath;
+  element.<span class="hljs-property">rel</span> = <span class="hljs-string">'stylesheet'</span>;
+};
+
+<span class="hljs-comment">// 关键方法，暴露模块</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">get</span> =(<span class="hljs-params"><span class="hljs-variable language_">module</span></span>) => {
+  <span class="hljs-keyword">return</span> moduleMap[<span class="hljs-variable language_">module</span>]();
+};
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">init</span> = (<span class="hljs-params"></span>) => {
+  <span class="hljs-comment">// 初始化逻辑，用于共享模块，暂时省略</span>
+}
+
+<span class="hljs-keyword">export</span> { dynamicLoadingCss, get, init }
+</code></pre>
+<p>从运行时容器的代码中我们可以得出一些关键的信息:</p>
+<ul>
+<li>
+<ol>
+<li><code>moduleMap</code>用来记录导出模块的信息，所有在<code>exposes</code>参数中声明的模块都会打包成单独的文件，然后通过 <code>dynamic import</code> 进行导入。</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>容器导出了十分关键的<code>get</code>方法，让本地模块能够通过调用这个方法来访问到该远程模块。</li>
+</ol>
+</li>
+</ul>
+<p>至此，我们就梳理清楚了远程模块的<code>运行时容器</code>与本地模块的交互流程，如下图所示</p>
+<p><img src="img\c5ebee2c-ae61-11ed-8369-342eb7027b95.jpg" alt="image.png"></p>
+<p>接下来，我们继续分析共享依赖的实现。拿之前的示例项目来说，本地模块设置了<code>shared: ['vue']</code>参数之后，当它执行远程模块代码的时候，一旦遇到了引入<code>vue</code>的情况，会优先使用本地的 <code>vue</code>，而不是远端模块中的<code>vue</code>。</p>
+<p><img src="img\c61f7ef9-ae61-11ed-9d4e-342eb7027b95.jpg" alt="image.png"></p>
+<p>让我们把焦点放到容器初始化的逻辑中，回到本地模块编译后的<code>ensure</code>函数逻辑:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// host</span>
+
+<span class="hljs-comment">// 下面是共享依赖表。每个共享依赖都会单独打包</span>
+<span class="hljs-keyword">const</span> shareScope = {
+  <span class="hljs-string">'vue'</span>:{<span class="hljs-string">'3.2.31'</span>:{<span class="hljs-attr">get</span>:<span class="hljs-function">()=></span><span class="hljs-title function_">get</span>(<span class="hljs-string">'./__federation_shared_vue.js'</span>), <span class="hljs-attr">loaded</span>:<span class="hljs-number">1</span>}}
+};
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">ensure</span>(<span class="hljs-params">remoteId</span>) {
+  <span class="hljs-keyword">const</span> remote = remotesMap[remoteId];
+  <span class="hljs-keyword">if</span> (remote.<span class="hljs-property">inited</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =></span> {
+        <span class="hljs-keyword">if</span> (!remote.<span class="hljs-property">inited</span>) {
+          remote.<span class="hljs-property">lib</span> = <span class="hljs-variable language_">window</span>[remoteId];
+          remote.<span class="hljs-property">lib</span>.<span class="hljs-title function_">init</span>(shareScope);
+          remote.<span class="hljs-property">inited</span> = <span class="hljs-literal">true</span>;
+        }
+        <span class="hljs-title function_">resolve</span>(remote.<span class="hljs-property">lib</span>);
+    });
+  }
+}
+</code></pre>
+<p>可以发现，<code>ensure</code>函数的主要逻辑是将共享依赖信息传递给远程模块的运行时容器，并进行容器的初始化。接下来我们进入容器初始化的逻辑<code>init</code>中:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> <span class="hljs-title function_">init</span> =(<span class="hljs-params">shareScope</span>) => {
+  globalThis.<span class="hljs-property">__federation_shared__</span>= globalThis.<span class="hljs-property">__federation_shared__</span>|| {};
+  <span class="hljs-comment">// 下面的逻辑大家不用深究，作用很简单，就是将本地模块的`共享模块表`绑定到远程模块的全局 window 对象上</span>
+  <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">entries</span>(shareScope).<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">[key, value]</span>) =></span> {
+    <span class="hljs-keyword">const</span> versionKey = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(value)[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">const</span> versionValue = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">values</span>(value)[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">const</span> scope = versionValue.<span class="hljs-property">scope</span> || <span class="hljs-string">'default'</span>;
+    globalThis.<span class="hljs-property">__federation_shared__</span>[scope] = globalThis.<span class="hljs-property">__federation_shared__</span>[scope] || {};
+    <span class="hljs-keyword">const</span> shared= globalThis.<span class="hljs-property">__federation_shared__</span>[scope];
+    (shared[key] = shared[key]||{})[versionKey] = versionValue;
+  });
+};
+</code></pre>
+<p>当本地模块的<code>共享依赖表</code>能够在远程模块访问时，远程模块内也就能够使用本地模块的依赖(如 <code>vue</code>)了。现在我们来看看远程模块中对于<code>import { h } from 'vue'</code>这种引入代码被转换成了什么样子:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// __federation_expose_Button.js</span>
+<span class="hljs-keyword">import</span> {importShared} <span class="hljs-keyword">from</span> <span class="hljs-string">'./__federation_fn_import.js'</span>
+<span class="hljs-keyword">const</span> { h } = <span class="hljs-keyword">await</span> <span class="hljs-title function_">importShared</span>(<span class="hljs-string">'vue'</span>)
+</code></pre>
+<p>不难看到，第三方依赖模块的处理逻辑都集中到了 <code>importShared</code> 函数，让我们来一探究竟:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// __federation_fn_import.js</span>
+<span class="hljs-keyword">const</span> moduleMap= {
+  <span class="hljs-string">'vue'</span>: {
+     <span class="hljs-attr">get</span>:<span class="hljs-function">()=></span><span class="hljs-function">()=></span><span class="hljs-title function_">__federation_import</span>(<span class="hljs-string">'./__federation_shared_vue.js'</span>),
+     <span class="hljs-attr">import</span>:<span class="hljs-literal">true</span>
+   }
+};
+<span class="hljs-comment">// 第三方模块缓存</span>
+<span class="hljs-keyword">const</span> moduleCache = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">create</span>(<span class="hljs-literal">null</span>);
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">importShared</span>(<span class="hljs-params">name,shareScope = <span class="hljs-string">'default'</span></span>) {
+  <span class="hljs-keyword">return</span> moduleCache[name] ? 
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">r</span>) =></span> <span class="hljs-title function_">r</span>(moduleCache[name])) : 
+    <span class="hljs-title function_">getProviderSharedModule</span>(name, shareScope);
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getProviderSharedModule</span>(<span class="hljs-params">name, shareScope</span>) {
+  <span class="hljs-comment">// 从 window 对象中寻找第三方包的包名，如果发现有挂载，则获取本地模块的依赖</span>
+  <span class="hljs-keyword">if</span> (xxx) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> <span class="hljs-title function_">getHostDep</span>();
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">getConsumerSharedModule</span>(name); 
+  }
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getConsumerSharedModule</span>(<span class="hljs-params">name , shareScope</span>) {
+  <span class="hljs-keyword">if</span> (moduleMap[name]?.<span class="hljs-property">import</span>) {
+    <span class="hljs-keyword">const</span> <span class="hljs-variable language_">module</span> = (<span class="hljs-keyword">await</span> moduleMap[name].<span class="hljs-title function_">get</span>())();
+    moduleCache[name] = <span class="hljs-variable language_">module</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">module</span>;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">`consumer config import=false,so cant use callback shared module`</span>);
+  }
+}
+</code></pre>
+<p>由于远程模块运行时容器初始化时已经挂载了共享依赖的信息，远程模块内部可以很方便的感知到当前的依赖是不是共享依赖，如果是共享依赖则使用本地模块的依赖代码，否则使用远程模块自身的依赖产物代码。最后我画了一张流程图，你可以参考学习:</p>
+<p><img src="img\c6485dee-ae61-11ed-93b6-342eb7027b95.jpg" alt="image.png"></p>
+<h2>小结</h2>
+<p>本小节的内容到这里就接近尾声了，在本小节中，你需要重点掌握<strong>模块复用的历史解决方案</strong>、<strong>模块联邦方案的优势</strong>、<strong>vite-plugin-federation 插件的使用及原理</strong>。</p>
+<p>首先，我给你介绍了模块复用的问题有哪些历史解决方案，主要包括<code>发布 npm 包</code>、<code>Git Submodule</code>、<code>依赖外部化 + CDN 导入</code>和 <code>Monorepo 架构</code>，也分析了各自的优势与局限性，然后引出 Module Federation(MF) 的概念，并分析了它为什么能近乎完美地解决模块共享问题，主要原因包括<code>实现了任意粒度的模块共享</code>、<code>减少构建产物体积</code>、<code>运行时按需加载</code>以及<code>共享第三方依赖</code>这四个方面。</p>
+<p>接下来，我用一个具体的项目示例来告诉你如何在 Vite 中使用模块联邦的特性，即通过<code>vite-plugin-federation</code>这个插件来完成 MF 的搭建。最后，我也给你详细介绍了 MF 底层的实现原理，从<code>本地模块</code>、<code>远程模块</code>、<code>共享依赖</code>三个视角来给你剖析 MF 的实现机制和核心编译逻辑。</p>
+<p>在此我想给你抛出一个问题，有人说模块联邦的架构是开历史的倒车，远程模块依然需要部署到云端(CDN)，跟很久之前 HTML 中直接使用 <code>CDN 地址</code> 引入依赖的方式如出一辙。请问这个观点有问题吗？问题出在什么地方？欢迎在评论区留下你的看法，也希望本文的内容能对你有所启发，我们下一节再见。</p>
+</div>
+</body>
+</html>

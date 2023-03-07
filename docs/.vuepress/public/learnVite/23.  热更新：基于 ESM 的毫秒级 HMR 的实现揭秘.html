@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <p>在 <a href="https://juejin.cn/book/7050063811973218341/section/7065976180020609032" target="_blank" rel="nofollow noopener noreferrer">第 13 小节</a> 中，我们学习过 Vite 中 HMR 的 API 使用，同时也介绍了基于 HMR Boundary (HMR 边界)的更新模式，即当一个模块发生变动时，Vite 会自动寻找更新边界，然后更新边界模块，如下图所示:</p>
+<p><img src="img\c94fb6f5-ae61-11ed-8cc8-342eb7027b95.jpg" alt=""></p>
+<p>那么，在 Vite 内部，服务端究竟是如何定位到 HMR 边界模块，以及客户端是如何接受更新并加载最新模块内容的呢？</p>
+<p>接下来的内容中，我就来和你一起深入 Vite 的底层实现，梳理 HMR 的各个实现要点，让你对 Vite 的 HMR 实现原理有比较深入的认识。</p>
+<h3>创建模块依赖图</h3>
+<p>为了方便管理各个模块之间的依赖关系，Vite 在 Dev Server 中创建了模块依赖图的数据结构，即<code>ModuleGraph</code>类，<a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/server/moduleGraph.ts" target="_blank" rel="nofollow noopener noreferrer">点击查看实现源码</a>，Vite 中 HMR 边界模块的判定会依靠这个类来实现。</p>
+<p>接下来，我们从以下几个维度看看这个图结构的创建过程。<strong>创建依赖图</strong>主要分为三个步骤:</p>
+<ul>
+<li>初始化依赖图实例</li>
+<li>创建依赖图节点</li>
+<li>绑定各个模块节点的依赖关系</li>
+</ul>
+<p>首先，Vite 在 Dev Server 启动时会初始化 ModuleGraph 的实例:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// pacakges/vite/src/node/server/index.ts</span>
+<span class="hljs-keyword">const</span> <span class="hljs-attr">moduleGraph</span>: <span class="hljs-title class_">ModuleGraph</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ModuleGraph</span>(<span class="hljs-function">(<span class="hljs-params">url</span>) =></span>
+  container.<span class="hljs-title function_">resolveId</span>(url)
+);
+</code></pre>
+<p>接下来我们具体查看<code>ModuleGraph</code>这个类的实现。其中定义了若干个 Map，用来记录模块信息:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 由原始请求 url 到模块节点的映射，如 /src/index.tsx</span>
+urlToModuleMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-title class_">ModuleNode</span>>()
+<span class="hljs-comment">// 由模块 id 到模块节点的映射，其中 id 与原始请求 url，为经过 resolveId 钩子解析后的结果</span>
+idToModuleMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-title class_">ModuleNode</span>>()
+<span class="hljs-comment">// 由文件到模块节点的映射，由于单文件可能包含多个模块，如 .vue 文件，因此 Map 的 value 值为一个集合</span>
+fileToModulesMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-title class_">Set</span>&#x3C;<span class="hljs-title class_">ModuleNode</span>>>()
+</code></pre>
+<p>ModuleNode 对象即代表模块节点的具体信息，我们可以来看看它的数据结构:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ModuleNode</span> {
+  <span class="hljs-comment">// 原始请求 url</span>
+  <span class="hljs-attr">url</span>: <span class="hljs-built_in">string</span>
+  <span class="hljs-comment">// 文件绝对路径 + query</span>
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>
+  <span class="hljs-comment">// 文件绝对路径</span>
+  <span class="hljs-attr">file</span>: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'js'</span> | <span class="hljs-string">'css'</span>
+  info?: <span class="hljs-title class_">ModuleInfo</span>
+  <span class="hljs-comment">// resolveId 钩子返回结果中的元数据</span>
+  meta?: <span class="hljs-title class_">Record</span>&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>>
+  <span class="hljs-comment">// 该模块的引用方</span>
+  importers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>&#x3C;<span class="hljs-title class_">ModuleNode</span>>()
+  <span class="hljs-comment">// 该模块所依赖的模块</span>
+  importedModules = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>&#x3C;<span class="hljs-title class_">ModuleNode</span>>()
+  <span class="hljs-comment">// 接受更新的模块</span>
+  acceptedHmrDeps = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>&#x3C;<span class="hljs-title class_">ModuleNode</span>>()
+  <span class="hljs-comment">// 是否为`接受自身模块`的更新</span>
+  isSelfAccepting = <span class="hljs-literal">false</span>
+  <span class="hljs-comment">// 经过 transform 钩子后的编译结果</span>
+  <span class="hljs-attr">transformResult</span>: <span class="hljs-title class_">TransformResult</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>
+  <span class="hljs-comment">// SSR 过程中经过 transform 钩子后的编译结果</span>
+  <span class="hljs-attr">ssrTransformResult</span>: <span class="hljs-title class_">TransformResult</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>
+  <span class="hljs-comment">// SSR 过程中的模块信息</span>
+  <span class="hljs-attr">ssrModule</span>: <span class="hljs-title class_">Record</span>&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>
+  <span class="hljs-comment">// 上一次热更新的时间戳</span>
+  lastHMRTimestamp = <span class="hljs-number">0</span>
+
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">url: <span class="hljs-built_in">string</span></span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">url</span> = url
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">type</span> = <span class="hljs-title function_">isDirectCSSRequest</span>(url) ? <span class="hljs-string">'css'</span> : <span class="hljs-string">'js'</span>
+  }
+}
+</code></pre>
+<p>ModuleNode 中包含的信息比较多，你需要重点关注的是 <code>importers</code> 和<code>importedModules</code>，这两条信息分别代表了当前模块被哪些模块引用以及它依赖了哪些模块，是构建整个模块依赖图的根基所在。</p>
+<p>那么，Vite 是在什么时候创建 ModuleNode 节点的呢？我们可以到 Vite Dev Server 中的<code>transform</code>中间件一探究竟:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// packages/vite/src/node/server/middlewares/transform.ts</span>
+<span class="hljs-comment">// 核心转换逻辑</span>
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> <span class="hljs-title function_">transformRequest</span>(url, server, {
+  <span class="hljs-attr">html</span>: req.<span class="hljs-property">headers</span>.<span class="hljs-property">accept</span>?.<span class="hljs-title function_">includes</span>(<span class="hljs-string">'text/html'</span>)
+})
+</code></pre>
+<p>可以看到，<code>transform</code>中间件的主要逻辑是调用 <code>transformRequest</code>方法，我们来进一步查看这个方法的核心代码实现:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// packages/vite/src/node/server/transformRequest.ts</span>
+<span class="hljs-comment">// 从 ModuleGraph 查找模块节点信息</span>
+<span class="hljs-keyword">const</span> <span class="hljs-variable language_">module</span> = <span class="hljs-keyword">await</span> server.<span class="hljs-property">moduleGraph</span>.<span class="hljs-title function_">getModuleByUrl</span>(url)
+<span class="hljs-comment">// 如果有则命中缓存</span>
+<span class="hljs-keyword">const</span> cached =
+  <span class="hljs-variable language_">module</span> &#x26;&#x26; (ssr ? <span class="hljs-variable language_">module</span>.<span class="hljs-property">ssrTransformResult</span> : <span class="hljs-variable language_">module</span>.<span class="hljs-property">transformResult</span>)
+<span class="hljs-keyword">if</span> (cached) {
+  <span class="hljs-keyword">return</span> cached
+}
+<span class="hljs-comment">// 否则调用 PluginContainer 的 resolveId 和 load 方法对进行模块加载</span>
+<span class="hljs-keyword">const</span> id = (<span class="hljs-keyword">await</span> pluginContainer.<span class="hljs-title function_">resolveId</span>(url))?.<span class="hljs-property">id</span> || url
+<span class="hljs-keyword">const</span> loadResult = <span class="hljs-keyword">await</span> pluginContainer.<span class="hljs-title function_">load</span>(id, { ssr })
+<span class="hljs-comment">// 然后通过调用 ensureEntryFromUrl 方法创建 ModuleNode</span>
+<span class="hljs-keyword">const</span> mod = <span class="hljs-keyword">await</span> moduleGraph.<span class="hljs-title function_">ensureEntryFromUrl</span>(url)
+</code></pre>
+<p>接着我们看看 <code>ensureEntryFromUrl</code> 方法如何<strong>创建新的 ModuleNode 节点</strong>:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">async</span> <span class="hljs-title function_">ensureEntryFromUrl</span>(<span class="hljs-attr">rawUrl</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">Promise</span>&#x3C;<span class="hljs-title class_">ModuleNode</span>> {
+  <span class="hljs-comment">// 实质是调用各个插件的 resolveId 钩子得到路径信息</span>
+  <span class="hljs-keyword">const</span> [url, resolvedId, meta] = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">resolveUrl</span>(rawUrl)
+  <span class="hljs-keyword">let</span> mod = <span class="hljs-variable language_">this</span>.<span class="hljs-property">urlToModuleMap</span>.<span class="hljs-title function_">get</span>(url)
+  <span class="hljs-keyword">if</span> (!mod) {
+    <span class="hljs-comment">// 如果没有缓存，就创建新的 ModuleNode 对象</span>
+    <span class="hljs-comment">// 并记录到 urlToModuleMap、idToModuleMap、fileToModulesMap 这三张表中</span>
+    mod = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ModuleNode</span>(url)
+    <span class="hljs-keyword">if</span> (meta) mod.<span class="hljs-property">meta</span> = meta
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">urlToModuleMap</span>.<span class="hljs-title function_">set</span>(url, mod)
+    mod.<span class="hljs-property">id</span> = resolvedId
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">idToModuleMap</span>.<span class="hljs-title function_">set</span>(resolvedId, mod)
+    <span class="hljs-keyword">const</span> file = (mod.<span class="hljs-property">file</span> = <span class="hljs-title function_">cleanUrl</span>(resolvedId))
+    <span class="hljs-keyword">let</span> fileMappedModules = <span class="hljs-variable language_">this</span>.<span class="hljs-property">fileToModulesMap</span>.<span class="hljs-title function_">get</span>(file)
+    <span class="hljs-keyword">if</span> (!fileMappedModules) {
+      fileMappedModules = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>()
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">fileToModulesMap</span>.<span class="hljs-title function_">set</span>(file, fileMappedModules)
+    }
+    fileMappedModules.<span class="hljs-title function_">add</span>(mod)
+  }
+  <span class="hljs-keyword">return</span> mod
+}
+</code></pre>
+<p>现在你应该明白了模块依赖图中各个 ModuleNode 节点是如何创建出来的，那么，各个节点的依赖关系是在什么时候绑定的呢？</p>
+<p>我们不妨把目光集中到<code>vite:import-analysis</code>插件当中，在这个插件的 transform 钩子中，会对模块代码中的 import 语句进行分析，得到如下的一些信息:</p>
+<ul>
+<li><code>importedUrls</code>: 当前模块的依赖模块 url 集合。</li>
+<li><code>acceptedUrls</code>: 当前模块中通过 import.meta.hot.accept 声明的依赖模块 url 集合。</li>
+<li><code>isSelfAccepting</code>: 分析 import.meta.hot.accept 的用法，标记是否为<code>接受自身更新</code>的类型。</li>
+</ul>
+<p>接下来会进入核心的<code>模块依赖关系绑定</code>的环节，核心代码如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 引用方模块</span>
+<span class="hljs-keyword">const</span> importerModule = moduleGraph.<span class="hljs-title function_">getModuleById</span>(importer)
+<span class="hljs-keyword">await</span> moduleGraph.<span class="hljs-title function_">updateModuleInfo</span>(
+  importerModule,
+  importedUrls,
+  normalizedAcceptedUrls,
+  isSelfAccepting
+)
+</code></pre>
+<p>可以看到，绑定依赖关系的逻辑主要由<code>ModuleGraph</code>对象的<code>updateModuleInfo</code>方法实现，核心代码如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">async</span> <span class="hljs-title function_">updateModuleInfo</span>(<span class="hljs-params">
+  mod: ModuleNode,
+  importedModules: <span class="hljs-built_in">Set</span>&#x3C;<span class="hljs-built_in">string</span> | ModuleNode>,
+  acceptedModules: <span class="hljs-built_in">Set</span>&#x3C;<span class="hljs-built_in">string</span> | ModuleNode>,
+  isSelfAccepting: <span class="hljs-built_in">boolean</span>
+</span>) {
+  mod.<span class="hljs-property">isSelfAccepting</span> = isSelfAccepting
+  mod.<span class="hljs-property">importedModules</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>()
+  <span class="hljs-comment">// 绑定节点依赖关系</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> imported <span class="hljs-keyword">of</span> importedModules) {
+    <span class="hljs-keyword">const</span> dep =
+      <span class="hljs-keyword">typeof</span> imported === <span class="hljs-string">'string'</span>
+        ? <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">ensureEntryFromUrl</span>(imported)
+        : imported
+    dep.<span class="hljs-property">importers</span>.<span class="hljs-title function_">add</span>(mod)
+    mod.<span class="hljs-property">importedModules</span>.<span class="hljs-title function_">add</span>(dep)
+  }
+
+  <span class="hljs-comment">// 更新 acceptHmrDeps 信息</span>
+  <span class="hljs-keyword">const</span> deps = (mod.<span class="hljs-property">acceptedHmrDeps</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>())
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> accepted <span class="hljs-keyword">of</span> acceptedModules) {
+    <span class="hljs-keyword">const</span> dep =
+      <span class="hljs-keyword">typeof</span> accepted === <span class="hljs-string">'string'</span>
+        ? <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">ensureEntryFromUrl</span>(accepted)
+        : accepted
+    deps.<span class="hljs-title function_">add</span>(dep)
+  }
+}
+</code></pre>
+<p>至此，模块间的依赖关系就成功进行绑定了。随着越来越多的模块经过 <code>vite:import-analysis</code>的 transform 钩子处理，所有模块之间的依赖关系会被记录下来，整个依赖图的信息也就被补充完整了。</p>
+<h3>服务端收集更新模块</h3>
+<p>刚才我们分析了模块依赖图的实现，接下来再看看 Vite 服务端如何根据这个图结构收集更新模块。</p>
+<p>首先， Vite 在服务启动时会通过 <code>chokidar</code> 新建文件监听器:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// packages/vite/src/node/server/index.ts</span>
+<span class="hljs-keyword">import</span> chokidar <span class="hljs-keyword">from</span> <span class="hljs-string">'chokidar'</span>
+
+<span class="hljs-comment">// 监听根目录下的文件</span>
+<span class="hljs-keyword">const</span> watcher = chokidar.<span class="hljs-title function_">watch</span>(path.<span class="hljs-title function_">resolve</span>(root));
+<span class="hljs-comment">// 修改文件</span>
+watcher.<span class="hljs-title function_">on</span>(<span class="hljs-string">'change'</span>, <span class="hljs-keyword">async</span> (file) => {
+  file = <span class="hljs-title function_">normalizePath</span>(file)
+  moduleGraph.<span class="hljs-title function_">onFileChange</span>(file)
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">handleHMRUpdate</span>(file, server)
+})
+<span class="hljs-comment">// 新增文件</span>
+watcher.<span class="hljs-title function_">on</span>(<span class="hljs-string">'add'</span>, <span class="hljs-function">(<span class="hljs-params">file</span>) =></span> {
+  <span class="hljs-title function_">handleFileAddUnlink</span>(<span class="hljs-title function_">normalizePath</span>(file), server)
+})
+<span class="hljs-comment">// 删除文件</span>
+watcher.<span class="hljs-title function_">on</span>(<span class="hljs-string">'unlink'</span>, <span class="hljs-function">(<span class="hljs-params">file</span>) =></span> {
+  <span class="hljs-title function_">handleFileAddUnlink</span>(<span class="hljs-title function_">normalizePath</span>(file), server, <span class="hljs-literal">true</span>)
+})
+</code></pre>
+<p>然后，我们分别以修改文件、新增文件和删除文件这几个方面来介绍 HMR 在服务端的逻辑。</p>
+<h4>1. 修改文件</h4>
+<p>当业务代码中某个文件被修改时，Vite 首先会调用<code>moduleGraph</code>的<code>onFileChange</code>对模块图中的对应节点进行<code>清除缓存</code>的操作:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ModuleGraph</span> {
+  <span class="hljs-title function_">onFileChange</span>(<span class="hljs-attr">file</span>: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">const</span> mods = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getModulesByFile</span>(file)
+    <span class="hljs-keyword">if</span> (mods) {
+      <span class="hljs-keyword">const</span> seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>&#x3C;<span class="hljs-title class_">ModuleNode</span>>()
+      <span class="hljs-comment">// 将模块的缓存信息去除</span>
+      mods.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">mod</span>) =></span> {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">invalidateModule</span>(mod, seen)
+      })
+    }
+  }
+
+  <span class="hljs-title function_">invalidateModule</span>(<span class="hljs-attr">mod</span>: <span class="hljs-title class_">ModuleNode</span>, <span class="hljs-attr">seen</span>: <span class="hljs-title class_">Set</span>&#x3C;<span class="hljs-title class_">ModuleNode</span>> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>()): <span class="hljs-built_in">void</span> {
+    mod.<span class="hljs-property">info</span> = <span class="hljs-literal">undefined</span>
+    mod.<span class="hljs-property">transformResult</span> = <span class="hljs-literal">null</span>
+    mod.<span class="hljs-property">ssrTransformResult</span> = <span class="hljs-literal">null</span>
+  }
+}
+</code></pre>
+<p>然后正式进入 HMR 收集更新的阶段，主要逻辑在<code>handleHMRUpdate</code>函数中，代码简化后如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// packages/vite/src/node/server/hmr.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleHMRUpdate</span>(<span class="hljs-params">
+  file: <span class="hljs-built_in">string</span>,
+  server: ViteDevServer
+</span>): <span class="hljs-title class_">Promise</span>&#x3C;<span class="hljs-built_in">any</span>> {
+  <span class="hljs-keyword">const</span> { ws, config, moduleGraph } = server
+  <span class="hljs-keyword">const</span> shortFile = <span class="hljs-title function_">getShortName</span>(file, config.<span class="hljs-property">root</span>)
+
+  <span class="hljs-comment">// 1. 配置文件/环境变量声明文件变化，直接重启服务</span>
+  <span class="hljs-comment">// 代码省略</span>
+
+  <span class="hljs-comment">// 2. 客户端注入的文件(vite/dist/client/client.mjs)更改</span>
+  <span class="hljs-comment">// 给客户端发送 full-reload 信号，使之刷新页面</span>
+  <span class="hljs-keyword">if</span> (file.<span class="hljs-title function_">startsWith</span>(normalizedClientDir)) {
+    ws.<span class="hljs-title function_">send</span>({
+      <span class="hljs-attr">type</span>: <span class="hljs-string">'full-reload'</span>,
+      <span class="hljs-attr">path</span>: <span class="hljs-string">'*'</span>
+    })
+    <span class="hljs-keyword">return</span>
+  }
+  <span class="hljs-comment">// 3. 普通文件变动</span>
+  <span class="hljs-comment">// 获取需要更新的模块</span>
+  <span class="hljs-keyword">const</span> mods = moduleGraph.<span class="hljs-title function_">getModulesByFile</span>(file)
+  <span class="hljs-keyword">const</span> timestamp = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>()
+  <span class="hljs-comment">// 初始化 HMR 上下文对象</span>
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">hmrContext</span>: <span class="hljs-title class_">HmrContext</span> = {
+    file,
+    timestamp,
+    <span class="hljs-attr">modules</span>: mods ? [...mods] : [],
+    <span class="hljs-attr">read</span>: <span class="hljs-function">() =></span> <span class="hljs-title function_">readModifiedFile</span>(file),
+    server
+  }
+  <span class="hljs-comment">// 依次执行插件的 handleHotUpdate 钩子，拿到插件处理后的 HMR 模块</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> plugin <span class="hljs-keyword">of</span> config.<span class="hljs-property">plugins</span>) {
+    <span class="hljs-keyword">if</span> (plugin.<span class="hljs-property">handleHotUpdate</span>) {
+      <span class="hljs-keyword">const</span> filteredModules = <span class="hljs-keyword">await</span> plugin.<span class="hljs-title function_">handleHotUpdate</span>(hmrContext)
+      <span class="hljs-keyword">if</span> (filteredModules) {
+        hmrContext.<span class="hljs-property">modules</span> = filteredModules
+      }
+    }
+  }
+  <span class="hljs-comment">// updateModules——核心处理逻辑</span>
+  <span class="hljs-title function_">updateModules</span>(shortFile, hmrContext.<span class="hljs-property">modules</span>, timestamp, server)
+}
+</code></pre>
+<p>从中可以看到，Vite 对于不同类型的文件，热更新的策略有所不同：</p>
+<ul>
+<li>对于配置文件和环境变量声明文件的改动，Vite 会直接重启服务器。</li>
+<li>对于客户端注入的文件(vite/dist/client/client.mjs)的改动，Vite 会给客户端发送<code>full-reload</code>信号，让客户端刷新页面。</li>
+<li>对于普通文件改动，Vite 首先会获取需要热更新的模块，然后对这些模块依次查找热更新边界，然后将模块更新的信息传给客户端。</li>
+</ul>
+<p>其中，对于普通文件的热更新边界查找的逻辑，主要集中在<code>updateModules</code>函数中，让我们来看看具体的实现:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">updateModules</span>(<span class="hljs-params">
+  file: <span class="hljs-built_in">string</span>,
+  modules: ModuleNode[],
+  timestamp: <span class="hljs-built_in">number</span>,
+  { config, ws }: ViteDevServer
+</span>) {
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">updates</span>: <span class="hljs-title class_">Update</span>[] = []
+  <span class="hljs-keyword">const</span> invalidatedModules = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>&#x3C;<span class="hljs-title class_">ModuleNode</span>>()
+  <span class="hljs-keyword">let</span> needFullReload = <span class="hljs-literal">false</span>
+  <span class="hljs-comment">// 遍历需要热更新的模块</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> mod <span class="hljs-keyword">of</span> modules) {
+    <span class="hljs-title function_">invalidate</span>(mod, timestamp, invalidatedModules)
+    <span class="hljs-keyword">if</span> (needFullReload) {
+      <span class="hljs-keyword">continue</span>
+    }
+    <span class="hljs-comment">// 初始化热更新边界集合</span>
+    <span class="hljs-keyword">const</span> boundaries = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>&#x3C;{
+      <span class="hljs-attr">boundary</span>: <span class="hljs-title class_">ModuleNode</span>
+      <span class="hljs-attr">acceptedVia</span>: <span class="hljs-title class_">ModuleNode</span>
+    }>()
+    <span class="hljs-comment">// 调用 propagateUpdate 函数，收集热更新边界</span>
+    <span class="hljs-keyword">const</span> hasDeadEnd = <span class="hljs-title function_">propagateUpdate</span>(mod, boundaries)
+    <span class="hljs-comment">// 返回值为 true 表示需要刷新页面，否则局部热更新即可</span>
+    <span class="hljs-keyword">if</span> (hasDeadEnd) {
+      needFullReload = <span class="hljs-literal">true</span>
+      <span class="hljs-keyword">continue</span>
+    }
+    <span class="hljs-comment">// 记录热更新边界信息</span>
+    updates.<span class="hljs-title function_">push</span>(
+      ...[...boundaries].<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">{ boundary, acceptedVia }</span>) =></span> ({
+        <span class="hljs-attr">type</span>: <span class="hljs-string">`<span class="hljs-subst">${boundary.<span class="hljs-keyword">type</span>}</span>-update`</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">Update</span>[<span class="hljs-string">'type'</span>],
+        timestamp,
+        <span class="hljs-attr">path</span>: boundary.<span class="hljs-property">url</span>,
+        <span class="hljs-attr">acceptedPath</span>: acceptedVia.<span class="hljs-property">url</span>
+      }))
+    )
+  }
+  <span class="hljs-comment">// 如果被打上 full-reload 标识，则让客户端强制刷新页面</span>
+  <span class="hljs-keyword">if</span> (needFullReload) {
+    ws.<span class="hljs-title function_">send</span>({
+      <span class="hljs-attr">type</span>: <span class="hljs-string">'full-reload'</span>
+    })
+  } <span class="hljs-keyword">else</span> {
+    config.<span class="hljs-property">logger</span>.<span class="hljs-title function_">info</span>(
+      updates
+        .<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">{ path }</span>) =></span> chalk.<span class="hljs-title function_">green</span>(<span class="hljs-string">`hmr update `</span>) + chalk.<span class="hljs-title function_">dim</span>(path))
+        .<span class="hljs-title function_">join</span>(<span class="hljs-string">'\n'</span>),
+      { <span class="hljs-attr">clear</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">timestamp</span>: <span class="hljs-literal">true</span> }
+    )
+    ws.<span class="hljs-title function_">send</span>({
+      <span class="hljs-attr">type</span>: <span class="hljs-string">'update'</span>,
+      updates
+    })
+  }
+}
+
+<span class="hljs-comment">// 热更新边界收集</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">propagateUpdate</span>(<span class="hljs-params">
+  node: ModuleNode,
+  boundaries: <span class="hljs-built_in">Set</span>&#x3C;{
+    boundary: ModuleNode
+    acceptedVia: ModuleNode
+  }>,
+  currentChain: ModuleNode[] = [node]
+</span>): <span class="hljs-built_in">boolean</span> {
+   <span class="hljs-comment">// 接受自身模块更新</span>
+   <span class="hljs-keyword">if</span> (node.<span class="hljs-property">isSelfAccepting</span>) {
+    boundaries.<span class="hljs-title function_">add</span>({
+      <span class="hljs-attr">boundary</span>: node,
+      <span class="hljs-attr">acceptedVia</span>: node
+    })
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+  }
+  <span class="hljs-comment">// 入口模块</span>
+  <span class="hljs-keyword">if</span> (!node.<span class="hljs-property">importers</span>.<span class="hljs-property">size</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+  }
+  <span class="hljs-comment">// 遍历引用方</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> importer <span class="hljs-keyword">of</span> node.<span class="hljs-property">importers</span>) {
+    <span class="hljs-keyword">const</span> subChain = currentChain.<span class="hljs-title function_">concat</span>(importer)
+    <span class="hljs-comment">// 如果某个引用方模块接受了当前模块的更新</span>
+    <span class="hljs-comment">// 那么将这个引用方模块作为热更新的边界</span>
+    <span class="hljs-keyword">if</span> (importer.<span class="hljs-property">acceptedHmrDeps</span>.<span class="hljs-title function_">has</span>(node)) {
+      boundaries.<span class="hljs-title function_">add</span>({
+        <span class="hljs-attr">boundary</span>: importer,
+        <span class="hljs-attr">acceptedVia</span>: node
+      })
+      <span class="hljs-keyword">continue</span>
+    }
+
+    <span class="hljs-keyword">if</span> (currentChain.<span class="hljs-title function_">includes</span>(importer)) {
+      <span class="hljs-comment">// 出现循环依赖，需要强制刷新页面</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+    }
+    <span class="hljs-comment">// 递归向更上层的引用方寻找热更新边界</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-title function_">propagateUpdate</span>(importer, boundaries, subChain)) {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+    }
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+}
+</code></pre>
+<p>可以看到，当热更新边界的信息收集完成后，服务端会将这些信息推送给客户端，从而完成局部的模块更新。</p>
+<h4>2. 新增和删除文件</h4>
+<p>对于新增和删除文件，Vite 也通过<code>chokidar</code>监听了相应的事件:</p>
+<pre><code class="hljs language-ts">watcher.<span class="hljs-title function_">on</span>(<span class="hljs-string">'add'</span>, <span class="hljs-function">(<span class="hljs-params">file</span>) =></span> {
+  <span class="hljs-title function_">handleFileAddUnlink</span>(<span class="hljs-title function_">normalizePath</span>(file), server)
+})
+
+watcher.<span class="hljs-title function_">on</span>(<span class="hljs-string">'unlink'</span>, <span class="hljs-function">(<span class="hljs-params">file</span>) =></span> {
+  <span class="hljs-title function_">handleFileAddUnlink</span>(<span class="hljs-title function_">normalizePath</span>(file), server, <span class="hljs-literal">true</span>)
+})
+</code></pre>
+<p>接下来，我们就来浏览一下<code>handleFileAddUnlink</code>的逻辑，代码简化后如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleFileAddUnlink</span>(<span class="hljs-params">
+  file: <span class="hljs-built_in">string</span>,
+  server: ViteDevServer,
+  isUnlink = <span class="hljs-literal">false</span>
+</span>): <span class="hljs-title class_">Promise</span>&#x3C;<span class="hljs-built_in">void</span>> {
+  <span class="hljs-keyword">const</span> modules = [...(server.<span class="hljs-property">moduleGraph</span>.<span class="hljs-title function_">getModulesByFile</span>(file) ?? [])]
+
+  <span class="hljs-keyword">if</span> (modules.<span class="hljs-property">length</span> > <span class="hljs-number">0</span>) {
+    <span class="hljs-title function_">updateModules</span>(
+      <span class="hljs-title function_">getShortName</span>(file, server.<span class="hljs-property">config</span>.<span class="hljs-property">root</span>),
+      modules,
+      <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(),
+      server
+    )
+  }
+}
+</code></pre>
+<p>不难发现，这个函数同样是调用<code>updateModules</code>完成模块热更新边界的查找和更新信息的推送，而<code>updateModules</code>在上文中已经分析过，这里就不再赘述了。</p>
+<h3>客户端派发更新</h3>
+<p>好，从前面的内容中，我们知道，服务端会监听文件的改动，然后计算出对应的热更新信息，通过 WebSocket 将更新信息传递给客户端，具体来说，会给客户端发送如下的数据:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  type<span class="hljs-punctuation">:</span> <span class="hljs-string">"update"</span><span class="hljs-punctuation">,</span>
+  update<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-comment">// 更新类型，也可能是 `css-update`</span>
+      type<span class="hljs-punctuation">:</span> <span class="hljs-string">"js-update"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-comment">// 更新时间戳</span>
+      timestamp<span class="hljs-punctuation">:</span> <span class="hljs-number">1650702020986</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-comment">// 热更模块路径</span>
+      path<span class="hljs-punctuation">:</span> <span class="hljs-string">"/src/main.ts"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-comment">// 接受的子模块路径</span>
+      acceptedPath<span class="hljs-punctuation">:</span> <span class="hljs-string">"/src/render.ts"</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+<span class="hljs-comment">// 或者 full-reload 信号</span>
+<span class="hljs-punctuation">{</span>
+  type<span class="hljs-punctuation">:</span> <span class="hljs-string">"full-reload"</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>那么客户端是如何接受这些信息并进行模块更新的呢？</p>
+<p>从上一节我们知道，Vite 在开发阶段会默认在 HTML 中注入一段客户端的脚本，即:</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"module"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/@vite/client"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre>
+<p>在启动任意一个 Vite 项目后，我们可以在浏览器查看具体的脚本内容:</p>
+<p><img src="img\c9be2dfc-ae61-11ed-80d4-342eb7027b95.jpg" alt="image.png"></p>
+<p>从中你可以发现，客户端的脚本中创建了 WebSocket 客户端，并与 Vite Dev Server 中的 WebSocket 服务端(<a href="https://github.com/vitejs/vite/blob/v2.7.0/packages/vite/src/node/server/ws.ts#L21" target="_blank" rel="nofollow noopener noreferrer">点击查看实现</a>)建立双向连接:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> socketProtocol = <span class="hljs-literal">null</span> || (location.<span class="hljs-property">protocol</span> === <span class="hljs-string">'https:'</span> ? <span class="hljs-string">'wss'</span> : <span class="hljs-string">'ws'</span>);
+<span class="hljs-keyword">const</span> socketHost = <span class="hljs-string">`<span class="hljs-subst">${<span class="hljs-literal">null</span> || location.hostname}</span>:<span class="hljs-subst">${<span class="hljs-string">"3000"</span>}</span>`</span>;
+<span class="hljs-keyword">const</span> socket = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>(<span class="hljs-string">`<span class="hljs-subst">${socketProtocol}</span>://<span class="hljs-subst">${socketHost}</span>`</span>, <span class="hljs-string">'vite-hmr'</span>);
+</code></pre>
+<p>随后会监听 socket 实例的<code>message</code>事件，接收到服务端传来的更新信息:</p>
+<pre><code class="hljs language-ts">socket.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'message'</span>, <span class="hljs-keyword">async</span> ({ data }) => {
+  <span class="hljs-title function_">handleMessage</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(data));
+});
+</code></pre>
+<p>接下来让我们把目光集中在 <code>handleMessage</code> 函数中:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleMessage</span>(<span class="hljs-params">payload: HMRPayload</span>) {
+  <span class="hljs-keyword">switch</span> (payload.<span class="hljs-property">type</span>) {
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'connected'</span>:
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`[vite] connected.`</span>)
+      <span class="hljs-comment">// 心跳检测</span>
+      <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =></span> socket.<span class="hljs-title function_">send</span>(<span class="hljs-string">'ping'</span>), __HMR_TIMEOUT__)
+      <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'update'</span>:
+      payload.<span class="hljs-property">updates</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">update</span>) =></span> {
+        <span class="hljs-keyword">if</span> (update.<span class="hljs-property">type</span> === <span class="hljs-string">'js-update'</span>) {
+          <span class="hljs-title function_">queueUpdate</span>(<span class="hljs-title function_">fetchUpdate</span>(update))
+        } <span class="hljs-keyword">else</span> {
+          <span class="hljs-comment">// css-update</span>
+          <span class="hljs-comment">// 省略实现</span>
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`[vite] css hot updated: <span class="hljs-subst">${path}</span>`</span>)
+        }
+      })
+      <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'full-reload'</span>:
+      <span class="hljs-comment">// 刷新页面</span>
+      location.<span class="hljs-title function_">reload</span>()
+    <span class="hljs-comment">// 省略其它消息类型</span>
+  }
+}
+</code></pre>
+<p>其中，我们重点关注 js 的更新逻辑，即下面这行代码:</p>
+<pre><code class="hljs language-scss"><span class="hljs-built_in">queueUpdate</span>(fetchUpdate(update))
+</code></pre>
+<p>到底做了些什么。</p>
+<p>我们先来看看<code>queueUpdate</code>和<code>fetchUpdate</code>这两个函数的实现:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">let</span> pending = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">let</span> <span class="hljs-attr">queued</span>: <span class="hljs-title class_">Promise</span>&#x3C;(<span class="hljs-function">() =></span> <span class="hljs-built_in">void</span>) | <span class="hljs-literal">undefined</span>>[] = []
+
+<span class="hljs-comment">// 批量任务处理，不与具体的热更新行为挂钩，主要起任务调度作用</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">queueUpdate</span>(<span class="hljs-params">p: <span class="hljs-built_in">Promise</span>&#x3C;(() => <span class="hljs-built_in">void</span>) | <span class="hljs-literal">undefined</span>></span>) {
+  queued.<span class="hljs-title function_">push</span>(p)
+  <span class="hljs-keyword">if</span> (!pending) {
+    pending = <span class="hljs-literal">true</span>
+    <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>()
+    pending = <span class="hljs-literal">false</span>
+    <span class="hljs-keyword">const</span> loading = [...queued]
+    queued = []
+    ;(<span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(loading)).<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">fn</span>) =></span> fn &#x26;&#x26; <span class="hljs-title function_">fn</span>())
+  }
+}
+
+<span class="hljs-comment">// 派发热更新的主要逻辑</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchUpdate</span>(<span class="hljs-params">{ path, acceptedPath, timestamp }: Update</span>) {
+  <span class="hljs-comment">// 后文会介绍 hotModuleMap 的作用，你暂且不用纠结实现，可以理解为 HMR 边界模块相关的信息</span>
+  <span class="hljs-keyword">const</span> mod = hotModulesMap.<span class="hljs-title function_">get</span>(path)
+  <span class="hljs-keyword">const</span> moduleMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>()
+  <span class="hljs-keyword">const</span> isSelfUpdate = path === acceptedPath
+
+  <span class="hljs-comment">// 1. 整理需要更新的模块集合</span>
+  <span class="hljs-keyword">const</span> modulesToUpdate = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>&#x3C;<span class="hljs-built_in">string</span>>()
+  <span class="hljs-keyword">if</span> (isSelfUpdate) {
+    <span class="hljs-comment">// 接受自身更新</span>
+    modulesToUpdate.<span class="hljs-title function_">add</span>(path)
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// 接受子模块更新</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> { deps } <span class="hljs-keyword">of</span> mod.<span class="hljs-property">callbacks</span>) {
+      deps.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">dep</span>) =></span> {
+        <span class="hljs-keyword">if</span> (acceptedPath === dep) {
+          modulesToUpdate.<span class="hljs-title function_">add</span>(dep)
+        }
+      })
+    }
+  }
+  <span class="hljs-comment">// 2. 整理需要执行的更新回调函数</span>
+  <span class="hljs-comment">// 注： mod.callbacks 为 import.meta.hot.accept 中绑定的更新回调函数，后文会介绍</span>
+  <span class="hljs-keyword">const</span> qualifiedCallbacks = mod.<span class="hljs-property">callbacks</span>.<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">{ deps }</span>) =></span> {
+    <span class="hljs-keyword">return</span> deps.<span class="hljs-title function_">some</span>(<span class="hljs-function">(<span class="hljs-params">dep</span>) =></span> modulesToUpdate.<span class="hljs-title function_">has</span>(dep))
+  })
+  <span class="hljs-comment">// 3. 对将要更新的模块进行失活操作，并通过动态 import 拉取最新的模块信息</span>
+  <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(
+    <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(modulesToUpdate).<span class="hljs-title function_">map</span>(<span class="hljs-keyword">async</span> (dep) => {
+      <span class="hljs-keyword">const</span> disposer = disposeMap.<span class="hljs-title function_">get</span>(dep)
+      <span class="hljs-keyword">if</span> (disposer) <span class="hljs-keyword">await</span> <span class="hljs-title function_">disposer</span>(dataMap.<span class="hljs-title function_">get</span>(dep))
+      <span class="hljs-keyword">const</span> [path, query] = dep.<span class="hljs-title function_">split</span>(<span class="hljs-string">`?`</span>)
+      <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> newMod = <span class="hljs-keyword">await</span> <span class="hljs-title function_">import</span>(
+          <span class="hljs-comment">/* @vite-ignore */</span>
+          base +
+            path.<span class="hljs-title function_">slice</span>(<span class="hljs-number">1</span>) +
+            <span class="hljs-string">`?import&#x26;t=<span class="hljs-subst">${timestamp}</span><span class="hljs-subst">${query ? <span class="hljs-string">`&#x26;<span class="hljs-subst">${query}</span>`</span> : <span class="hljs-string">''</span>}</span>`</span>
+        )
+        moduleMap.<span class="hljs-title function_">set</span>(dep, newMod)
+      } <span class="hljs-keyword">catch</span> (e) {
+        <span class="hljs-title function_">warnFailedFetch</span>(e, dep)
+      }
+    })
+  )
+  <span class="hljs-comment">// 4. 返回一个函数，用来执行所有的更新回调</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-function">() =></span> {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> { deps, fn } <span class="hljs-keyword">of</span> qualifiedCallbacks) {
+      <span class="hljs-title function_">fn</span>(deps.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">dep</span>) =></span> moduleMap.<span class="hljs-title function_">get</span>(dep)))
+    }
+    <span class="hljs-keyword">const</span> loggedPath = isSelfUpdate ? path : <span class="hljs-string">`<span class="hljs-subst">${acceptedPath}</span> via <span class="hljs-subst">${path}</span>`</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`[vite] hot updated: <span class="hljs-subst">${loggedPath}</span>`</span>)
+  }
+}
+</code></pre>
+<p>对热更新的边界模块来讲，我们需要在客户端获取这些信息:</p>
+<ul>
+<li>边界模块所接受(accept)的模块</li>
+<li>accept 的模块触发更新后的回调</li>
+</ul>
+<p>我们知道，在 <code>vite:import-analysis</code> 插件中，会给包含热更新逻辑的模块注入一些工具代码，如下图所示:</p>
+<p><img src="img\c9ed4ebc-ae61-11ed-b5f7-342eb7027b95.jpg" alt="image.png"></p>
+<p><code>createHotContext</code> 同样是客户端脚本中的一个工具函数，我们来看看它主要的实现:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> hotModulesMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-title class_">HotModule</span>>()
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">createHotContext</span> = (<span class="hljs-params">ownerPath: <span class="hljs-built_in">string</span></span>) => {
+  <span class="hljs-comment">// 将当前模块的接收模块信息和更新回调注册到 hotModulesMap</span>
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">acceptDeps</span>(<span class="hljs-params">deps: <span class="hljs-built_in">string</span>[], callback: HotCallback[<span class="hljs-string">'fn'</span>] = () => {}</span>) {
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">mod</span>: <span class="hljs-title class_">HotModule</span> = hotModulesMap.<span class="hljs-title function_">get</span>(ownerPath) || {
+      <span class="hljs-attr">id</span>: ownerPath,
+      <span class="hljs-attr">callbacks</span>: []
+    }
+    mod.<span class="hljs-property">callbacks</span>.<span class="hljs-title function_">push</span>({
+      deps,
+      <span class="hljs-attr">fn</span>: callback
+    })
+    hotModulesMap.<span class="hljs-title function_">set</span>(ownerPath, mod)
+  }
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-comment">// import.meta.hot.accept</span>
+    <span class="hljs-title function_">accept</span>(<span class="hljs-params">deps: <span class="hljs-built_in">any</span>, callback?: <span class="hljs-built_in">any</span></span>) {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> deps === <span class="hljs-string">'function'</span> || !deps) {
+        <span class="hljs-title function_">acceptDeps</span>([ownerPath], <span class="hljs-function">(<span class="hljs-params">[mod]</span>) =></span> deps &#x26;&#x26; <span class="hljs-title function_">deps</span>(mod))
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> deps === <span class="hljs-string">'string'</span>) {
+        <span class="hljs-title function_">acceptDeps</span>([deps], <span class="hljs-function">(<span class="hljs-params">[mod]</span>) =></span> callback &#x26;&#x26; <span class="hljs-title function_">callback</span>(mod))
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(deps)) {
+        <span class="hljs-title function_">acceptDeps</span>(deps, callback)
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`invalid hot.accept() usage.`</span>)
+      }
+    },
+    <span class="hljs-comment">// import.meta.hot.dispose</span>
+    <span class="hljs-comment">// import.meta.hot.invalidate</span>
+    <span class="hljs-comment">// 省略更多方法的实现</span>
+  }
+}
+</code></pre>
+<p>因此，Vite 给每个热更新边界模块注入的工具代码主要有两个作用:</p>
+<ul>
+<li>注入 import.meta.hot 对象的实现</li>
+<li>将当前模块 accept 过的模块和更新回调函数记录到 hotModulesMap 表中</li>
+</ul>
+<p>而前面所说的 <code>fetchUpdate</code> 函数则是通过 <code>hotModuleMap</code> 来获取边界模块的相关信息，在 accept 的模块发生变动后，通过动态 import 拉取最新的模块内容，然后返回更新回调，让<code>queueUpdate</code>这个调度函数执行更新回调，从而完成<strong>派发更新</strong>的过程。至此，HMR 的过程就结束了。</p>
+<h2>小结</h2>
+<p>好，本小节的内容就到这里。你需要重点掌握 Vite 中的<strong>模块依赖图实现</strong>、<strong>服务端收集更新模块</strong>和<strong>客户端派发更新</strong>的原理。</p>
+<p>首先，Vite 为了更方便地管理模块之间的关系，创建了模块依赖图的数据结构，在 HMR 过程中，服务端会根据这张图来寻找 HMR 边界模块。</p>
+<p>其次，HMR 更新由客户端和服务端配合完成，两者通过 WebSocket 进行数据传输。在服务端，Vite 通过查找模块依赖图确定热更新的边界，并将局部更新的信息传递给客户端，而客户端接收到热更信息后，会通过动态 import 请求并加载最新模块的内容，并执行派发更新的回调，即 import.meta.hot.accept 中定义的回调函数，从而完成完整的热更新过程。</p>
+<p>最后，欢迎你在评论区记录本节的学习心得，也恭喜你完成了<strong>源码精读章节</strong>的学习，让我们下一章再见！</p>
+</div>
+</body>
+</html>

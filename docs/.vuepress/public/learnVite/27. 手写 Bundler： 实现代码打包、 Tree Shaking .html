@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <p>在上一小节，我带你实现了一个简单的 JavaScript AST 解析器，你也应该对词法分析和语法分析底层原理有了一定的了解。那么在本小节的内容中，我们将基于 AST 解析器来实现一个模块打包工具(Bundler)，也就是实现一个精简版的 Rollup。通过本节的实战学习，你不仅能对各种 AST 的各种操作信手拈来，还能够对 JavaScript 模块打包工具本身有更加深刻的理解。</p>
+<h2>实现思路梳理</h2>
+<p>首先我们来梳理一下整体的实现思路，如下图所示:</p>
+<p><img src="img\cebe66dd-ae61-11ed-9aa9-342eb7027b95.jpg" alt="image.png"></p>
+<p>第一步我们需要获取模块的内容并解析模块 AST，然后梳理模块间的依赖关系，生成一张模块依赖图(<code>ModuleGraph</code>)。</p>
+<p>接下来，我们根据模块依赖图生成拓扑排序后的模块列表，以保证最后的产物中各个模块的顺序是正确的，比如模块 A 依赖了模块 B，那么在产物中，模块 B 的代码需要保证在模块 A 的代码之前执行。</p>
+<p>当然，Tree Shaking 的实现也是很重要的一环，我会带你实现一个基于 import/export 符号分析的 Tree Shaking 效果，保证只有被 import 的部分被打包进产物。最后，我们便可以输出完整的 Bundle 代码，完成模块打包。</p>
+<h2>开发环境搭建</h2>
+<p>我们先来搭建一下项目的基本开发环境，首先新建目录<code>my-bundler</code>，然后进入目录中执行 <code>pnpm init -y</code> 初始化，安装一些必要的依赖:</p>
+<blockquote>
+<p>建议 fork 小册的 <a>Github 仓库</a>，从项目根目录下创建项目，因为需要使用仓库中的 ast-parser</p>
+</blockquote>
+<pre><code class="hljs language-ts">pnpm i magic-<span class="hljs-built_in">string</span> -S
+pnpm i <span class="hljs-meta">@types</span>/node tsup typescript typescript-transform-paths -D
+</code></pre>
+<p>新建<code>tsconfig.json</code>，内容如下:</p>
+<pre><code class="hljs language-ts">{
+  <span class="hljs-string">"compilerOptions"</span>: {
+    <span class="hljs-string">"target"</span>: <span class="hljs-string">"es2016"</span>,
+    <span class="hljs-string">"allowJs"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">"module"</span>: <span class="hljs-string">"commonjs"</span>,
+    <span class="hljs-string">"moduleResolution"</span>: <span class="hljs-string">"node"</span>,
+    <span class="hljs-string">"outDir"</span>: <span class="hljs-string">"dist"</span>,
+    <span class="hljs-string">"esModuleInterop"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">"forceConsistentCasingInFileNames"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">"strict"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">"skipLibCheck"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">"sourceMap"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">"baseUrl"</span>: <span class="hljs-string">"src"</span>,
+    <span class="hljs-string">"rootDir"</span>: <span class="hljs-string">"src"</span>,
+    <span class="hljs-string">"declaration"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">"plugins"</span>: [
+      {
+        <span class="hljs-string">"transform"</span>: <span class="hljs-string">"typescript-transform-paths"</span><span class="hljs-comment">/* 支持别名 */</span> 
+      },
+      {
+        <span class="hljs-string">"transform"</span>: <span class="hljs-string">"typescript-transform-paths"</span>,
+        <span class="hljs-string">"afterDeclarations"</span>: <span class="hljs-literal">true</span><span class="hljs-comment">/* 支持类型文件中的别名 */</span> 
+      }
+    ],
+    <span class="hljs-string">"paths"</span>: {
+      <span class="hljs-string">"*"</span>: [<span class="hljs-string">"./*"</span>],
+      <span class="hljs-string">"ast-parser"</span>: [<span class="hljs-string">"../../ast-parser"</span>]<span class="hljs-comment">/* AST 解析器的路径*/</span>
+    }
+  },
+  <span class="hljs-string">"include"</span>: [<span class="hljs-string">"src"</span>],
+  <span class="hljs-string">"references"</span>: [{ <span class="hljs-string">"path"</span>: <span class="hljs-string">"../ast-parser"</span> }]
+}
+</code></pre>
+<p>然后在 package.json 中添加如下的构建脚本:</p>
+<pre><code class="hljs language-ts"><span class="hljs-string">"scripts"</span>: {
+  <span class="hljs-string">"dev"</span>: <span class="hljs-string">"tsup ./src/rollup.ts --format cjs,esm --dts --clean --watch"</span>,
+  <span class="hljs-string">"build"</span>: <span class="hljs-string">"tsup ./src/rollup.ts --format cjs,esm --dts --clean --minify"</span>
+},
+</code></pre>
+<p>接下来，你可以在<code>src</code>目录下新建<code>index.ts</code>，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/index.ts</span>
+<span class="hljs-keyword">import</span> { Bundle } <span class="hljs-keyword">from</span> <span class="hljs-string">'./Bundle'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> BuildOptions {
+  <span class="hljs-attr">input</span>: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">build</span>(<span class="hljs-params">options: BuildOptions</span>) </span>{
+  <span class="hljs-keyword">const</span> bundle = <span class="hljs-keyword">new</span> Bundle({
+    <span class="hljs-attr">entry</span>: options.input
+  });
+  <span class="hljs-keyword">return</span> bundle.build().then(<span class="hljs-function">() =></span> {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">generate</span>: <span class="hljs-function">() =></span> bundle.render()
+    };
+  });
+}
+</code></pre>
+<p>由此可见，所有核心的逻辑我们封装在了 Bundle 对象中，接着新建<code>Bundle.ts</code>及其依赖的<code>Graph.ts</code>， 添加如下的代码骨架:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// Bundle.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bundle</span> </span>{
+  <span class="hljs-attr">graph</span>: Graph;
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">options: BundleOptions</span>)</span> {
+    <span class="hljs-comment">// 初始化模块依赖图对象</span>
+    <span class="hljs-built_in">this</span>.graph = <span class="hljs-keyword">new</span> Graph({
+      <span class="hljs-attr">entry</span>: options.entry,
+      <span class="hljs-attr">bundle</span>: <span class="hljs-built_in">this</span>
+    });
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-title">build</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-comment">// 模块打包逻辑，完成所有的 AST 相关操作</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.graph.build();
+  }
+  
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-comment">// 代码生成逻辑，拼接模块 AST 节点，产出代码</span>
+  }
+  
+  <span class="hljs-function"><span class="hljs-title">getModuleById</span>(<span class="hljs-params">id: <span class="hljs-built_in">string</span></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.graph.getModuleById(id);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">addModule</span>(<span class="hljs-params"><span class="hljs-built_in">module</span>: Module</span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.graph.addModule(<span class="hljs-built_in">module</span>);
+  }
+}
+
+<span class="hljs-comment">// Graph.ts</span>
+<span class="hljs-comment">// 模块依赖图对象的实现</span>
+<span class="hljs-keyword">import</span> { dirname, resolve } <span class="hljs-keyword">from</span> <span class="hljs-string">'path'</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Graph</span> </span>{
+  <span class="hljs-attr">entryPath</span>: <span class="hljs-built_in">string</span>;
+  basedir: <span class="hljs-built_in">string</span>;
+  moduleById: Record&#x3C;<span class="hljs-built_in">string</span>, Module> = {};
+  modules: Module[] = [];
+
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">options: GraphOptions</span>)</span> {
+    <span class="hljs-keyword">const</span> { entry, bundle } = options;
+    <span class="hljs-built_in">this</span>.entryPath = resolve(entry);
+    <span class="hljs-built_in">this</span>.basedir = dirname(<span class="hljs-built_in">this</span>.entryPath);
+    <span class="hljs-built_in">this</span>.bundle = bundle;
+  }
+  
+  <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-title">build</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-comment">// 1. 获取并解析模块信息</span>
+    <span class="hljs-comment">// 2. 构建依赖关系图</span>
+    <span class="hljs-comment">// 3. 模块拓扑排序</span>
+    <span class="hljs-comment">// 4. Tree Shaking, 标记需要包含的语句</span>
+  }
+  
+  <span class="hljs-function"><span class="hljs-title">getModuleById</span>(<span class="hljs-params">id: <span class="hljs-built_in">string</span></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.moduleById[id];
+  }
+
+  <span class="hljs-function"><span class="hljs-title">addModule</span>(<span class="hljs-params"><span class="hljs-built_in">module</span>: Module</span>)</span> {
+    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.moduleById[<span class="hljs-built_in">module</span>.id]) {
+      <span class="hljs-built_in">this</span>.moduleById[<span class="hljs-built_in">module</span>.id] = <span class="hljs-built_in">module</span>;
+      <span class="hljs-built_in">this</span>.modules.push(<span class="hljs-built_in">module</span>);
+    }
+  }
+}
+</code></pre>
+<p>接下来，我们就正式开始实现打包器的模块解析逻辑。</p>
+<h3>模块 AST 解析</h3>
+<p>我们基于目前的 <code>Graph.ts</code> 继续开发，首先在 Graph 对象中初始化模块加载器(ModuleLoader):</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/Graph.ts</span>
+<span class="hljs-keyword">import</span> { dirname, resolve } <span class="hljs-keyword">from</span> <span class="hljs-string">'path'</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Graph</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">options: GraphOptions</span>)</span> {
+    <span class="hljs-comment">// 省略其它代码</span>
+    <span class="hljs-comment">// 初始化模块加载器对象</span>
+    <span class="hljs-built_in">this</span>.moduleLoader = <span class="hljs-keyword">new</span> ModuleLoader(bundle);
+  }
+  
+  <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-title">build</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-comment">// 1. 获取并解析模块信息，返回入口模块对象</span>
+    <span class="hljs-keyword">const</span> entryModule = <span class="hljs-keyword">await</span> <span class="hljs-built_in">this</span>.moduleLoader.fetchModule(
+      <span class="hljs-built_in">this</span>.entryPath,
+      <span class="hljs-literal">null</span>,
+      <span class="hljs-literal">true</span>
+    );
+  }
+}
+</code></pre>
+<p>然后添加<code>ModuleLoader.ts</code>，代码如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/ModuleLoader.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ModuleLoader</span> </span>{
+  <span class="hljs-attr">bundle</span>: Bundle;
+  resolveIdsMap: <span class="hljs-built_in">Map</span>&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span> | <span class="hljs-literal">false</span>> = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>();
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">bundle: Bundle</span>)</span> {
+    <span class="hljs-built_in">this</span>.bundle = bundle;
+  }
+ 
+  <span class="hljs-comment">// 解析模块逻辑</span>
+  <span class="hljs-function"><span class="hljs-title">resolveId</span>(<span class="hljs-params">id: <span class="hljs-built_in">string</span>, importer: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span></span>)</span> {
+    <span class="hljs-keyword">const</span> cacheKey = id + importer;
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.resolveIdsMap.has(cacheKey)) {
+      <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.resolveIdsMap.get(cacheKey)!;
+    }
+    <span class="hljs-keyword">const</span> resolved = defaultResolver(id, importer);
+    <span class="hljs-built_in">this</span>.resolveIdsMap.set(cacheKey, resolved);
+    <span class="hljs-keyword">return</span> resolved;
+  }
+  
+  <span class="hljs-comment">// 加载模块内容并解析</span>
+  <span class="hljs-keyword">async</span> fetchModule(
+    id: <span class="hljs-built_in">string</span>,
+    <span class="hljs-attr">importer</span>: <span class="hljs-literal">null</span> | <span class="hljs-built_in">string</span>,
+    isEntry = <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">bundle</span>: Bundle = <span class="hljs-built_in">this</span>.bundle,
+    <span class="hljs-attr">loader</span>: ModuleLoader = <span class="hljs-built_in">this</span>
+  ): <span class="hljs-built_in">Promise</span>&#x3C;Module | <span class="hljs-literal">null</span>> {
+    <span class="hljs-keyword">const</span> path = <span class="hljs-built_in">this</span>.resolveId(id, importer);
+    <span class="hljs-comment">// 查找缓存</span>
+    <span class="hljs-keyword">const</span> existModule = <span class="hljs-built_in">this</span>.bundle.getModuleById(path);
+    <span class="hljs-keyword">if</span> (existModule) {
+      <span class="hljs-keyword">return</span> existModule;
+    }
+    <span class="hljs-keyword">const</span> code = <span class="hljs-keyword">await</span> readFile(path, { <span class="hljs-attr">encoding</span>: <span class="hljs-string">'utf-8'</span> });
+    <span class="hljs-comment">// 初始化模块，解析 AST</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-built_in">module</span> = <span class="hljs-keyword">new</span> Module({
+      path,
+      code,
+      bundle,
+      loader,
+      isEntry
+    });
+    <span class="hljs-built_in">this</span>.bundle.addModule(<span class="hljs-built_in">module</span>);
+    <span class="hljs-comment">// 拉取所有的依赖模块</span>
+    <span class="hljs-keyword">await</span> <span class="hljs-built_in">this</span>.fetchAllDependencies(<span class="hljs-built_in">module</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">module</span>;
+  }
+  
+  <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-title">fetchAllDependencies</span>(<span class="hljs-params"><span class="hljs-built_in">module</span>: Module</span>)</span> {
+    <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all(
+      <span class="hljs-built_in">module</span>.dependencies.map(<span class="hljs-function">(<span class="hljs-params">dep</span>) =></span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.fetchModule(dep, <span class="hljs-built_in">module</span>.path);
+      })
+    );
+  }
+}
+</code></pre>
+<p>主要由 <code>fetchModule</code> 方法完成模块的加载和解析，流程如下:</p>
+<ul>
+<li>
+<ol>
+<li>调用 resolveId 方法解析模块路径</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>初始化模块实例即 Module 对象，解析模块 AST</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>递归初始化模块的所有依赖模块</li>
+</ol>
+</li>
+</ul>
+<p>其中，最主要的逻辑在于第二步，即 Module 对象实例的初始化，在这个过程中，模块代码将会被进行 AST 解析及依赖分析。接下来，让我们把目光集中在 Module 对象的实现上。</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/Module.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Module</span> </span>{
+  <span class="hljs-attr">isEntry</span>: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">false</span>;
+  id: <span class="hljs-built_in">string</span>;
+  path: <span class="hljs-built_in">string</span>;
+  bundle: Bundle;
+  moduleLoader: ModuleLoader;
+  code: <span class="hljs-built_in">string</span>;
+  magicString: MagicString;
+  statements: Statement[];
+  imports: Imports;
+  <span class="hljs-built_in">exports</span>: Exports;
+  reexports: Exports;
+  exportAllSources: <span class="hljs-built_in">string</span>[] = [];
+  exportAllModules: Module[] = [];
+  dependencies: <span class="hljs-built_in">string</span>[] = [];
+  dependencyModules: Module[] = [];
+  referencedModules: Module[] = [];
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{ path, bundle, code, loader, isEntry = <span class="hljs-literal">false</span> }: ModuleOptions</span>)</span> {
+    <span class="hljs-built_in">this</span>.id = path;
+    <span class="hljs-built_in">this</span>.bundle = bundle;
+    <span class="hljs-built_in">this</span>.moduleLoader = loader;
+    <span class="hljs-built_in">this</span>.isEntry = isEntry;
+    <span class="hljs-built_in">this</span>.path = path;
+    <span class="hljs-built_in">this</span>.code = code;
+    <span class="hljs-built_in">this</span>.magicString = <span class="hljs-keyword">new</span> MagicString(code);
+    <span class="hljs-built_in">this</span>.imports = {};
+    <span class="hljs-built_in">this</span>.exports = {};
+    <span class="hljs-built_in">this</span>.reexports = {};
+    <span class="hljs-built_in">this</span>.declarations = {};
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">const</span> ast = parse(code) <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>;
+      <span class="hljs-keyword">const</span> nodes = ast.body <span class="hljs-keyword">as</span> StatementNode[];
+      <span class="hljs-comment">// 以语句(Statement)的维度来拆分 Module，保存 statement 的集合，供之后分析</span>
+      <span class="hljs-built_in">this</span>.statements = nodes.map(<span class="hljs-function">(<span class="hljs-params">node</span>) =></span> {
+        <span class="hljs-keyword">const</span> magicString = <span class="hljs-built_in">this</span>.magicString.snip(node.start, node.end);
+        <span class="hljs-comment">// Statement 对象将在后文中介绍具体实现</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Statement(node, magicString, <span class="hljs-built_in">this</span>);
+      });
+    } <span class="hljs-keyword">catch</span> (e) {
+      <span class="hljs-built_in">console</span>.log(e);
+      <span class="hljs-keyword">throw</span> e;
+    }
+    <span class="hljs-comment">// 分析 AST 节点</span>
+    <span class="hljs-built_in">this</span>.analyseAST();
+  }
+  <span class="hljs-function"><span class="hljs-title">analyseAST</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-comment">// 以语句为最小单元来分析</span>
+    <span class="hljs-built_in">this</span>.statements.forEach(<span class="hljs-function">(<span class="hljs-params">statement</span>) =></span> {
+      <span class="hljs-comment">// 对 statement 进行分析</span>
+      statement.analyse();
+      <span class="hljs-comment">// 注册顶层声明</span>
+      <span class="hljs-keyword">if</span> (!statement.scope.parent) {
+        statement.scope.eachDeclaration(<span class="hljs-function">(<span class="hljs-params">name, declaration</span>) =></span> {
+          <span class="hljs-built_in">this</span>.declarations[name] = declaration;
+        });
+      }
+    });
+    <span class="hljs-comment">// 注册 statement 的 next 属性，用于生成代码使用，next 即下一个 statement 的起始位置</span>
+    <span class="hljs-keyword">const</span> statements = <span class="hljs-built_in">this</span>.statements;
+    <span class="hljs-keyword">let</span> next = <span class="hljs-built_in">this</span>.code.length;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = statements.length - <span class="hljs-number">1</span>; i >= <span class="hljs-number">0</span>; i--) {
+      statements[i].next = next;
+      next = statements[i].start;
+    }
+  }  
+}
+</code></pre>
+<p>OK，我们可以来梳理一下解析 AST 节点主要做了哪些事情:</p>
+<ol>
+<li>
+<p>调用 ast-parser 将代码字符串解析为 AST 对象。</p>
+</li>
+<li>
+<p>遍历 AST 对象中的各个语句，以语句的维度来进行 AST 分析，通过语句的分析结果来构造作用域链和模块依赖关系。</p>
+</li>
+</ol>
+<p>ast-parser 的解析部分我们已经详细介绍过，这里不再赘述。接下来我们将重点放到 Statement 对象的实现上。你可以新建<code>src/Statement.ts</code>，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/Statement.ts</span>
+<span class="hljs-comment">// 以下为三个工具函数</span>
+<span class="hljs-comment">// 是否为函数节点</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isFunctionDeclaration</span>(<span class="hljs-params">node: Declaration</span>): <span class="hljs-title">boolean</span> </span>{
+  <span class="hljs-keyword">if</span> (!node) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  <span class="hljs-keyword">return</span> (
+    <span class="hljs-comment">// function foo() {}</span>
+    node.type === <span class="hljs-string">'FunctionDeclaration'</span> ||
+    <span class="hljs-comment">// const foo = function() {}</span>
+    (node.type === NodeType.VariableDeclarator &#x26;&#x26;
+      node.init &#x26;&#x26;
+      node.init.type === NodeType.FunctionExpression) ||
+    <span class="hljs-comment">// export function ...</span>
+    <span class="hljs-comment">// export default function</span>
+    ((node.type === NodeType.ExportNamedDeclaration ||
+      node.type === NodeType.ExportDefaultDeclaration) &#x26;&#x26;
+      !!node.declaration &#x26;&#x26;
+      node.declaration.type === NodeType.FunctionDeclaration)
+  );
+}
+
+<span class="hljs-comment">// 是否为 export 声明节点</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isExportDeclaration</span>(<span class="hljs-params">node: ExportDeclaration</span>): <span class="hljs-title">boolean</span> </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-regexp">/^Export/</span>.test(node.type);
+}
+
+<span class="hljs-comment">// 是否为 import 声明节点</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isImportDeclaration</span>(<span class="hljs-params">node: <span class="hljs-built_in">any</span></span>) </span>{
+  <span class="hljs-keyword">return</span> node.type === <span class="hljs-string">'ImportDeclaration'</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Statement</span> </span>{
+  <span class="hljs-attr">node</span>: StatementNode;
+  magicString: MagicString;
+  <span class="hljs-built_in">module</span>: Module;
+  scope: Scope;
+  start: <span class="hljs-built_in">number</span>;
+  next: <span class="hljs-built_in">number</span>;
+  isImportDeclaration: <span class="hljs-built_in">boolean</span>;
+  isExportDeclaration: <span class="hljs-built_in">boolean</span>;
+  isReexportDeclaration: <span class="hljs-built_in">boolean</span>;
+  isFunctionDeclaration: <span class="hljs-built_in">boolean</span>;
+  isIncluded: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">false</span>;
+  defines: <span class="hljs-built_in">Set</span>&#x3C;<span class="hljs-built_in">string</span>> = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>();
+  modifies: <span class="hljs-built_in">Set</span>&#x3C;<span class="hljs-built_in">string</span>> = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>();
+  dependsOn: <span class="hljs-built_in">Set</span>&#x3C;<span class="hljs-built_in">string</span>> = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>();
+  references: Reference[] = [];
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">node: StatementNode, magicString: MagicString, <span class="hljs-built_in">module</span>: Module</span>)</span> {
+    <span class="hljs-built_in">this</span>.magicString = magicString;
+    <span class="hljs-built_in">this</span>.node = node;
+    <span class="hljs-built_in">this</span>.module = <span class="hljs-built_in">module</span>;
+    <span class="hljs-built_in">this</span>.scope = <span class="hljs-keyword">new</span> Scope({
+      <span class="hljs-attr">statement</span>: <span class="hljs-built_in">this</span>
+    });
+    <span class="hljs-built_in">this</span>.start = node.start;
+    <span class="hljs-built_in">this</span>.next = <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">this</span>.isImportDeclaration = isImportDeclaration(node);
+    <span class="hljs-built_in">this</span>.isExportDeclaration = isExportDeclaration(node <span class="hljs-keyword">as</span> ExportDeclaration);
+    <span class="hljs-built_in">this</span>.isReexportDeclaration =
+      <span class="hljs-built_in">this</span>.isExportDeclaration &#x26;&#x26;
+      !!(node <span class="hljs-keyword">as</span> ExportAllDeclaration | ExportNamedDeclaration).source;
+    <span class="hljs-built_in">this</span>.isFunctionDeclaration = isFunctionDeclaration(
+      node <span class="hljs-keyword">as</span> FunctionDeclaration
+    );
+
+  }
+
+  <span class="hljs-function"><span class="hljs-title">analyse</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.isImportDeclaration) <span class="hljs-keyword">return</span>;
+    <span class="hljs-comment">// 1、构建作用域链，记录 Declaration 节点表</span>
+    buildScope(<span class="hljs-built_in">this</span>);
+    <span class="hljs-comment">// 2. 寻找引用的依赖节点，记录 Reference 节点表</span>
+    findReference(<span class="hljs-built_in">this</span>);
+  }
+}
+</code></pre>
+<p>在 Statement 节点的分析过程中主要需要做两件事情:</p>
+<ul>
+<li>构建作用域链。这是为了记录当前语句中声明的变量。</li>
+<li>记录引用的依赖节点。这是为了记录当前语句引用了哪些变量以及这些变量对应的 AST 节点。</li>
+</ul>
+<p>而无论是构建作用域链还是记录引用节点，我们都离不开一个最基本的操作，那就是对 AST 进行遍历操作。你可以新建<code>src/utils/walk.ts</code>，用来存放 AST 节点遍历的逻辑，代码可以去 <a href="https://github.com/sanyuan0704/juejin-book-vite/blob/main/bundler/src/utils/walk.ts" target="_blank" rel="nofollow noopener noreferrer">Github 仓库链接</a>获取，由于这部分内容并不属于本文的重点，就不再详细赘述了，感兴趣的同学可以研究一下实现细节。接下来我们主要通过这个遍历器来完成 Statement 节点的分析。</p>
+<p>对于作用域链的分析，我们先来新建一个 Scope 对象，封装作用域相关的基本信息:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/utils/Scope.ts</span>
+<span class="hljs-keyword">import</span> { Statement } <span class="hljs-keyword">from</span> <span class="hljs-string">'Statement'</span>;
+<span class="hljs-keyword">import</span> { Declaration } <span class="hljs-keyword">from</span> <span class="hljs-string">'ast/Declaration'</span>;
+
+<span class="hljs-keyword">interface</span> ScopeOptions {
+  parent?: Scope;
+  paramNodes?: <span class="hljs-built_in">any</span>[];
+  block?: <span class="hljs-built_in">boolean</span>;
+  statement: Statement;
+  isTopLevel?: <span class="hljs-built_in">boolean</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Scope</span> </span>{
+  <span class="hljs-comment">// 父作用域</span>
+  parent?: Scope;
+  <span class="hljs-comment">// 如果是函数作用域，则需要参数节点</span>
+  paramNodes: <span class="hljs-built_in">any</span>[];
+  <span class="hljs-comment">// 是否为块级作用域</span>
+  isBlockScope?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-comment">// 作用域对应的语句节点</span>
+  statement: Statement;
+  <span class="hljs-comment">// 变量/函数 声明节点，为 Scope 的核心数据</span>
+  declarations: Record&#x3C;<span class="hljs-built_in">string</span>, Declaration> = {};
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">options: ScopeOptions</span>)</span> {
+    <span class="hljs-keyword">const</span> { parent, paramNodes, block, statement } = options;
+    <span class="hljs-built_in">this</span>.parent = parent;
+    <span class="hljs-built_in">this</span>.paramNodes = paramNodes || [];
+    <span class="hljs-built_in">this</span>.statement = statement;
+    <span class="hljs-built_in">this</span>.isBlockScope = !!block;
+    <span class="hljs-built_in">this</span>.paramNodes.forEach(
+      <span class="hljs-function">(<span class="hljs-params">node</span>) =></span>
+        (<span class="hljs-built_in">this</span>.declarations[node.name] = <span class="hljs-keyword">new</span> Declaration(
+          node,
+          <span class="hljs-literal">true</span>,
+          <span class="hljs-built_in">this</span>.statement
+        ))
+    );
+  }
+
+  <span class="hljs-function"><span class="hljs-title">addDeclaration</span>(<span class="hljs-params">node: <span class="hljs-built_in">any</span>, isBlockDeclaration: <span class="hljs-built_in">boolean</span></span>)</span> {
+    <span class="hljs-comment">// block scope &#x26; var, 向上追溯，直到顶层作用域</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.isBlockScope &#x26;&#x26; !isBlockDeclaration &#x26;&#x26; <span class="hljs-built_in">this</span>.parent) {
+      <span class="hljs-built_in">this</span>.parent.addDeclaration(node, isBlockDeclaration);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">// 否则在当前作用域新建声明节点(Declaration)</span>
+      <span class="hljs-keyword">const</span> key = node.id &#x26;&#x26; node.id.name;
+      <span class="hljs-built_in">this</span>.declarations[key] = <span class="hljs-keyword">new</span> Declaration(node, <span class="hljs-literal">false</span>, <span class="hljs-built_in">this</span>.statement);
+    }
+  }
+
+  <span class="hljs-comment">// 遍历声明节点(Declaration)</span>
+  <span class="hljs-function"><span class="hljs-title">eachDeclaration</span>(<span class="hljs-params">fn: (name: <span class="hljs-built_in">string</span>, dec: Declaration) => <span class="hljs-built_in">void</span></span>)</span> {
+    <span class="hljs-built_in">Object</span>.keys(<span class="hljs-built_in">this</span>.declarations).forEach(<span class="hljs-function">(<span class="hljs-params">key</span>) =></span> {
+      fn(key, <span class="hljs-built_in">this</span>.declarations[key]);
+    });
+  }
+
+  contains(name: <span class="hljs-built_in">string</span>): Declaration {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.findDeclaration(name);
+  }
+
+  findDeclaration(name: <span class="hljs-built_in">string</span>): Declaration {
+    <span class="hljs-keyword">return</span> (
+      <span class="hljs-built_in">this</span>.declarations[name] ||
+      (<span class="hljs-built_in">this</span>.parent &#x26;&#x26; <span class="hljs-built_in">this</span>.parent.findDeclaration(name))
+    );
+  }
+}
+</code></pre>
+<p>Scope 的核心在于声明节点(即<code>Declaration</code>)的收集与存储，而上述的代码中并没有 Declaration 对象的实现，接下来我们来封装一下这个对象:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/ast/Declaration.ts</span>
+<span class="hljs-keyword">import</span> { Module } <span class="hljs-keyword">from</span> <span class="hljs-string">'../Module'</span>;
+<span class="hljs-keyword">import</span> { Statement } <span class="hljs-keyword">from</span> <span class="hljs-string">'../Statement'</span>;
+<span class="hljs-keyword">import</span> { Reference } <span class="hljs-keyword">from</span> <span class="hljs-string">'./Reference'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Declaration</span> </span>{
+  <span class="hljs-attr">isFunctionDeclaration</span>: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">false</span>;
+  functionNode: <span class="hljs-built_in">any</span>;
+  statement: Statement | <span class="hljs-literal">null</span>;
+  name: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>;
+  isParam: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">false</span>;
+  isUsed: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">false</span>;
+  isReassigned: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">false</span>;
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">node: <span class="hljs-built_in">any</span>, isParam: <span class="hljs-built_in">boolean</span>, statement: Statement | <span class="hljs-literal">null</span></span>)</span> {
+    <span class="hljs-comment">// 考虑函数和变量声明两种情况</span>
+    <span class="hljs-keyword">if</span> (node) {
+      <span class="hljs-keyword">if</span> (node.type === <span class="hljs-string">'FunctionDeclaration'</span>) {
+        <span class="hljs-built_in">this</span>.isFunctionDeclaration = <span class="hljs-literal">true</span>;
+        <span class="hljs-built_in">this</span>.functionNode = node;
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (
+        node.type === <span class="hljs-string">'VariableDeclarator'</span> &#x26;&#x26;
+        node.init &#x26;&#x26;
+        <span class="hljs-regexp">/FunctionExpression/</span>.test(node.init.type)
+      ) {
+        <span class="hljs-built_in">this</span>.isFunctionDeclaration = <span class="hljs-literal">true</span>;
+        <span class="hljs-built_in">this</span>.functionNode = node.init;
+      }
+    }
+    <span class="hljs-built_in">this</span>.statement = statement;
+    <span class="hljs-built_in">this</span>.isParam = isParam;
+  }
+  
+  <span class="hljs-function"><span class="hljs-title">addReference</span>(<span class="hljs-params">reference: Reference</span>)</span> {
+    reference.declaration = <span class="hljs-built_in">this</span>;
+    <span class="hljs-built_in">this</span>.name = reference.name;
+  }
+}
+</code></pre>
+<p>既然有了声明节点，那么我们如果感知到哪些地方使用了这些节点呢？这时候就需要 Reference 节点登场了，它的作用就是记录其它节点与 Declaration 节点的引用关系，让我门来简单实现一下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { Scope } <span class="hljs-keyword">from</span> <span class="hljs-string">'./Scope'</span>;
+<span class="hljs-keyword">import</span> { Statement } <span class="hljs-keyword">from</span> <span class="hljs-string">'../Statement'</span>;
+<span class="hljs-keyword">import</span> { Declaration } <span class="hljs-keyword">from</span> <span class="hljs-string">'./Declaration'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Reference</span> </span>{
+  <span class="hljs-attr">node</span>: <span class="hljs-built_in">any</span>;
+  scope: Scope;
+  statement: Statement;
+  <span class="hljs-comment">// declaration 信息在构建依赖图的部分补充</span>
+  declaration: Declaration | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>;
+  name: <span class="hljs-built_in">string</span>;
+  start: <span class="hljs-built_in">number</span>;
+  end: <span class="hljs-built_in">number</span>;
+  objectPaths: <span class="hljs-built_in">any</span>[] = [];
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">node: <span class="hljs-built_in">any</span>, scope: Scope, statement: Statement</span>)</span> {
+    <span class="hljs-built_in">this</span>.node = node;
+    <span class="hljs-built_in">this</span>.scope = scope;
+    <span class="hljs-built_in">this</span>.statement = statement;
+    <span class="hljs-built_in">this</span>.start = node.start;
+    <span class="hljs-built_in">this</span>.end = node.end;
+    <span class="hljs-keyword">let</span> root = node;
+    <span class="hljs-built_in">this</span>.objectPaths = [];
+    <span class="hljs-keyword">while</span> (root.type === <span class="hljs-string">'MemberExpression'</span>) {
+      <span class="hljs-built_in">this</span>.objectPaths.unshift(root.property);
+      root = root.object;
+    }
+    <span class="hljs-built_in">this</span>.objectPaths.unshift(root);
+    <span class="hljs-built_in">this</span>.name = root.name;
+  }
+}
+</code></pre>
+<p>OK，前面铺垫了这么多基础的数据结构，让大家了解到各个关键对象的作用及其联系，接下来我们正式开始编写构建作用域链的代码。</p>
+<p>你可以新建<code>src/utils/buildScope.ts</code>，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { walk } <span class="hljs-keyword">from</span> <span class="hljs-string">'utils/walk'</span>;
+<span class="hljs-keyword">import</span> { Scope } <span class="hljs-keyword">from</span> <span class="hljs-string">'ast/Scope'</span>;
+<span class="hljs-keyword">import</span> { Statement } <span class="hljs-keyword">from</span> <span class="hljs-string">'Statement'</span>;
+<span class="hljs-keyword">import</span> {
+  NodeType,
+  Node,
+  VariableDeclaration,
+  VariableDeclarator
+} <span class="hljs-keyword">from</span> <span class="hljs-string">'ast-parser'</span>;
+<span class="hljs-keyword">import</span> { FunctionDeclaration } <span class="hljs-keyword">from</span> <span class="hljs-string">'ast-parser'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">buildScope</span>(<span class="hljs-params">statement: Statement</span>) </span>{
+  <span class="hljs-keyword">const</span> { node, <span class="hljs-attr">scope</span>: initialScope } = statement;
+  <span class="hljs-keyword">let</span> scope = initialScope;
+  <span class="hljs-comment">// 遍历 AST</span>
+  walk(node, {
+    <span class="hljs-comment">// 遵循深度优先的原则，每进入和离开一个节点会触发 enter 和 leave 钩子</span>
+    <span class="hljs-comment">// 如 a 的子节点为 b，那么触发顺序为 a-enter、b-enter、b-leave、a-leave</span>
+    <span class="hljs-function"><span class="hljs-title">enter</span>(<span class="hljs-params">node: Node</span>)</span> {
+      <span class="hljs-comment">// function foo () {...}</span>
+      <span class="hljs-keyword">if</span> (node.type === NodeType.FunctionDeclaration) {
+        scope.addDeclaration(node, <span class="hljs-literal">false</span>);
+      }
+      <span class="hljs-comment">// var let const</span>
+      <span class="hljs-keyword">if</span> (node.type === NodeType.VariableDeclaration) {
+        <span class="hljs-keyword">const</span> currentNode = node <span class="hljs-keyword">as</span> VariableDeclaration;
+        <span class="hljs-keyword">const</span> isBlockDeclaration = currentNode.kind !== <span class="hljs-string">'var'</span>;
+        currentNode.declarations.forEach(<span class="hljs-function">(<span class="hljs-params">declarator: VariableDeclarator</span>) =></span> {
+          scope.addDeclaration(declarator, isBlockDeclaration);
+        });
+      }
+
+      <span class="hljs-keyword">let</span> newScope;
+
+      <span class="hljs-comment">// function scope</span>
+      <span class="hljs-keyword">if</span> (node.type === NodeType.FunctionDeclaration) {
+        <span class="hljs-keyword">const</span> currentNode = node <span class="hljs-keyword">as</span> FunctionDeclaration;
+        newScope = <span class="hljs-keyword">new</span> Scope({
+          <span class="hljs-attr">parent</span>: scope,
+          <span class="hljs-attr">block</span>: <span class="hljs-literal">false</span>,
+          <span class="hljs-attr">paramNodes</span>: currentNode.params,
+          statement
+        });
+      }
+
+      <span class="hljs-comment">// new block scope</span>
+      <span class="hljs-keyword">if</span> (node.type === NodeType.BlockStatement) {
+        newScope = <span class="hljs-keyword">new</span> Scope({
+          <span class="hljs-attr">parent</span>: scope,
+          <span class="hljs-attr">block</span>: <span class="hljs-literal">true</span>,
+          statement
+        });
+      }
+      <span class="hljs-comment">// 记录 Scope 父子关系</span>
+      <span class="hljs-keyword">if</span> (newScope) {
+        <span class="hljs-built_in">Object</span>.defineProperty(node, <span class="hljs-string">'_scope'</span>, {
+          <span class="hljs-attr">value</span>: newScope,
+          <span class="hljs-attr">configurable</span>: <span class="hljs-literal">true</span>
+        });
+
+        scope = newScope;
+      }
+    },
+    <span class="hljs-function"><span class="hljs-title">leave</span>(<span class="hljs-params">node: <span class="hljs-built_in">any</span></span>)</span> {
+      <span class="hljs-comment">// 更新当前作用域</span>
+      <span class="hljs-comment">// 当前 scope 即 node._scope</span>
+      <span class="hljs-keyword">if</span> (node._scope &#x26;&#x26; scope.parent) {
+        scope = scope.parent;
+      }
+    }
+  });
+}
+</code></pre>
+<p>从中可以看到，我们会对如下类型的 AST 节点进行处理:</p>
+<ul>
+<li>
+<p>变量声明节点。包括<code>var</code>、<code>let</code>和<code>const</code>声明对应的节点。对<code>let</code>和<code>const</code>，我们需要将声明节点绑定到<code>当前作用域</code>中，而对于<code>var</code>，需要绑定到全局作用域。</p>
+</li>
+<li>
+<p>函数声明节点。对于这类节点，我们直接创建一个新的作用域。</p>
+</li>
+<li>
+<p>块级节点。即用 <code>{ }</code> 包裹的节点，如 if 块、函数体，此时我们也创建新的作用域。</p>
+</li>
+</ul>
+<p>在构建完作用域完成后，我们进入下一个环节: <strong>记录引用节点</strong>。</p>
+<p>新建<code>src/utils/findReference.ts</code>，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { Statement } <span class="hljs-keyword">from</span> <span class="hljs-string">'Statement'</span>;
+<span class="hljs-keyword">import</span> { walk } <span class="hljs-keyword">from</span> <span class="hljs-string">'utils/walk'</span>;
+<span class="hljs-keyword">import</span> { Reference } <span class="hljs-keyword">from</span> <span class="hljs-string">'ast/Reference'</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isReference</span>(<span class="hljs-params">node: <span class="hljs-built_in">any</span>, parent: <span class="hljs-built_in">any</span></span>): <span class="hljs-title">boolean</span> </span>{
+  <span class="hljs-keyword">if</span> (node.type === <span class="hljs-string">'MemberExpression'</span> &#x26;&#x26; parent.type !== <span class="hljs-string">'MemberExpression'</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  }
+  <span class="hljs-keyword">if</span> (node.type === <span class="hljs-string">'Identifier'</span>) {
+    <span class="hljs-comment">// 如 export { foo as bar }, 忽略 bar</span>
+    <span class="hljs-keyword">if</span> (parent.type === <span class="hljs-string">'ExportSpecifier'</span> &#x26;&#x26; node !== parent.local)
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-comment">// 如 import { foo as bar } from 'xxx', 忽略 bar</span>
+    <span class="hljs-keyword">if</span> (parent.type === <span class="hljs-string">'ImportSpecifier'</span> &#x26;&#x26; node !== parent.imported) {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findReference</span>(<span class="hljs-params">statement: Statement</span>) </span>{
+  <span class="hljs-keyword">const</span> { references, <span class="hljs-attr">scope</span>: initialScope, node } = statement;
+  <span class="hljs-keyword">let</span> scope = initialScope;
+  walk(node, {
+    <span class="hljs-function"><span class="hljs-title">enter</span>(<span class="hljs-params">node: <span class="hljs-built_in">any</span>, parent: <span class="hljs-built_in">any</span></span>)</span> {
+      <span class="hljs-keyword">if</span> (node._scope) scope = node._scope;
+      <span class="hljs-keyword">if</span> (isReference(node, parent)) {
+        <span class="hljs-comment">// 记录 Reference 节点</span>
+        <span class="hljs-keyword">const</span> reference = <span class="hljs-keyword">new</span> Reference(node, scope, statement);
+        references.push(reference);
+      }
+    },
+    <span class="hljs-function"><span class="hljs-title">leave</span>(<span class="hljs-params">node: <span class="hljs-built_in">any</span></span>)</span> {
+      <span class="hljs-keyword">if</span> (node._scope &#x26;&#x26; scope.parent) {
+        scope = scope.parent;
+      }
+    }
+  });
+}
+</code></pre>
+<p>至此，我们就完成了模块 AST 解析的功能。</p>
+<h2>模块依赖图绑定</h2>
+<p>回到 Graph 对象中，接下来我们需要实现的是模块依赖图的构建:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/Graph.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Graph</span> </span>{
+  <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-title">build</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-comment">//  ✅(完成) 1. 获取并解析模块信息</span>
+    <span class="hljs-comment">// 2. 构建依赖关系图</span>
+    <span class="hljs-built_in">this</span>.module.forEach(<span class="hljs-function"><span class="hljs-params">module</span> =></span> <span class="hljs-built_in">module</span>.bind());
+    <span class="hljs-comment">// 3. 模块拓扑排序</span>
+    <span class="hljs-comment">// 4. Tree Shaking, 标记需要包含的语句</span>
+  }
+}
+</code></pre>
+<p>现在我们在 Module 对象的 AnalyzeAST 中新增依赖绑定的代码:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/Module.ts</span>
+<span class="hljs-function"><span class="hljs-title">analyzeAST</span>(<span class="hljs-params"></span>)</span> {
+  <span class="hljs-comment">// 如果语句为 import/export 声明，那么给当前模块记录依赖的标识符</span>
+  <span class="hljs-built_in">this</span>.statements.forEach(<span class="hljs-function">(<span class="hljs-params">statement</span>) =></span> {
+    <span class="hljs-keyword">if</span> (statement.isImportDeclaration) {
+      <span class="hljs-built_in">this</span>.addImports(statement);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (statement.isExportDeclaration) {
+      <span class="hljs-built_in">this</span>.addExports(statement);
+    }
+  });
+}
+
+<span class="hljs-comment">// 处理 import 声明</span>
+<span class="hljs-function"><span class="hljs-title">addImports</span>(<span class="hljs-params">statement: Statement</span>)</span> {
+  <span class="hljs-keyword">const</span> node = statement.node <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>;
+  <span class="hljs-keyword">const</span> source = node.source.value;
+  <span class="hljs-comment">// import</span>
+  node.specifiers.forEach(<span class="hljs-function">(<span class="hljs-params">specifier: Specifier</span>) =></span> {
+    <span class="hljs-comment">// 为方便理解，本文只处理具名导入</span>
+    <span class="hljs-keyword">const</span> localName = specifier.local.name;
+    <span class="hljs-keyword">const</span> name = specifier.imported.name;
+    <span class="hljs-built_in">this</span>.imports[localName] = { source, name, localName };
+  });
+  <span class="hljs-built_in">this</span>._addDependencySource(source);
+}
+
+<span class="hljs-comment">// 处理 export 声明</span>
+<span class="hljs-function"><span class="hljs-title">addExports</span>(<span class="hljs-params">statement: Statement</span>)</span> {
+  <span class="hljs-keyword">const</span> node = statement.node <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>;
+  <span class="hljs-keyword">const</span> source = node.source &#x26;&#x26; node.source.value;
+  <span class="hljs-comment">// 为方便立即，本文只处理具名导出</span>
+  <span class="hljs-keyword">if</span> (node.type === <span class="hljs-string">'ExportNamedDeclaration'</span>) {
+    <span class="hljs-comment">// export { a, b } from 'mod'</span>
+    <span class="hljs-keyword">if</span> (node.specifiers.length) {
+      node.specifiers.forEach(<span class="hljs-function">(<span class="hljs-params">specifier: Specifier</span>) =></span> {
+        <span class="hljs-keyword">const</span> localName = specifier.local.name;
+        <span class="hljs-keyword">const</span> exportedName = specifier.exported.name;
+        <span class="hljs-built_in">this</span>.exports[exportedName] = {
+          localName,
+          <span class="hljs-attr">name</span>: exportedName
+        };
+        <span class="hljs-keyword">if</span> (source) {
+          <span class="hljs-built_in">this</span>.reexports[localName] = {
+            statement,
+            source,
+            localName,
+            <span class="hljs-attr">name</span>: localName,
+            <span class="hljs-attr">module</span>: <span class="hljs-literal">undefined</span>
+          };
+          <span class="hljs-built_in">this</span>.imports[localName] = {
+            source,
+            localName,
+            <span class="hljs-attr">name</span>: localName
+          };
+          <span class="hljs-built_in">this</span>._addDependencySource(source);
+        }
+      });
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">const</span> declaration = node.declaration;
+      <span class="hljs-keyword">let</span> name;
+      <span class="hljs-keyword">if</span> (declaration.type === <span class="hljs-string">'VariableDeclaration'</span>) {
+        <span class="hljs-comment">// export const foo = 2;</span>
+        name = declaration.declarations[<span class="hljs-number">0</span>].id.name;
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// export function foo() {}</span>
+        name = declaration.id.name;
+      }
+      <span class="hljs-built_in">this</span>.exports[name] = {
+        statement,
+        <span class="hljs-attr">localName</span>: name,
+        name
+      };
+    }
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (node.type === <span class="hljs-string">'ExportAllDeclaration'</span>) {
+    <span class="hljs-comment">// export * from 'mod'</span>
+    <span class="hljs-keyword">if</span> (source) {
+      <span class="hljs-built_in">this</span>.exportAllSources.push(source);
+      <span class="hljs-built_in">this</span>.addDependencySource(source);
+    }
+  }
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-title">_addDependencySource</span>(<span class="hljs-params">source: <span class="hljs-built_in">string</span></span>)</span> {
+  <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.dependencies.includes(source)) {
+    <span class="hljs-built_in">this</span>.dependencies.push(source);
+  }
+}
+</code></pre>
+<p>在记录完 import 和 export 的标识符之后，我们根据这些标识符绑定到具体的模块对象，新增<code>bind</code>方法，实现如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-function"><span class="hljs-title">bind</span>(<span class="hljs-params"></span>)</span> {
+  <span class="hljs-comment">// 省略已有代码</span>
+  <span class="hljs-comment">// 记录标识符对应的模块对象</span>
+  <span class="hljs-built_in">this</span>.bindDependencies();
+  <span class="hljs-comment">/// 除此之外，根据之前记录的 Reference 节点绑定对应的 Declaration 节点</span>
+  <span class="hljs-built_in">this</span>.bindReferences();
+}
+
+<span class="hljs-function"><span class="hljs-title">bindDependencies</span>(<span class="hljs-params"></span>)</span> {
+  [...Object.values(<span class="hljs-built_in">this</span>.imports), ...Object.values(<span class="hljs-built_in">this</span>.reexports)].forEach(
+    <span class="hljs-function">(<span class="hljs-params">specifier</span>) =></span> {
+      specifier.module = <span class="hljs-built_in">this</span>._getModuleBySource(specifier.source!);
+    }
+  );
+  <span class="hljs-built_in">this</span>.exportAllModules = <span class="hljs-built_in">this</span>.exportAllSources.map(
+    <span class="hljs-built_in">this</span>._getModuleBySource.bind(<span class="hljs-built_in">this</span>)
+  );
+  <span class="hljs-comment">// 建立模块依赖图</span>
+  <span class="hljs-built_in">this</span>.dependencyModules = <span class="hljs-built_in">this</span>.dependencies.map(
+    <span class="hljs-built_in">this</span>._getModuleBySource.bind(<span class="hljs-built_in">this</span>)
+  );
+  <span class="hljs-built_in">this</span>.dependencyModules.forEach(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">module</span></span>) =></span> {
+    <span class="hljs-built_in">module</span>.referencedModules.push(<span class="hljs-built_in">this</span>);
+  });
+}
+
+<span class="hljs-function"><span class="hljs-title">bindReferences</span>(<span class="hljs-params"></span>)</span> {
+  <span class="hljs-built_in">this</span>.statements.forEach(<span class="hljs-function">(<span class="hljs-params">statement</span>) =></span> {
+    statement.references.forEach(<span class="hljs-function">(<span class="hljs-params">reference</span>) =></span> {
+      <span class="hljs-comment">// 根据引用寻找声明的位置</span>
+      <span class="hljs-comment">// 寻找顺序: 1. statement 2. 当前模块 3. 依赖模块</span>
+      <span class="hljs-keyword">const</span> declaration =
+        reference.scope.findDeclaration(reference.name) ||
+        <span class="hljs-built_in">this</span>.trace(reference.name);
+      <span class="hljs-keyword">if</span> (declaration) {
+        declaration.addReference(reference);
+      }
+    });
+  });
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-title">_getModuleBySource</span>(<span class="hljs-params">source: <span class="hljs-built_in">string</span></span>)</span> {
+  <span class="hljs-keyword">const</span> id = <span class="hljs-built_in">this</span>.moduleLoader.resolveId(source!, <span class="hljs-built_in">this</span>.path) <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.bundle.getModuleById(id);
+}
+</code></pre>
+<p>现在，我们便将各个模块间的依赖关系绑定完成了。</p>
+<h2>模块拓扑排序</h2>
+<p>接下来，我们将所有的模块根据依赖关系进行拓扑排序:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/Graph.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Graph</span> </span>{
+  <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-title">build</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-comment">//  ✅(完成) 1. 获取并解析模块信息</span>
+    <span class="hljs-comment">//  ✅(完成) 2. 构建依赖关系图</span>
+    <span class="hljs-comment">// 3. 模块拓扑排序</span>
+    <span class="hljs-built_in">this</span>.orderedModules = <span class="hljs-built_in">this</span>.sortModules(entryModule!);
+    <span class="hljs-comment">// 4. Tree Shaking, 标记需要包含的语句</span>
+  }
+  
+  <span class="hljs-function"><span class="hljs-title">sortModules</span>(<span class="hljs-params">entryModule: Module</span>)</span> {
+    <span class="hljs-comment">// 拓扑排序模块数组</span>
+    <span class="hljs-keyword">const</span> orderedModules: Module[] = [];
+    <span class="hljs-comment">// 记录已经分析过的模块表</span>
+    <span class="hljs-keyword">const</span> analysedModule: Record&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">boolean</span>> = {};
+    <span class="hljs-comment">// 记录模块的父模块 id </span>
+    <span class="hljs-keyword">const</span> parent: Record&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>> = {};
+    <span class="hljs-comment">// 记录循环依赖</span>
+    <span class="hljs-keyword">const</span> cyclePathList: <span class="hljs-built_in">string</span>[][] = [];
+    
+    <span class="hljs-comment">// 用来回溯，用来定位循环依赖</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCyclePath</span>(<span class="hljs-params">id: <span class="hljs-built_in">string</span>, parentId: <span class="hljs-built_in">string</span></span>): <span class="hljs-title">string</span>[] </span>{
+      <span class="hljs-keyword">const</span> paths = [id];
+      <span class="hljs-keyword">let</span> currrentId = parentId;
+      <span class="hljs-keyword">while</span> (currrentId !== id) {
+        paths.push(currrentId);
+        <span class="hljs-comment">// 向前回溯</span>
+        currrentId = parent[currrentId];
+      }
+      paths.push(paths[<span class="hljs-number">0</span>]);
+      <span class="hljs-keyword">return</span> paths.reverse();
+    }
+    
+    <span class="hljs-comment">// 拓扑排序核心逻辑，基于依赖图的后序遍历完成</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">analyseModule</span>(<span class="hljs-params"><span class="hljs-built_in">module</span>: Module</span>) </span>{
+      <span class="hljs-keyword">if</span> (analysedModule[<span class="hljs-built_in">module</span>.id]) {
+        <span class="hljs-keyword">return</span>;
+      }
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> dependency <span class="hljs-keyword">of</span> <span class="hljs-built_in">module</span>.dependencyModules) {
+        <span class="hljs-comment">// 检测循环依赖</span>
+        <span class="hljs-comment">// 为什么是这个条件，下文会分析</span>
+        <span class="hljs-keyword">if</span> (parent[dependency.id]) {
+          <span class="hljs-keyword">if</span> (!analysedModule[dependency.id]) {
+            cyclePathList.push(getCyclePath(dependency.id, <span class="hljs-built_in">module</span>.id));
+          }
+          <span class="hljs-keyword">continue</span>;
+        }
+        parent[dependency.id] = <span class="hljs-built_in">module</span>.id;
+        analyseModule(dependency);
+      }
+      analysedModule[<span class="hljs-built_in">module</span>.id] = <span class="hljs-literal">true</span>;
+      orderedModules.push(<span class="hljs-built_in">module</span>);
+    }
+    <span class="hljs-comment">// 从入口模块开始分析</span>
+    analyseModule(entryModule);
+    <span class="hljs-comment">// 如果有循环依赖，则打印循环依赖信息</span>
+    <span class="hljs-keyword">if</span> (cyclePathList.length) {
+      cyclePathList.forEach(<span class="hljs-function">(<span class="hljs-params">paths</span>) =></span> {
+        <span class="hljs-built_in">console</span>.log(paths);
+      });
+      process.exit(<span class="hljs-number">1</span>);
+    }
+    <span class="hljs-keyword">return</span> orderedModules;
+  }
+}
+</code></pre>
+<p>拓扑排序的核心在于对依赖图进行后续遍历，将被依赖的模块放到前面，如下图所示:</p>
+<p><img src="img\ced33906-ae61-11ed-a54f-342eb7027b95.jpg" alt="image.png"></p>
+<p>其中 A 依赖 B 和 C，B 和 C 依赖 D，D 依赖 E，那么最后的拓扑排序即<code>E、D、B、C、A</code>。但也有一种特殊情况，就是出现循环的情况，如下面这张图所示:</p>
+<p><img src="img\cee95fb9-ae61-11ed-b4be-342eb7027b95.jpg" alt="image.png"></p>
+<p>上图中的依赖关系呈现了<code>B->C->D->B</code>的循环依赖，这种情况是我们需要避免的。那么如何来检测出循环依赖呢？</p>
+<p>由于 <code>analyseModule</code> 函数中采用后序的方式来遍历依赖，也就是说一旦某个模块被记录到 <code>analysedModule</code> 表中，那么也就意味着其所有的依赖模块已经被遍历完成了:</p>
+<pre><code class="hljs language-ts"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">analyseModule</span>(<span class="hljs-params"><span class="hljs-built_in">module</span>: Module</span>) </span>{
+  <span class="hljs-keyword">if</span> (analysedModule[<span class="hljs-built_in">module</span>.id]) {
+    <span class="hljs-keyword">return</span>;
+  }
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> dependency <span class="hljs-keyword">of</span> <span class="hljs-built_in">module</span>.dependencyModules) {
+    <span class="hljs-comment">// 检测循环依赖的代码省略</span>
+    parent[dependency.id] = <span class="hljs-built_in">module</span>.id;
+    analyseModule(dependency);
+  }
+  analysedModule[<span class="hljs-built_in">module</span>.id] = <span class="hljs-literal">true</span>;
+  orderedModules.push(<span class="hljs-built_in">module</span>);
+}
+</code></pre>
+<p>如果某个模块没有被记录到 analysedModule 中，则表示它的依赖模块并没有分析完，在这个前提下中，如果再次遍历到这个模块，说明已经出现了循环依赖，你可以对照下图理解:</p>
+<p><img src="img\cee95fb9-ae61-11ed-b4be-342eb7027b95.jpg" alt="image.png"></p>
+<p>因此检测循环依赖的条件应该为下面这样:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> dependency <span class="hljs-keyword">of</span> <span class="hljs-built_in">module</span>.dependencyModules) {
+  <span class="hljs-comment">// 检测循环依赖</span>
+  <span class="hljs-comment">// 1. 不为入口模块</span>
+  <span class="hljs-keyword">if</span> (parent[dependency.id]) {
+    <span class="hljs-comment">// 2. 依赖模块还没有分析结束</span>
+    <span class="hljs-keyword">if</span> (!analysedModule[dependency.id]) {
+      cyclePathList.push(getCyclePath(dependency.id, <span class="hljs-built_in">module</span>.id));
+    }
+    <span class="hljs-keyword">continue</span>;
+  }
+  parent[dependency.id] = <span class="hljs-built_in">module</span>.id;
+  analyseModule(dependency);
+}
+</code></pre>
+<p>OK，到目前为止，我们完成了第三步<code>模块拓扑排序</code>的步骤，接下来我们进入 Tree Shaking 功能的开发:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/Graph.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Graph</span> </span>{
+  <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-title">build</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-comment">// ✅(完成) 1. 获取并解析模块信息</span>
+    <span class="hljs-comment">// ✅(完成) 2. 构建依赖关系图</span>
+    <span class="hljs-comment">// ✅(完成) 3. 模块拓扑排序</span>
+    <span class="hljs-comment">// 4. Tree Shaking, 标记需要包含的语句</span>
+  }
+}
+</code></pre>
+<h2>实现 Tree Shaking</h2>
+<p>相信 Tree Shaking 对于大家并不陌生，它主要的作用就是在打包产物中摇掉没有使用的代码，从而优化产物体积。而得益于 ES 模块的静态特性，我们可以基于 import/export 的符号可达性来进行 Tree Shaking 分析，如:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// index.ts</span>
+<span class="hljs-keyword">import</span> { a } <span class="hljs-keyword">from</span> <span class="hljs-string">'./utils'</span>;
+
+<span class="hljs-built_in">console</span>.log(a);
+
+<span class="hljs-comment">// utils.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> a = <span class="hljs-number">1</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> b = <span class="hljs-number">2</span>;
+</code></pre>
+<p>由于在如上的代码中我们只使用到了 a，则 a 属于可达符号，b 属于不可达符号，因此最后的代码不会包含 b 相关的实现代码。</p>
+<p>接下来我们就来实现这一功能，即基于符号可达性来进行无用代码的删除。</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/Graph.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Graph</span> </span>{
+  <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-title">build</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-comment">// ✅(完成) 1. 获取并解析模块信息</span>
+    <span class="hljs-comment">// ✅(完成) 2. 构建依赖关系图</span>
+    <span class="hljs-comment">// ✅(完成) 3. 模块拓扑排序</span>
+    <span class="hljs-comment">// 4. Tree Shaking, 标记需要包含的语句</span>
+    <span class="hljs-comment">// 从入口处分析</span>
+    entryModule!.getExports().forEach(<span class="hljs-function">(<span class="hljs-params">name</span>) =></span> {
+      <span class="hljs-keyword">const</span> declaration = entryModule!.traceExport(name);
+      declaration!.use();
+    });
+  }
+}
+</code></pre>
+<p>在 Module 对象中，我们需要增加<code>getExports</code>和<code>traceExport</code>方法来获取和分析模块的导出:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 拿到模块所有导出</span>
+getExports(): <span class="hljs-built_in">string</span>[] {
+  <span class="hljs-keyword">return</span> [
+    ...Object.keys(<span class="hljs-built_in">this</span>.exports),
+    ...Object.keys(<span class="hljs-built_in">this</span>.reexports),
+    ...this.exportAllModules
+      .map(<span class="hljs-function"><span class="hljs-params">module</span> =></span> <span class="hljs-built_in">module</span>.getExports())
+      .flat()  
+    ];
+}
+
+<span class="hljs-comment">// 从导出名追溯到 Declaration 声明节点</span>
+traceExport(name: <span class="hljs-built_in">string</span>): Declaration | <span class="hljs-literal">null</span> {
+  <span class="hljs-comment">// 1. reexport</span>
+  <span class="hljs-comment">// export { foo as bar } from './mod'</span>
+  <span class="hljs-keyword">const</span> reexportDeclaration = <span class="hljs-built_in">this</span>.reexports[name];
+  <span class="hljs-keyword">if</span> (reexportDeclaration) {
+    <span class="hljs-comment">// 说明是从其它模块 reexport 出来的</span>
+    <span class="hljs-comment">// 经过 bindDependencies 方法处理，现已绑定 module</span>
+    <span class="hljs-keyword">const</span> declaration = reexportDeclaration.module!.traceExport(
+      reexportDeclaration.localName
+    );
+    <span class="hljs-keyword">if</span> (!declaration) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(
+        <span class="hljs-string">`<span class="hljs-subst">${reexportDeclaration.localName}</span> is not exported by module <span class="hljs-subst">${
+          reexportDeclaration.<span class="hljs-built_in">module</span>!.path
+        }</span>(imported by <span class="hljs-subst">${<span class="hljs-built_in">this</span>.path}</span>)`</span>
+      );
+    }
+    <span class="hljs-keyword">return</span> declaration;
+  }
+  <span class="hljs-comment">// 2. export</span>
+  <span class="hljs-comment">// export { foo }</span>
+  <span class="hljs-keyword">const</span> exportDeclaration = <span class="hljs-built_in">this</span>.exports[name];
+  <span class="hljs-keyword">if</span> (exportDeclaration) {
+    <span class="hljs-keyword">const</span> declaration = <span class="hljs-built_in">this</span>.trace(name);
+    <span class="hljs-keyword">if</span> (declaration) {
+      <span class="hljs-keyword">return</span> declaration;
+    }
+  }
+  <span class="hljs-comment">// 3. export all</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> exportAllModule <span class="hljs-keyword">of</span> <span class="hljs-built_in">this</span>.exportAllModules) {
+    <span class="hljs-keyword">const</span> declaration = exportAllModule.trace(name);
+    <span class="hljs-keyword">if</span> (declaration) {
+      <span class="hljs-keyword">return</span> declaration;
+    }
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+}
+
+<span class="hljs-function"><span class="hljs-title">trace</span>(<span class="hljs-params">name: <span class="hljs-built_in">string</span></span>)</span> {
+  <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.declarations[name]) {
+    <span class="hljs-comment">// 从当前模块找</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.declarations[name];
+  }
+  <span class="hljs-comment">// 从依赖模块找</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.imports[name]) {
+    <span class="hljs-keyword">const</span> importSpecifier = <span class="hljs-built_in">this</span>.imports[name];
+    <span class="hljs-keyword">const</span> importModule = importSpecifier.module!;
+    <span class="hljs-keyword">const</span> declaration = importModule.traceExport(importSpecifier.name);
+    <span class="hljs-keyword">if</span> (declaration) {
+      <span class="hljs-keyword">return</span> declaration;
+    }
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+}
+</code></pre>
+<p>当我们对每个导出找到对应的 Declaration 节点之后，则对这个节点进行标记，从而让其代码能够在代码生成阶段得以保留。那么如何进行标记呢？</p>
+<p>我们不妨回到 Declaration 的实现中，增加 <code>use</code> 方法:</p>
+<pre><code class="hljs language-ts"><span class="hljs-function"><span class="hljs-title">use</span>(<span class="hljs-params"></span>)</span> {
+  <span class="hljs-comment">// 标记该节点被使用</span>
+  <span class="hljs-built_in">this</span>.isUsed = <span class="hljs-literal">true</span>;
+  <span class="hljs-comment">// 对应的 statement 节点也应该被标记</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.statement) {
+    <span class="hljs-built_in">this</span>.statement.mark();
+  }
+}
+
+<span class="hljs-comment">// 另外，你可以加上 render 方法，便于后续代码生成的步骤</span>
+<span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name;
+}
+</code></pre>
+<p>接下来我们到 Statement 对象中，继续增加 mark 方法，来追溯被使用过的 Declaration 节点:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/Statement.ts</span>
+<span class="hljs-function"><span class="hljs-title">mark</span>(<span class="hljs-params"></span>)</span> {
+  <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.isIncluded) {
+    <span class="hljs-keyword">return</span>;
+  }
+  <span class="hljs-built_in">this</span>.isIncluded = <span class="hljs-literal">true</span>;
+  <span class="hljs-built_in">this</span>.references.forEach(
+    <span class="hljs-function">(<span class="hljs-params">ref: Reference</span>) =></span> ref.declaration &#x26;&#x26; ref.declaration.use()
+  );
+}
+</code></pre>
+<p>这时候，Reference 节点的作用就体现出来了，由于我们之前专门收集到 Statement 的 Reference 节点，通过 Reference 节点我们可以追溯到对应的 Declaration 节点，并调用其 use 方法进行标记。</p>
+<h2>代码生成</h2>
+<p>如此，我们便完成了 Tree Shaking 的标记过程，接下来我们看看如何来进行代码生成，直观地看到 Tree Shaking 的效果。</p>
+<p>我们在 Module 对象中增加<code>render</code>方法，用来将模块渲染为字符串:</p>
+<pre><code class="hljs language-ts"><span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> {
+  <span class="hljs-keyword">const</span> source = <span class="hljs-built_in">this</span>.magicString.clone().trim();
+  <span class="hljs-built_in">this</span>.statements.forEach(<span class="hljs-function">(<span class="hljs-params">statement</span>) =></span> {
+    <span class="hljs-comment">// 1. Tree Shaking</span>
+    <span class="hljs-keyword">if</span> (!statement.isIncluded) {
+      source.remove(statement.start, statement.next);
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-comment">// 2. 重写引用位置的变量名 -> 对应的声明位置的变量名</span>
+    statement.references.forEach(<span class="hljs-function">(<span class="hljs-params">reference</span>) =></span> {
+      <span class="hljs-keyword">const</span> { start, end } = reference;
+      <span class="hljs-keyword">const</span> declaration = reference.declaration;
+      <span class="hljs-keyword">if</span> (declaration) {
+        <span class="hljs-keyword">const</span> name = declaration.render();
+        source.overwrite(start, end, name!);
+      }
+    });
+    <span class="hljs-comment">// 3. 擦除/重写 export 相关的代码</span>
+    <span class="hljs-keyword">if</span> (statement.isExportDeclaration &#x26;&#x26; !<span class="hljs-built_in">this</span>.isEntry) {
+      <span class="hljs-comment">// export { foo, bar }</span>
+      <span class="hljs-keyword">if</span> (
+        statement.node.type === <span class="hljs-string">'ExportNamedDeclaration'</span> &#x26;&#x26;
+        statement.node.specifiers.length
+      ) {
+        source.remove(statement.start, statement.next);
+      }
+      <span class="hljs-comment">// remove `export` from `export const foo = 42`</span>
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (
+        statement.node.type === <span class="hljs-string">'ExportNamedDeclaration'</span> &#x26;&#x26;
+        (statement.node.declaration!.type === <span class="hljs-string">'VariableDeclaration'</span> ||
+          statement.node.declaration!.type === <span class="hljs-string">'FunctionDeclaration'</span>)
+      ) {
+        source.remove(
+          statement.node.start,
+          statement.node.declaration!.start
+        );
+      }
+      <span class="hljs-comment">// remove `export * from './mod'`</span>
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (statement.node.type === <span class="hljs-string">'ExportAllDeclaration'</span>) {
+        source.remove(statement.start, statement.next);
+      }
+    }
+  });
+  <span class="hljs-keyword">return</span> source.trim();
+}
+</code></pre>
+<p>接着，我们在 Bundle 对象也实现一下 render 方法，用来生成最后的产物代码:</p>
+<pre><code class="hljs language-ts">render(): { <span class="hljs-attr">code</span>: <span class="hljs-built_in">string</span> } {
+  <span class="hljs-keyword">let</span> msBundle = <span class="hljs-keyword">new</span> MagicString.Bundle({ <span class="hljs-attr">separator</span>: <span class="hljs-string">'\n'</span> });
+  <span class="hljs-comment">// 按照模块拓扑顺序生成代码</span>
+  <span class="hljs-built_in">this</span>.graph.orderedModules.forEach(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">module</span></span>) =></span> {
+    msBundle.addSource({
+      <span class="hljs-attr">content</span>: <span class="hljs-built_in">module</span>.render()
+    });
+  });
+
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">code</span>: msBundle.toString(),
+  };
+}
+</code></pre>
+<p>OK，现在我们终于可以来测试目前的 Bundler 功能了，测试代码如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// test.js</span>
+<span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+<span class="hljs-keyword">const</span> { build } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./dist/index'</span>);
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">buildTest</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> bundle = <span class="hljs-keyword">await</span> build({
+    <span class="hljs-attr">input</span>: <span class="hljs-string">'./test/index.js'</span>
+  });
+  <span class="hljs-keyword">const</span> res = bundle.generate();
+  fs.writeFileSync(<span class="hljs-string">'./test/bundle.js'</span>, res.code);
+}
+
+buildTest();
+
+<span class="hljs-comment">// test/index.js</span>
+<span class="hljs-keyword">import</span> { a, add } <span class="hljs-keyword">from</span> <span class="hljs-string">'./utils.js'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> c = add(a, <span class="hljs-number">2</span>);
+
+<span class="hljs-comment">// test/utils.js</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> a = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> b = <span class="hljs-number">2</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> add = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">num1, num2</span>) </span>{
+  <span class="hljs-keyword">return</span> num1 + num2;
+};
+</code></pre>
+<p>在终端执行<code>node test.js</code>，即可将产物代码输出到 test 目录下的 <code>bundle.js</code> 中:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// test/bundle.js</span>
+<span class="hljs-keyword">const</span> a = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">const</span> add = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">num1, num2</span>) </span>{
+  <span class="hljs-keyword">return</span> num1 + num2;
+};
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> c = add(a, <span class="hljs-number">2</span>);
+</code></pre>
+<p>可以看到，最后的产物代码已经成功生成，变量 b 相关的代码已经完全从产出中擦除，实现了基于符号可达性的 Tree Shaking 的效果。</p>
+<h2>小结</h2>
+<p>至此，我们便实现了一个简易版的 Bundler，完成了如下几个核心的步骤:</p>
+<ul>
+<li>模块 AST 解析</li>
+<li>模块依赖图生成</li>
+<li>模块拓扑排序</li>
+<li>基于符号可达性的 Tree Shaking</li>
+<li>Bundle 代码生成</li>
+</ul>
+<p>文中所有的代码我也已经放到了 <a href="https://github.com/sanyuan0704/juejin-book-vite/tree/main/bundler" target="_blank" rel="nofollow noopener noreferrer">Github 仓库</a>上，你可以对照着一起学习。</p>
+<p>最后，恭喜你学习完了本小册最后一节的内容，不过我并不希望这一小节作为小册的结束，在未来我还会不定期地更新一些加餐内容，将这本小册打磨得更加系统和完善，和大家一起继续加油！</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <p>本小节为上一小节的续篇，我们基于下面的导图继续实现 no-bundle 构建服务:</p>
+<p><img src="img\cb8ed162-ae61-11ed-b56a-342eb7027b95.jpg" alt="image.png"></p>
+<p>接下来我们需要完成如下的模块:</p>
+<ul>
+<li>CSS 编译插件</li>
+<li>静态资源加载插件</li>
+<li>模块依赖图开发，并在 transform 中间件中接入</li>
+<li>HMR 服务端代码开发</li>
+<li>HMR 客户端代码开发</li>
+</ul>
+<p>话不多说，下面我们正式进入实战的环节。</p>
+<blockquote>
+<p>注: 手写 Vite 项目的所有代码，我已经放到了小册的 Github 仓库中，<a href="https://github.com/sanyuan0704/juejin-book-vite/tree/main/mini-vite" target="_blank" rel="nofollow noopener noreferrer">点击查看</a></p>
+</blockquote>
+<h2>CSS 编译插件</h2>
+<p>首先，我们可以看看项目中 CSS 代码是如何被引入的:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// playground/src/main.tsx</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">"./index.css"</span>;
+</code></pre>
+<p>为了让 CSS 能够在 no-bundle 服务中正常加载，我们需要将其包装成浏览器可以识别的模块格式，也就是 <code>JS 模块</code>，其中模块加载和转换的逻辑我们可以通过插件来实现。当然，首先我们需要在 transform 中间件中允许对 CSS 的请求进行处理，代码如下:</p>
+<pre><code class="hljs language-diff">// src/node/server/middlewares/transform.ts
+// 需要增加的导入语句
+<span class="hljs-addition">+ import { isCSSRequest } from '../../utils';</span>
+
+export function transformMiddleware(
+  serverContext: ServerContext
+): NextHandleFunction {
+  return async (req, res, next) => {
+    if (req.method !== "GET" || !req.url) {
+      return next();
+    }
+    const url = req.url;
+    debug("transformMiddleware: %s", url);
+    // transform JS request
+<span class="hljs-deletion">-    if (isJSRequest(url)) {</span>
+<span class="hljs-addition">+    if (isJSRequest(url) || isCSSRequest(url)) {</span>
+      // 后续代码省略
+     }
+
+    next();
+  };
+}
+</code></pre>
+<p>然后我们来补充对应的工具函数:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/node/utils.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> isCSSRequest = (<span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>): <span class="hljs-function"><span class="hljs-params">boolean</span> =></span>
+  <span class="hljs-title function_">cleanUrl</span>(id).<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">".css"</span>);
+</code></pre>
+<p>现在我们来开发 CSS 的编译插件，你可以新建<code>src/node/plugins/css.ts</code>文件，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { readFile } <span class="hljs-keyword">from</span> <span class="hljs-string">"fs-extra"</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Plugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"../plugin"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">cssPlugin</span>(<span class="hljs-params"></span>): <span class="hljs-title class_">Plugin</span> {
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">"m-vite:css"</span>,
+    <span class="hljs-title function_">load</span>(<span class="hljs-params">id</span>) {
+      <span class="hljs-comment">// 加载</span>
+      <span class="hljs-keyword">if</span> (id.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">".css"</span>)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-title function_">readFile</span>(id, <span class="hljs-string">"utf-8"</span>);
+      }
+    },
+    <span class="hljs-comment">// 转换逻辑</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-title function_">transform</span>(<span class="hljs-params">code, id</span>) {
+      <span class="hljs-keyword">if</span> (id.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">".css"</span>)) {
+        <span class="hljs-comment">// 包装成 JS 模块</span>
+        <span class="hljs-keyword">const</span> jsContent = <span class="hljs-string">`
+const css = "<span class="hljs-subst">${code.replace(/\n/g, <span class="hljs-string">""</span>)}</span>";
+const style = document.createElement("style");
+style.setAttribute("type", "text/css");
+style.innerHTML = css;
+document.head.appendChild(style);
+export default css;
+`</span>.<span class="hljs-title function_">trim</span>();
+        <span class="hljs-keyword">return</span> {
+          <span class="hljs-attr">code</span>: jsContent,
+        };
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    },
+  };
+}
+</code></pre>
+<p>这个插件的逻辑比较简单，主要是将封装一层 JS 样板代码，将 CSS 包装成一个 ES 模块，当浏览器执行这个模块的时候，会通过一个 style 标签将 CSS 代码作用到页面中，从而使样式代码生效。</p>
+<p>接着我们来注册这个 CSS 插件:</p>
+<pre><code class="hljs language-diff">// src/node/plugins/index.ts
+<span class="hljs-addition">+ import { cssPlugin } from "./css";</span>
+
+export function resolvePlugins(): Plugin[] {
+  return [
+    // 省略前面的插件
+<span class="hljs-addition">+     cssPlugin(),</span>
+  ];
+}
+</code></pre>
+<p>现在，你可以通过<code>pnpm dev</code>来启动 playground 项目，不过在启动之前，需要保证 TSX 文件已经引入了对应的 CSS 文件:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// playground/src/main.tsx</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">"./index.css"</span>;
+
+<span class="hljs-comment">// playground/src/App.tsx</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">"./App.css"</span>;
+</code></pre>
+<p>在启动项目后，打开浏览器进行访问，可以看到样式已经正常生效:</p>
+<p><img src="img\cbc06264-ae61-11ed-bfe1-342eb7027b95.jpg" alt="image.png"></p>
+<h2>静态资源加载</h2>
+<p>在完成 CSS 加载之后，我们现在继续完成静态资源的加载。以 playground 项目为例，我们来支持 svg 文件的加载。首先，我们看看 svg 文件是如何被引入并使用的:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// playground/src/App.tsx</span>
+<span class="hljs-keyword">import</span> logo <span class="hljs-keyword">from</span> <span class="hljs-string">"./logo.svg"</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"App-logo"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">{logo}</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">""</span> /></span></span>
+  )
+}
+</code></pre>
+<p>站在 no-bundle 服务的角度，从如上的代码我们可以分析出静态资源的两种请求:</p>
+<ul>
+<li>import 请求。如 <code>import logo from "./logo.svg"</code>。</li>
+<li>资源内容请求。如 img 标签将资源 url 填入 src，那么浏览器会请求具体的资源内容。</li>
+</ul>
+<p>因此，接下来为了实现静态资源的加载，我们需要做两手准备: 对静态资源的 import 请求返回资源的 url；对于具体内容的请求，读取静态资源的文件内容，并响应给浏览器。</p>
+<p>首先处理 import 请求，我们可以在 TSX 的 import 分析插件中，给静态资源相关的 import 语句做一个标记:</p>
+<pre><code class="hljs language-diff">// src/node/plugins/importAnalysis.ts
+
+async transform(code, id) {
+  // 省略前面的代码
+  for (const importInfo of imports) {
+    const { s: modStart, e: modEnd, n: modSource } = importInfo;
+    if (!modSource) continue;
+<span class="hljs-addition">+    // 静态资源</span>
+<span class="hljs-addition">+    if (modSource.endsWith(".svg")) {</span>
+<span class="hljs-addition">+      // 加上 ?import 后缀</span>
+<span class="hljs-addition">+      const resolvedUrl = path.join(path.dirname(id), modSource);</span>
+<span class="hljs-addition">+      ms.overwrite(modStart, modEnd, `${resolvedUrl}?import`);</span>
+<span class="hljs-addition">+      continue;</span>
+    }
+  }
+}
+</code></pre>
+<p>编译后的 App.tsx 内容如下:</p>
+<p><img src="img\cbed23ef-ae61-11ed-823f-342eb7027b95.jpg" alt="image.png"></p>
+<p>接着浏览器会发出带有<code>?import</code>后缀的请求，我们在 transform 中间件进行处理:</p>
+<pre><code class="hljs language-diff">// src/node/server/middlewares/transform.ts
+// 需要增加的导入语句
+<span class="hljs-addition">+ import { isImportRequest } from '../../utils';</span>
+
+export function transformMiddleware(
+  serverContext: ServerContext
+): NextHandleFunction {
+  return async (req, res, next) => {
+    if (req.method !== "GET" || !req.url) {
+      return next();
+    }
+    const url = req.url;
+    debug("transformMiddleware: %s", url);
+    // transform JS request
+<span class="hljs-deletion">-    if (isJSRequest(url) || isCSSRequest(url)) {</span>
+<span class="hljs-addition">+    if (isJSRequest(url) || isCSSRequest(url) || isImportRequest(url)) {</span>
+      // 后续代码省略
+     }
+
+    next();
+  };
+}
+</code></pre>
+<p>然后补充对应的工具函数:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/node/utils.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">isImportRequest</span>(<span class="hljs-params">url: <span class="hljs-built_in">string</span></span>): <span class="hljs-built_in">boolean</span> {
+  <span class="hljs-keyword">return</span> url.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">"?import"</span>);
+}
+</code></pre>
+<p>此时，我们就可以开发静态资源插件了。新建<code>src/node/plugins/assets.ts</code>，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { pathExists, readFile } <span class="hljs-keyword">from</span> <span class="hljs-string">"fs-extra"</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Plugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"../plugin"</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">ServerContext</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"../server"</span>;
+<span class="hljs-keyword">import</span> { cleanUrl, getShortName, normalizePath, removeImportQuery } <span class="hljs-keyword">from</span> <span class="hljs-string">"../utils"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">assetPlugin</span>(<span class="hljs-params"></span>): <span class="hljs-title class_">Plugin</span> {
+  <span class="hljs-keyword">let</span> <span class="hljs-attr">serverContext</span>: <span class="hljs-title class_">ServerContext</span>;
+
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">"m-vite:asset"</span>,
+    <span class="hljs-title function_">configureServer</span>(<span class="hljs-params">s</span>) {
+      serverContext = s;
+    },
+    <span class="hljs-keyword">async</span> <span class="hljs-title function_">load</span>(<span class="hljs-params">id</span>) {
+      <span class="hljs-keyword">const</span> cleanedId = <span class="hljs-title function_">removeImportQuery</span>(<span class="hljs-title function_">cleanUrl</span>(id));
+      <span class="hljs-keyword">const</span> resolvedId = <span class="hljs-string">`/<span class="hljs-subst">${getShortName(normalizePath(id), serverContext.root)}</span>`</span>;
+
+      <span class="hljs-comment">// 这里仅处理 svg</span>
+      <span class="hljs-keyword">if</span> (cleanedId.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">".svg"</span>)) {
+        <span class="hljs-keyword">return</span> {
+          <span class="hljs-attr">code</span>: <span class="hljs-string">`export default "<span class="hljs-subst">${resolvedId}</span>"`</span>,
+        };
+      }
+    },
+  };
+}
+</code></pre>
+<p>接着来注册这个插件:</p>
+<pre><code class="hljs language-diff">// src/node/plugins/index.ts
+<span class="hljs-addition">+ import { assetPlugin } from "./assets";</span>
+
+export function resolvePlugins(): Plugin[] {
+  return [
+    // 省略前面的插件
+<span class="hljs-addition">+     assetPlugin(),</span>
+  ];
+}
+</code></pre>
+<p>OK，目前我们处理完了静态资源的 import 请求，接着我们还需要处理非 import 请求，返回资源的具体内容。我们可以通过一个中间件来进行处理:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/node/server/middlewares/static.ts</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">NextHandleFunction</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"connect"</span>;
+<span class="hljs-keyword">import</span> { isImportRequest } <span class="hljs-keyword">from</span> <span class="hljs-string">"../../utils"</span>;
+<span class="hljs-comment">// 一个用于加载静态资源的中间件</span>
+<span class="hljs-keyword">import</span> sirv <span class="hljs-keyword">from</span> <span class="hljs-string">"sirv"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">staticMiddleware</span>(<span class="hljs-params">root: <span class="hljs-built_in">string</span></span>): <span class="hljs-title class_">NextHandleFunction</span> {
+  <span class="hljs-keyword">const</span> serveFromRoot = <span class="hljs-title function_">sirv</span>(root, { <span class="hljs-attr">dev</span>: <span class="hljs-literal">true</span> });
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">async</span> (req, res, next) => {
+    <span class="hljs-keyword">if</span> (!req.<span class="hljs-property">url</span>) {
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-comment">// 不处理 import 请求</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isImportRequest</span>(req.<span class="hljs-property">url</span>)) {
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-title function_">serveFromRoot</span>(req, res, next);
+  };
+}
+</code></pre>
+<p>然后在服务中注册这个中间件:</p>
+<pre><code class="hljs language-diff">// src/node/server/index.ts
+// 需要添加的引入语句
+<span class="hljs-addition">+ import { staticMiddleware } from "./middlewares/static";</span>
+
+export async function startDevServer() {
+  // 前面的代码省略
+<span class="hljs-addition">+  app.use(staticMiddleware(serverContext.root));</span>
+
+  app.listen(3000, async () => {
+    // 省略实现
+  });
+}
+</code></pre>
+<p>现在，你可以通过<code>pnpm dev</code>启动 playground 项目，在浏览器中访问，可以发现 svg 图片已经能够成功显示了:</p>
+<p><img src="img\cc1a1622-ae61-11ed-8d51-342eb7027b95.jpg" alt="image.png"></p>
+<p>其实不光是 svg 文件，几乎所有格式的静态资源都可以按照如上的思路进行处理:</p>
+<ol>
+<li>
+<p>通过加入<code>?import</code>后缀标识 import 请求，返回将静态资源封装成一个 JS 模块，即<code>export default xxx</code>的形式，导出资源的真实地址。</p>
+</li>
+<li>
+<p>对非 import 请求，响应静态资源的具体内容，通过 <code>Content-Type</code>响应头告诉浏览器资源的类型(这部分工作 sirv 中间件已经帮我们做了)。</p>
+</li>
+</ol>
+<h2>模块依赖图开发</h2>
+<p>模块依赖图在 no-bundle 构建服务中是一个不可或缺的数据结构，一方面可以存储各个模块的信息，用于记录编译缓存，另一方面也可以记录各个模块间的依赖关系，用于实现 HMR。</p>
+<p>接下来我们来实现模块依赖图，即<code>ModuleGraph</code>类，新建<code>src/node/ModuleGraph.ts</code>，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">PartialResolvedId</span>, <span class="hljs-title class_">TransformResult</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"rollup"</span>;
+<span class="hljs-keyword">import</span> { cleanUrl } <span class="hljs-keyword">from</span> <span class="hljs-string">"./utils"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ModuleNode</span> {
+  <span class="hljs-comment">// 资源访问 url</span>
+  <span class="hljs-attr">url</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-comment">// 资源绝对路径</span>
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>;
+  importers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>&#x3C;<span class="hljs-title class_">ModuleNode</span>>();
+  importedModules = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>&#x3C;<span class="hljs-title class_">ModuleNode</span>>();
+  <span class="hljs-attr">transformResult</span>: <span class="hljs-title class_">TransformResult</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>;
+  lastHMRTimestamp = <span class="hljs-number">0</span>;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">url: <span class="hljs-built_in">string</span></span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">url</span> = url;
+  }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ModuleGraph</span> {
+  <span class="hljs-comment">// 资源 url 到 ModuleNode 的映射表</span>
+  urlToModuleMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-title class_">ModuleNode</span>>();
+  <span class="hljs-comment">// 资源绝对路径到 ModuleNode 的映射表</span>
+  idToModuleMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-title class_">ModuleNode</span>>();
+
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">
+    <span class="hljs-keyword">private</span> resolveId: (url: <span class="hljs-built_in">string</span>) => <span class="hljs-built_in">Promise</span>&#x3C;PartialResolvedId | <span class="hljs-literal">null</span>>
+  </span>) {}
+
+  <span class="hljs-title function_">getModuleById</span>(<span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">ModuleNode</span> | <span class="hljs-literal">undefined</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">idToModuleMap</span>.<span class="hljs-title function_">get</span>(id);
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">getModuleByUrl</span>(<span class="hljs-attr">rawUrl</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">Promise</span>&#x3C;<span class="hljs-title class_">ModuleNode</span> | <span class="hljs-literal">undefined</span>> {
+    <span class="hljs-keyword">const</span> { url } = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_resolve</span>(rawUrl);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">urlToModuleMap</span>.<span class="hljs-title function_">get</span>(url);
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">ensureEntryFromUrl</span>(<span class="hljs-attr">rawUrl</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">Promise</span>&#x3C;<span class="hljs-title class_">ModuleNode</span>> {
+    <span class="hljs-keyword">const</span> { url, resolvedId } = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_resolve</span>(rawUrl);
+    <span class="hljs-comment">// 首先检查缓存</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">urlToModuleMap</span>.<span class="hljs-title function_">has</span>(url)) {
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">urlToModuleMap</span>.<span class="hljs-title function_">get</span>(url) <span class="hljs-keyword">as</span> <span class="hljs-title class_">ModuleNode</span>;
+    }
+    <span class="hljs-comment">// 若无缓存，更新 urlToModuleMap 和 idToModuleMap</span>
+    <span class="hljs-keyword">const</span> mod = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ModuleNode</span>(url);
+    mod.<span class="hljs-property">id</span> = resolvedId;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">urlToModuleMap</span>.<span class="hljs-title function_">set</span>(url, mod);
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">idToModuleMap</span>.<span class="hljs-title function_">set</span>(resolvedId, mod);
+    <span class="hljs-keyword">return</span> mod;
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">updateModuleInfo</span>(<span class="hljs-params">
+    mod: ModuleNode,
+    importedModules: <span class="hljs-built_in">Set</span>&#x3C;<span class="hljs-built_in">string</span> | ModuleNode>
+  </span>) {
+    <span class="hljs-keyword">const</span> prevImports = mod.<span class="hljs-property">importedModules</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> curImports <span class="hljs-keyword">of</span> importedModules) {
+      <span class="hljs-keyword">const</span> dep =
+        <span class="hljs-keyword">typeof</span> curImports === <span class="hljs-string">"string"</span>
+          ? <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">ensureEntryFromUrl</span>(<span class="hljs-title function_">cleanUrl</span>(curImports))
+          : curImports;
+      <span class="hljs-keyword">if</span> (dep) {
+        mod.<span class="hljs-property">importedModules</span>.<span class="hljs-title function_">add</span>(dep);
+        dep.<span class="hljs-property">importers</span>.<span class="hljs-title function_">add</span>(mod);
+      }
+    }
+    <span class="hljs-comment">// 清除已经不再被引用的依赖</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> prevImport <span class="hljs-keyword">of</span> prevImports) {
+      <span class="hljs-keyword">if</span> (!importedModules.<span class="hljs-title function_">has</span>(prevImport.<span class="hljs-property">url</span>)) {
+        prevImport.<span class="hljs-property">importers</span>.<span class="hljs-title function_">delete</span>(mod);
+      }
+    }
+  }
+
+  <span class="hljs-comment">// HMR 触发时会执行这个方法</span>
+  <span class="hljs-title function_">invalidateModule</span>(<span class="hljs-params">file: <span class="hljs-built_in">string</span></span>) {
+    <span class="hljs-keyword">const</span> mod = <span class="hljs-variable language_">this</span>.<span class="hljs-property">idToModuleMap</span>.<span class="hljs-title function_">get</span>(file);
+    <span class="hljs-keyword">if</span> (mod) {
+      <span class="hljs-comment">// 更新时间戳</span>
+      mod.<span class="hljs-property">lastHMRTimestamp</span> = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>();
+      mod.<span class="hljs-property">transformResult</span> = <span class="hljs-literal">null</span>;
+      mod.<span class="hljs-property">importers</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">importer</span>) =></span> {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">invalidateModule</span>(importer.<span class="hljs-property">id</span>!);
+      });
+    }
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">async</span> <span class="hljs-title function_">_resolve</span>(
+    <span class="hljs-attr">url</span>: <span class="hljs-built_in">string</span>
+  ): <span class="hljs-title class_">Promise</span>&#x3C;{ <span class="hljs-attr">url</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">resolvedId</span>: <span class="hljs-built_in">string</span> }> {
+    <span class="hljs-keyword">const</span> resolved = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">resolveId</span>(url);
+    <span class="hljs-keyword">const</span> resolvedId = resolved?.<span class="hljs-property">id</span> || url;
+    <span class="hljs-keyword">return</span> { url, resolvedId };
+  }
+}
+</code></pre>
+<p>相信经过第 23 小节的学习，你已经对模块依赖图的实现结构比较熟悉了，对于代码细节这里也不再赘述。接着我们看看如何将这个 ModuleGraph 接入到目前的架构中。</p>
+<p>首先在服务启动前，我们需要初始化 ModuleGraph 实例:</p>
+<pre><code class="hljs language-diff">// src/node/server/index.ts
+<span class="hljs-addition">+ import { ModuleGraph } from "../ModuleGraph";</span>
+
+export interface ServerContext {
+  root: string;
+  pluginContainer: PluginContainer;
+  app: connect.Server;
+  plugins: Plugin[];
+<span class="hljs-addition">+  moduleGraph: ModuleGraph;</span>
+}
+
+export async function startDevServer() {
+<span class="hljs-addition">+  const moduleGraph = new ModuleGraph((url) => pluginContainer.resolveId(url));</span>
+  const pluginContainer = createPluginContainer(plugins);
+  const serverContext: ServerContext = {
+    root: process.cwd(),
+    app,
+    pluginContainer,
+    plugins,
+<span class="hljs-addition">+    moduleGraph</span>
+  };
+  
+}
+</code></pre>
+<p>然后在加载完模块后，也就是调用插件容器的 load 方法后，我们需要通过 <code>ensureEntryFromUrl</code> 方法注册模块:</p>
+<pre><code class="hljs language-diff">// src/node/server/middlewares/transform.ts
+let code = await pluginContainer.load(resolvedResult.id);
+if (typeof code <span class="hljs-comment">=== "object" &#x26;&#x26; code !== null) {</span>
+  code = code.code;
+}
+<span class="hljs-addition">+ const { moduleGraph }  = serverContext;</span>
+<span class="hljs-addition">+ mod = await moduleGraph.ensureEntryFromUrl(url);</span>
+</code></pre>
+<p>当我们对 JS 模块分析完 import 语句之后，需要更新模块之间的依赖关系:</p>
+<pre><code class="hljs language-diff">// src/node/plugins/importAnalysis.ts
+export function importAnalysis() {
+  return {
+    transform(code: string, id: string) {
+      // 省略前面的代码
+<span class="hljs-addition">+      const { moduleGraph } = serverContext;</span>
+<span class="hljs-addition">+      const curMod = moduleGraph.getModuleById(id)!;</span>
+<span class="hljs-addition">+      const importedModules = new Set&#x3C;string>();</span>
+      for(const importInfo of imports) {
+        // 省略部分代码
+        if (BARE_IMPORT_RE.test(modSource)) {
+          // 省略部分代码
+<span class="hljs-addition">+          importedModules.add(bundlePath);</span>
+        } else if (modSource.startsWith(".") || modSource.startsWith("/")) {
+          const resolved = await resolve(modSource, id);
+          if (resolved) {
+            ms.overwrite(modStart, modEnd, resolved);
+<span class="hljs-addition">+            importedModules.add(resolved);</span>
+          }
+        }
+      }
+<span class="hljs-addition">+      moduleGraph.updateModuleInfo(curMod, importedModules);</span>
+      // 省略后续 return 代码
+    }
+  }
+}
+</code></pre>
+<p>现在，一个完整的模块依赖图就能随着 JS 请求的到来而不断建立起来了。另外，基于现在的模块依赖图，我们也可以记录模块编译后的产物，并进行缓存。让我们回到 transform 中间件中:</p>
+<pre><code class="hljs language-diff">export async function transformRequest(
+  url: string,
+  serverContext: ServerContext
+) {
+  const { moduleGraph, pluginContainer } = serverContext;
+  url = cleanUrl(url);
+<span class="hljs-addition">+  let mod = await moduleGraph.getModuleByUrl(url);</span>
+<span class="hljs-addition">+  if (mod &#x26;&#x26; mod.transformResult) {</span>
+<span class="hljs-addition">+    return mod.transformResult;</span>
+<span class="hljs-addition">+  }</span>
+  const resolvedResult = await pluginContainer.resolveId(url);
+  let transformResult;
+  if (resolvedResult?.id) {
+    let code = await pluginContainer.load(resolvedResult.id);
+    if (typeof code <span class="hljs-comment">=== "object" &#x26;&#x26; code !== null) {</span>
+      code = code.code;
+    }
+    mod = await moduleGraph.ensureEntryFromUrl(url);
+    if (code) {
+      transformResult = await pluginContainer.transform(
+        code as string,
+        resolvedResult?.id
+      );
+    }
+  }
+<span class="hljs-addition">+  if (mod) {</span>
+<span class="hljs-addition">+    mod.transformResult = transformResult;</span>
+<span class="hljs-addition">+  }</span>
+  return transformResult;
+}
+</code></pre>
+<p>在搭建好模块依赖图之后，我们把目光集中到最重要的部分——HMR 上面。</p>
+<h2>HMR 服务端</h2>
+<p>HMR 在服务端需要完成如下的工作:</p>
+<ul>
+<li>创建文件监听器，以监听文件的变动</li>
+<li>创建 WebSocket 服务端，负责和客户端进行通信</li>
+<li>文件变动时，从 ModuleGraph 中定位到需要更新的模块，将更新信息发送给客户端</li>
+</ul>
+<p>首先，我们来创建文件监听器:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/node/server/index.ts</span>
+<span class="hljs-keyword">import</span> chokidar, { <span class="hljs-title class_">FSWatcher</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"chokidar"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">startDevServer</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> watcher = chokidar.<span class="hljs-title function_">watch</span>(root, {
+    <span class="hljs-attr">ignored</span>: [<span class="hljs-string">"**/node_modules/**"</span>, <span class="hljs-string">"**/.git/**"</span>],
+    <span class="hljs-attr">ignoreInitial</span>: <span class="hljs-literal">true</span>,
+  });
+}
+</code></pre>
+<p>接着初始化 WebSocket 服务端，新建<code>src/node/ws.ts</code>，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> connect <span class="hljs-keyword">from</span> <span class="hljs-string">"connect"</span>;
+<span class="hljs-keyword">import</span> { red } <span class="hljs-keyword">from</span> <span class="hljs-string">"picocolors"</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">WebSocketServer</span>, <span class="hljs-title class_">WebSocket</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"ws"</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-variable constant_">HMR_PORT</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"./constants"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createWebSocketServer</span>(<span class="hljs-params">server: connect.Server</span>): {
+  <span class="hljs-attr">send</span>: <span class="hljs-function">(<span class="hljs-params">msg: <span class="hljs-built_in">string</span></span>) =></span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">close</span>: <span class="hljs-function">() =></span> <span class="hljs-built_in">void</span>;
+} {
+  <span class="hljs-keyword">let</span> <span class="hljs-attr">wss</span>: <span class="hljs-title class_">WebSocketServer</span>;
+  wss = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocketServer</span>({ <span class="hljs-attr">port</span>: <span class="hljs-variable constant_">HMR_PORT</span> });
+  wss.<span class="hljs-title function_">on</span>(<span class="hljs-string">"connection"</span>, <span class="hljs-function">(<span class="hljs-params">socket</span>) =></span> {
+    socket.<span class="hljs-title function_">send</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">type</span>: <span class="hljs-string">"connected"</span> }));
+  });
+
+  wss.<span class="hljs-title function_">on</span>(<span class="hljs-string">"error"</span>, <span class="hljs-function">(<span class="hljs-params">e: <span class="hljs-built_in">Error</span> &#x26; { code: <span class="hljs-built_in">string</span> }</span>) =></span> {
+    <span class="hljs-keyword">if</span> (e.<span class="hljs-property">code</span> !== <span class="hljs-string">"EADDRINUSE"</span>) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-title function_">red</span>(<span class="hljs-string">`WebSocket server error:\n<span class="hljs-subst">${e.stack || e.message}</span>`</span>));
+    }
+  });
+
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-title function_">send</span>(<span class="hljs-params">payload: <span class="hljs-built_in">Object</span></span>) {
+      <span class="hljs-keyword">const</span> stringified = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(payload);
+      wss.<span class="hljs-property">clients</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">client</span>) =></span> {
+        <span class="hljs-keyword">if</span> (client.<span class="hljs-property">readyState</span> === <span class="hljs-title class_">WebSocket</span>.<span class="hljs-property">OPEN</span>) {
+          client.<span class="hljs-title function_">send</span>(stringified);
+        }
+      });
+    },
+
+    <span class="hljs-title function_">close</span>(<span class="hljs-params"></span>) {
+      wss.<span class="hljs-title function_">close</span>();
+    },
+  };
+}
+</code></pre>
+<p>同时定义 <code>HMR_PORT</code> 常量:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/node/constants.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">HMR_PORT</span> = <span class="hljs-number">24678</span>;
+</code></pre>
+<p>接着我们将 WebSocket 服务端实例加入 no-bundle 服务中:</p>
+<pre><code class="hljs language-diff">// src/node/server/index.ts
+export interface ServerContext {
+  root: string;
+  pluginContainer: PluginContainer;
+  app: connect.Server;
+  plugins: Plugin[];
+  moduleGraph: ModuleGraph;
+<span class="hljs-addition">+  ws: { send: (data: any) => void; close: () => void };</span>
+<span class="hljs-addition">+  watcher: FSWatcher;</span>
+}
+
+export async function startDevServer() {
+<span class="hljs-addition">+  // WebSocket 对象</span>
+<span class="hljs-addition">+  const ws = createWebSocketServer(app);</span>
+  // // 开发服务器上下文
+  const serverContext: ServerContext = {
+    root: process.cwd(),
+    app,
+    pluginContainer,
+    plugins,
+    moduleGraph,
+<span class="hljs-addition">+    ws,</span>
+<span class="hljs-addition">+    watcher</span>
+  };
+}
+</code></pre>
+<p>下面我们来实现当文件变动时，服务端具体的处理逻辑，新建 <code>src/node/hmr.ts</code>:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ServerContext</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"./server/index"</span>;
+<span class="hljs-keyword">import</span> { blue, green } <span class="hljs-keyword">from</span> <span class="hljs-string">"picocolors"</span>;
+<span class="hljs-keyword">import</span> { getShortName } <span class="hljs-keyword">from</span> <span class="hljs-string">"./utils"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">bindingHMREvents</span>(<span class="hljs-params">serverContext: ServerContext</span>) {
+  <span class="hljs-keyword">const</span> { watcher, ws, root } = serverContext;
+
+  watcher.<span class="hljs-title function_">on</span>(<span class="hljs-string">"change"</span>, <span class="hljs-keyword">async</span> (file) => {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`✨<span class="hljs-subst">${blue(<span class="hljs-string">"[hmr]"</span>)}</span> <span class="hljs-subst">${green(file)}</span> changed`</span>);
+    <span class="hljs-keyword">const</span> { moduleGraph } = serverContext;
+    <span class="hljs-comment">// 清除模块依赖图中的缓存</span>
+    <span class="hljs-keyword">await</span> moduleGraph.<span class="hljs-title function_">invalidateModule</span>(file);
+    <span class="hljs-comment">// 向客户端发送更新信息</span>
+    ws.<span class="hljs-title function_">send</span>({
+      <span class="hljs-attr">type</span>: <span class="hljs-string">"update"</span>,
+      <span class="hljs-attr">updates</span>: [
+        {
+          <span class="hljs-attr">type</span>: <span class="hljs-string">"js-update"</span>,
+          <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(),
+          <span class="hljs-attr">path</span>: <span class="hljs-string">"/"</span> + <span class="hljs-title function_">getShortName</span>(file, root),
+          <span class="hljs-attr">acceptedPath</span>: <span class="hljs-string">"/"</span> + <span class="hljs-title function_">getShortName</span>(file, root),
+        },
+      ],
+    });
+  });
+}
+</code></pre>
+<p>注意补充一下缺失的工具函数:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/node/utils.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getShortName</span>(<span class="hljs-params">file: <span class="hljs-built_in">string</span>, root: <span class="hljs-built_in">string</span></span>) {
+  <span class="hljs-keyword">return</span> file.<span class="hljs-title function_">startsWith</span>(root + <span class="hljs-string">"/"</span>) ? path.<span class="hljs-property">posix</span>.<span class="hljs-title function_">relative</span>(root, file) : file;
+}
+</code></pre>
+<p>接着我们在服务中添加如下代码:</p>
+<pre><code class="hljs language-diff">// src/node/server/index.ts
+<span class="hljs-addition">+  import { bindingHMREvents } from "../hmr";</span>
+<span class="hljs-addition">+  import { normalizePath } from "../utils";</span>
+
+// 开发服务器上下文
+const serverContext: ServerContext = {
+  root: normalizePath(process.cwd()),
+  app,
+  pluginContainer,
+  plugins,
+  moduleGraph,
+  ws,
+  watcher,
+};
+<span class="hljs-addition">+ bindingHMREvents(serverContext);</span>
+</code></pre>
+<h2>HMR 客户端</h2>
+<p>HMR 客户端指的是我们向浏览器中注入的一段 JS 脚本，这段脚本中会做如下的事情:</p>
+<ul>
+<li>创建 WebSocket 客户端，用于和服务端通信</li>
+<li>在收到服务端的更新信息后，通过动态 import 拉取最新的模块内容，执行 accept 更新回调</li>
+<li>暴露 HMR 的一些工具函数，比如 import.meta.hot 对象的实现</li>
+</ul>
+<p>首先我们来开发客户端的脚本内容，你可以新建<code>src/client/client.ts</code>文件，然后在 tsup.config.ts 中增加如下的配置:</p>
+<pre><code class="hljs language-diff">import { defineConfig } from "tsup";
+
+export default defineConfig({
+  entry: {
+    index: "src/node/cli.ts",
+<span class="hljs-addition">+    client: "src/client/client.ts",</span>
+  },
+});
+</code></pre>
+<blockquote>
+<p>注: 改动 tsup 配置之后，为了使最新配置生效，你需要在 <code>mini-vite</code> 项目中执行 <code>pnpm start</code> 重新进行构建。</p>
+</blockquote>
+<p>客户端脚本的具体实现如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/client/client.ts</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"[vite] connecting..."</span>);
+
+<span class="hljs-comment">// 1. 创建客户端 WebSocket 实例</span>
+<span class="hljs-comment">// 其中的 __HMR_PORT__ 之后会被 no-bundle 服务编译成具体的端口号</span>
+<span class="hljs-keyword">const</span> socket = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>(<span class="hljs-string">`ws://localhost:__HMR_PORT__`</span>, <span class="hljs-string">"vite-hmr"</span>);
+
+<span class="hljs-comment">// 2. 接收服务端的更新信息</span>
+socket.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"message"</span>, <span class="hljs-keyword">async</span> ({ data }) => {
+  <span class="hljs-title function_">handleMessage</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(data)).<span class="hljs-title function_">catch</span>(<span class="hljs-variable language_">console</span>.<span class="hljs-property">error</span>);
+});
+
+<span class="hljs-comment">// 3. 根据不同的更新类型进行更新</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleMessage</span>(<span class="hljs-params">payload: <span class="hljs-built_in">any</span></span>) {
+  <span class="hljs-keyword">switch</span> (payload.<span class="hljs-property">type</span>) {
+    <span class="hljs-keyword">case</span> <span class="hljs-string">"connected"</span>:
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`[vite] connected.`</span>);
+      <span class="hljs-comment">// 心跳检测</span>
+      <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =></span> socket.<span class="hljs-title function_">send</span>(<span class="hljs-string">"ping"</span>), <span class="hljs-number">1000</span>);
+      <span class="hljs-keyword">break</span>;
+
+    <span class="hljs-keyword">case</span> <span class="hljs-string">"update"</span>:
+      <span class="hljs-comment">// 进行具体的模块更新</span>
+      payload.<span class="hljs-property">updates</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">update: Update</span>) =></span> {
+        <span class="hljs-keyword">if</span> (update.<span class="hljs-property">type</span> === <span class="hljs-string">"js-update"</span>) {
+          <span class="hljs-comment">// 具体的更新逻辑，后续来开发</span>
+        }
+      });
+      <span class="hljs-keyword">break</span>;
+  }
+}
+</code></pre>
+<p>关于客户端具体的 JS 模块更新逻辑和工具函数的实现，你暂且不用过于关心。我们先把这段比较简单的 HMR 客户端代码注入到浏览器中，首先在新建 <code>src/node/plugins/clientInject.ts</code>，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-variable constant_">CLIENT_PUBLIC_PATH</span>, <span class="hljs-variable constant_">HMR_PORT</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"../constants"</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Plugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"../plugin"</span>;
+<span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">"fs-extra"</span>;
+<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">"path"</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">ServerContext</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"../server/index"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">clientInjectPlugin</span>(<span class="hljs-params"></span>): <span class="hljs-title class_">Plugin</span> {
+  <span class="hljs-keyword">let</span> <span class="hljs-attr">serverContext</span>: <span class="hljs-title class_">ServerContext</span>;
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">"m-vite:client-inject"</span>,
+    <span class="hljs-title function_">configureServer</span>(<span class="hljs-params">s</span>) {
+      serverContext = s;
+    },
+    <span class="hljs-title function_">resolveId</span>(<span class="hljs-params">id</span>) {
+      <span class="hljs-keyword">if</span> (id === <span class="hljs-variable constant_">CLIENT_PUBLIC_PATH</span>) {
+        <span class="hljs-keyword">return</span> { id };
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    },
+    <span class="hljs-keyword">async</span> <span class="hljs-title function_">load</span>(<span class="hljs-params">id</span>) {
+      <span class="hljs-comment">// 加载 HMR 客户端脚本</span>
+      <span class="hljs-keyword">if</span> (id === <span class="hljs-variable constant_">CLIENT_PUBLIC_PATH</span>) {
+        <span class="hljs-keyword">const</span> realPath = path.<span class="hljs-title function_">join</span>(
+          serverContext.<span class="hljs-property">root</span>,
+          <span class="hljs-string">"node_modules"</span>,
+          <span class="hljs-string">"mini-vite"</span>,
+          <span class="hljs-string">"dist"</span>,
+          <span class="hljs-string">"client.mjs"</span>
+        );
+        <span class="hljs-keyword">const</span> code = <span class="hljs-keyword">await</span> fs.<span class="hljs-title function_">readFile</span>(realPath, <span class="hljs-string">"utf-8"</span>);
+        <span class="hljs-keyword">return</span> {
+          <span class="hljs-comment">// 替换占位符</span>
+          <span class="hljs-attr">code</span>: code.<span class="hljs-title function_">replace</span>(<span class="hljs-string">"__HMR_PORT__"</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(<span class="hljs-variable constant_">HMR_PORT</span>)),
+        };
+      }
+    },
+    <span class="hljs-title function_">transformIndexHtml</span>(<span class="hljs-params">raw</span>) {
+      <span class="hljs-comment">// 插入客户端脚本</span>
+      <span class="hljs-comment">// 即在 head 标签后面加上 &#x3C;script type="module" src="/@vite/client">&#x3C;/script></span>
+      <span class="hljs-comment">// 注: 在 indexHtml 中间件里面会自动执行 transformIndexHtml 钩子</span>
+      <span class="hljs-keyword">return</span> raw.<span class="hljs-title function_">replace</span>(
+        <span class="hljs-regexp">/(&#x3C;head[^>]*>)/i</span>,
+        <span class="hljs-string">`$1&#x3C;script type="module" src="<span class="hljs-subst">${CLIENT_PUBLIC_PATH}</span>">&#x3C;/script>`</span>
+      );
+    },
+  };
+}
+</code></pre>
+<p>同时添加相应的常量声明:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/node/constants.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">CLIENT_PUBLIC_PATH</span> = <span class="hljs-string">"/@vite/client"</span>;
+</code></pre>
+<p>接着我们来注册这个插件:</p>
+<pre><code class="hljs language-diff">// src/node/plugins/index.ts
+<span class="hljs-addition">+ import { clientInjectPlugin } from './clientInject';</span>
+
+export function resolvePlugins(): Plugin[] {
+  return [
+<span class="hljs-addition">+     clientInjectPlugin()</span>
+    // 省略其它插件
+  ]
+}
+</code></pre>
+<p>需要注意的是，<code>clientInject</code>插件最好放到最前面的位置，以免后续插件的 load 钩子干扰客户端脚本的加载。</p>
+<p>接下来你可以在 playground 项目下执行<code>pnpm dev</code>，然后查看页面，可以发现控制台出现了如下的 log 信息:</p>
+<p><img src="img\cc3853da-ae61-11ed-ba23-342eb7027b95.jpg" alt="image.png"></p>
+<p>查看网络面板，也能发现客户端脚本的请求被正常响应:</p>
+<p><img src="img\cc4d29e1-ae61-11ed-8417-342eb7027b95.jpg" alt="image.png"></p>
+<p>OK，接下来我们就来继续完善客户端脚本的具体实现。</p>
+<p>值得一提的是，之所以我们可以在代码中编写类似<code>import.meta.hot.xxx</code>之类的方法，是因为 Vite 帮我们在模块最顶层注入了<code>import.meta.hot</code>对象，而这个对象由<code>createHotContext</code>来实现，具体的注入代码如下所示:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { createHotContext <span class="hljs-keyword">as</span> __vite__createHotContext } <span class="hljs-keyword">from</span> <span class="hljs-string">"/@vite/client"</span>;
+<span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">hot</span> = <span class="hljs-title function_">__vite__createHotContext</span>(<span class="hljs-string">"/src/App.tsx"</span>);
+</code></pre>
+<p>下面我们在 import 分析插件中做一些改动，实现插入这段代码的功能:</p>
+<pre><code class="hljs language-diff">import { init, parse } from "es-module-lexer";
+import {
+  BARE_IMPORT_RE,
+  CLIENT_PUBLIC_PATH,
+  PRE_BUNDLE_DIR,
+} from "../constants";
+import {
+  cleanUrl,
+<span class="hljs-addition">+  getShortName,</span>
+  isJSRequest,
+} from "../utils";
+import MagicString from "magic-string";
+import path from "path";
+import { Plugin } from "../plugin";
+import { ServerContext } from "../server/index";
+
+export function importAnalysisPlugin(): Plugin {
+  let serverContext: ServerContext;
+  return {
+    name: "m-vite:import-analysis",
+    configureServer(s) {
+      serverContext = s;
+    },
+    async transform(code: string, id: string) {
+<span class="hljs-addition">+      if (!isJSRequest(id) || isInternalRequest(id)) {</span>
+        return null;
+      }
+      await init;
+      const importedModules = new Set&#x3C;string>();
+      const [imports] = parse(code);
+      const ms = new MagicString(code);
+<span class="hljs-addition">+      const resolve = async (id: string, importer?: string) => {</span>
+<span class="hljs-addition">+        const resolved = await this.resolve(</span>
+<span class="hljs-addition">+          id,</span>
+<span class="hljs-addition">+          normalizePath(importer)</span>
+<span class="hljs-addition">+        );</span>
+<span class="hljs-addition">+        if (!resolved) {</span>
+<span class="hljs-addition">+          return;</span>
+<span class="hljs-addition">+        }</span>
+<span class="hljs-addition">+        const cleanedId = cleanUrl(resolved.id);</span>
+<span class="hljs-addition">+        const mod = moduleGraph.getModuleById(cleanedId);</span>
+<span class="hljs-addition">+        let resolvedId = `/${getShortName(resolved.id, serverContext.root)}`;</span>
+<span class="hljs-addition">+        if (mod &#x26;&#x26; mod.lastHMRTimestamp > 0) {</span>
+<span class="hljs-addition">+          resolvedId += "?t=" + mod.lastHMRTimestamp;</span>
+<span class="hljs-addition">+        }</span>
+<span class="hljs-addition">+        return resolvedId;</span>
+<span class="hljs-addition">+      };</span>
+      const { moduleGraph } = serverContext;
+      const curMod = moduleGraph.getModuleById(id)!;
+
+      for (const importInfo of imports) {
+        const { s: modStart, e: modEnd, n: modSource } = importInfo;
+        if (!modSource || isInternalRequest(modSource)) continue;
+        // 静态资源
+        if (modSource.endsWith(".svg")) {
+          // 加上 ?import 后缀
+          const resolvedUrl = await resolve(modSource, id);
+          ms.overwrite(modStart, modEnd, `${resolvedUrl}?import`);
+          continue;
+        }
+        // 第三方库: 路径重写到预构建产物的路径
+        if (BARE_IMPORT_RE.test(modSource)) {
+          const bundlePath = normalizePath(
+            path.join('/', PRE_BUNDLE_DIR, `${modSource}.js`)
+          ms.overwrite(modStart, modEnd, bundlePath);
+          importedModules.add(bundlePath);
+        } else if (modSource.startsWith(".") || modSource.startsWith("/")) {
+<span class="hljs-addition">+          const resolved = await resolve(modSource, id);</span>
+          if (resolved) {
+            ms.overwrite(modStart, modEnd, resolved);
+            importedModules.add(resolved);
+          }
+        }
+      }
+      // 只对业务源码注入
+<span class="hljs-addition">+      if (!id.includes("node_modules")) {</span>
+<span class="hljs-addition">+        // 注入 HMR 相关的工具函数</span>
+<span class="hljs-addition">+        ms.prepend(</span>
+<span class="hljs-addition">+          `import { createHotContext as __vite__createHotContext } from "${CLIENT_PUBLIC_PATH}";` +</span>
+<span class="hljs-addition">+            `import.meta.hot = __vite__createHotContext(${JSON.stringify(</span>
+<span class="hljs-addition">+              cleanUrl(curMod.url)</span>
+<span class="hljs-addition">+            )});`</span>
+<span class="hljs-addition">+        );</span>
+<span class="hljs-addition">+      }</span>
+
+      moduleGraph.updateModuleInfo(curMod, importedModules);
+
+      return {
+        code: ms.toString(),
+        map: ms.generateMap(),
+      };
+    },
+  };
+}
+</code></pre>
+<p>接着启动 playground，打开页面后你可以发现 import.meta.hot 的实现代码已经被成功插入:</p>
+<p><img src="img\cc627f80-ae61-11ed-bc1e-342eb7027b95.jpg" alt="image.png"></p>
+<p>现在，我们回到客户端脚本的实现中，来开发<code>createHotContext</code> 这个工具方法:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">HotModule</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">callbacks</span>: <span class="hljs-title class_">HotCallback</span>[];
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">HotCallback</span> {
+  <span class="hljs-attr">deps</span>: <span class="hljs-built_in">string</span>[];
+  <span class="hljs-attr">fn</span>: <span class="hljs-function">(<span class="hljs-params">modules: <span class="hljs-built_in">object</span>[]</span>) =></span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-comment">// HMR 模块表</span>
+<span class="hljs-keyword">const</span> hotModulesMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-title class_">HotModule</span>>();
+<span class="hljs-comment">// 不在生效的模块表</span>
+<span class="hljs-keyword">const</span> pruneMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-function">(<span class="hljs-params">data: <span class="hljs-built_in">any</span></span>) =></span> <span class="hljs-built_in">void</span> | <span class="hljs-title class_">Promise</span>&#x3C;<span class="hljs-built_in">void</span>>>();
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">createHotContext</span> = (<span class="hljs-params">ownerPath: <span class="hljs-built_in">string</span></span>) => {
+  <span class="hljs-keyword">const</span> mod = hotModulesMap.<span class="hljs-title function_">get</span>(ownerPath);
+  <span class="hljs-keyword">if</span> (mod) {
+    mod.<span class="hljs-property">callbacks</span> = [];
+  }
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">acceptDeps</span>(<span class="hljs-params">deps: <span class="hljs-built_in">string</span>[], callback: <span class="hljs-built_in">any</span></span>) {
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">mod</span>: <span class="hljs-title class_">HotModule</span> = hotModulesMap.<span class="hljs-title function_">get</span>(ownerPath) || {
+      <span class="hljs-attr">id</span>: ownerPath,
+      <span class="hljs-attr">callbacks</span>: [],
+    };
+    <span class="hljs-comment">// callbacks 属性存放 accept 的依赖、依赖改动后对应的回调逻辑</span>
+    mod.<span class="hljs-property">callbacks</span>.<span class="hljs-title function_">push</span>({
+      deps,
+      <span class="hljs-attr">fn</span>: callback,
+    });
+    hotModulesMap.<span class="hljs-title function_">set</span>(ownerPath, mod);
+  }
+
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-title function_">accept</span>(<span class="hljs-params">deps: <span class="hljs-built_in">any</span>, callback?: <span class="hljs-built_in">any</span></span>) {
+      <span class="hljs-comment">// 这里仅考虑接受自身模块更新的情况</span>
+      <span class="hljs-comment">// import.meta.hot.accept()</span>
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> deps === <span class="hljs-string">"function"</span> || !deps) {
+        <span class="hljs-title function_">acceptDeps</span>([ownerPath], <span class="hljs-function">(<span class="hljs-params">[mod]</span>) =></span> deps &#x26;&#x26; <span class="hljs-title function_">deps</span>(mod));
+      }
+    },
+    <span class="hljs-comment">// 模块不再生效的回调</span>
+    <span class="hljs-comment">// import.meta.hot.prune(() => {})</span>
+    <span class="hljs-title function_">prune</span>(<span class="hljs-params">cb: (data: <span class="hljs-built_in">any</span>) => <span class="hljs-built_in">void</span></span>) {
+      pruneMap.<span class="hljs-title function_">set</span>(ownerPath, cb);
+    },
+  };
+};
+</code></pre>
+<p>在 accept 方法中，我们会用<code>hotModulesMap</code>这张表记录该模块所 accept 的模块，以及 accept 的模块更新之后回调逻辑。</p>
+<p>接着，我们来开发客户端热更新的具体逻辑，也就是服务端传递更新内容之后客户端如何来派发更新。实现代码如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchUpdate</span>(<span class="hljs-params">{ path, timestamp }: Update</span>) {
+  <span class="hljs-keyword">const</span> mod = hotModulesMap.<span class="hljs-title function_">get</span>(path);
+  <span class="hljs-keyword">if</span> (!mod) <span class="hljs-keyword">return</span>;
+
+  <span class="hljs-keyword">const</span> moduleMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();
+  <span class="hljs-keyword">const</span> modulesToUpdate = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>&#x3C;<span class="hljs-built_in">string</span>>();
+  modulesToUpdate.<span class="hljs-title function_">add</span>(path);
+
+  <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(
+    <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(modulesToUpdate).<span class="hljs-title function_">map</span>(<span class="hljs-keyword">async</span> (dep) => {
+      <span class="hljs-keyword">const</span> [path, query] = dep.<span class="hljs-title function_">split</span>(<span class="hljs-string">`?`</span>);
+      <span class="hljs-keyword">try</span> {
+        <span class="hljs-comment">// 通过动态 import 拉取最新模块</span>
+        <span class="hljs-keyword">const</span> newMod = <span class="hljs-keyword">await</span> <span class="hljs-title function_">import</span>(
+          path + <span class="hljs-string">`?t=<span class="hljs-subst">${timestamp}</span><span class="hljs-subst">${query ? <span class="hljs-string">`&#x26;<span class="hljs-subst">${query}</span>`</span> : <span class="hljs-string">""</span>}</span>`</span>
+        );
+        moduleMap.<span class="hljs-title function_">set</span>(dep, newMod);
+      } <span class="hljs-keyword">catch</span> (e) {}
+    })
+  );
+
+  <span class="hljs-keyword">return</span> <span class="hljs-function">() =></span> {
+    <span class="hljs-comment">// 拉取最新模块后执行更新回调</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> { deps, fn } <span class="hljs-keyword">of</span> mod.<span class="hljs-property">callbacks</span>) {
+      <span class="hljs-title function_">fn</span>(deps.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">dep: <span class="hljs-built_in">any</span></span>) =></span> moduleMap.<span class="hljs-title function_">get</span>(dep)));
+    }
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`[vite] hot updated: <span class="hljs-subst">${path}</span>`</span>);
+  };
+}
+</code></pre>
+<p>现在，我们可以来初步测试一下 HMR 的功能，你可以暂时将 main.tsx 的内容换成下面这样:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">"react"</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">ReactDOM</span> <span class="hljs-keyword">from</span> <span class="hljs-string">"react-dom"</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">"./index.css"</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">App</span> = (<span class="hljs-params"></span>) => <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>hello 123123<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>;
+
+<span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">App</span> /></span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"root"</span>));
+
+<span class="hljs-comment">// @ts-ignore</span>
+<span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">hot</span>.<span class="hljs-title function_">accept</span>(<span class="hljs-function">() =></span> {
+  <span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">render</span>(<span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">App</span> /></span></span>, <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"root"</span>));
+});
+</code></pre>
+<p>启动 playground，然后打开浏览器，可以看到如下的文本:</p>
+<p><img src="img\cc8e77b1-ae61-11ed-a5fc-342eb7027b95.jpg" alt="image.png"></p>
+<p>现在回到编辑器中，修改文本内容，然后保存，你可以发现页面内容也跟着发生了变化，并且网络面板发出了拉取最新模块的请求，说明 HMR 已经成功生效:</p>
+<p><img src="img\ccb6f230-ae61-11ed-b6f7-342eb7027b95.jpg" alt="image.png"></p>
+<p>同时，当你再次刷新页面，看到的仍然是最新的页面内容。这一点非常重要，之所以能达到这样的效果，是因为我们在文件改动后会调用 ModuleGraph 的 invalidateModule 方法，这个方法会清除热更模块以及所有上层引用方模块的编译缓存:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 方法实现</span>
+<span class="hljs-title function_">invalidateModule</span>(<span class="hljs-params">file: <span class="hljs-built_in">string</span></span>) {
+  <span class="hljs-keyword">const</span> mod = <span class="hljs-variable language_">this</span>.<span class="hljs-property">idToModuleMap</span>.<span class="hljs-title function_">get</span>(file);
+  <span class="hljs-keyword">if</span> (mod) {
+    mod.<span class="hljs-property">lastHMRTimestamp</span> = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>();
+    mod.<span class="hljs-property">transformResult</span> = <span class="hljs-literal">null</span>;
+    mod.<span class="hljs-property">importers</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">importer</span>) =></span> {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">invalidateModule</span>(importer.<span class="hljs-property">id</span>!);
+    });
+  }
+}
+</code></pre>
+<p>这样每次经过 HMR 后，再次刷新页面，渲染出来的一定是最新的模块内容。</p>
+<p>当然，我们也可以对 CSS 实现热更新功能，在客户端脚本中添加如下的工具函数:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> sheetsMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">updateStyle</span>(<span class="hljs-params">id: <span class="hljs-built_in">string</span>, content: <span class="hljs-built_in">string</span></span>) {
+  <span class="hljs-keyword">let</span> style = sheetsMap.<span class="hljs-title function_">get</span>(id);
+  <span class="hljs-keyword">if</span> (!style) {
+    <span class="hljs-comment">// 添加 style 标签</span>
+    style = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">"style"</span>);
+    style.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"type"</span>, <span class="hljs-string">"text/css"</span>);
+    style.<span class="hljs-property">innerHTML</span> = content;
+    <span class="hljs-variable language_">document</span>.<span class="hljs-property">head</span>.<span class="hljs-title function_">appendChild</span>(style);
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// 更新 style 标签内容</span>
+    style.<span class="hljs-property">innerHTML</span> = content;
+  }
+  sheetsMap.<span class="hljs-title function_">set</span>(id, style);
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">removeStyle</span>(<span class="hljs-params">id: <span class="hljs-built_in">string</span></span>): <span class="hljs-built_in">void</span> {
+  <span class="hljs-keyword">const</span> style = sheetsMap.<span class="hljs-title function_">get</span>(id);
+  <span class="hljs-keyword">if</span> (style) {
+    <span class="hljs-variable language_">document</span>.<span class="hljs-property">head</span>.<span class="hljs-title function_">removeChild</span>(style);
+  }
+  sheetsMap.<span class="hljs-title function_">delete</span>(id);
+}
+</code></pre>
+<p>紧接着我们调整一下 CSS 编译插件的代码:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { readFile } <span class="hljs-keyword">from</span> <span class="hljs-string">"fs-extra"</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-variable constant_">CLIENT_PUBLIC_PATH</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"../constants"</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Plugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"../plugin"</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">ServerContext</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"../server"</span>;
+<span class="hljs-keyword">import</span> { getShortName } <span class="hljs-keyword">from</span> <span class="hljs-string">"../utils"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">cssPlugin</span>(<span class="hljs-params"></span>): <span class="hljs-title class_">Plugin</span> {
+  <span class="hljs-keyword">let</span> <span class="hljs-attr">serverContext</span>: <span class="hljs-title class_">ServerContext</span>;
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">"m-vite:css"</span>,
+    <span class="hljs-title function_">configureServer</span>(<span class="hljs-params">s</span>) {
+      serverContext = s;
+    },
+    <span class="hljs-title function_">load</span>(<span class="hljs-params">id</span>) {
+      <span class="hljs-keyword">if</span> (id.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">".css"</span>)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-title function_">readFile</span>(id, <span class="hljs-string">"utf-8"</span>);
+      }
+    },
+    <span class="hljs-comment">// 主要变动在 transform 钩子中</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-title function_">transform</span>(<span class="hljs-params">code, id</span>) {
+      <span class="hljs-keyword">if</span> (id.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">".css"</span>)) {
+        <span class="hljs-comment">// 包装成 JS 模块</span>
+        <span class="hljs-keyword">const</span> jsContent = <span class="hljs-string">`
+import { createHotContext as __vite__createHotContext } from "<span class="hljs-subst">${CLIENT_PUBLIC_PATH}</span>";
+import.meta.hot = __vite__createHotContext("/<span class="hljs-subst">${getShortName(id, serverContext.root)}</span>");
+
+import { updateStyle, removeStyle } from "<span class="hljs-subst">${CLIENT_PUBLIC_PATH}</span>"
+  
+const id = '<span class="hljs-subst">${id}</span>';
+const css = '<span class="hljs-subst">${code.replace(/\n/g, <span class="hljs-string">""</span>)}</span>';
+
+updateStyle(id, css);
+import.meta.hot.accept();
+export default css;
+import.meta.hot.prune(() => removeStyle(id));`</span>.<span class="hljs-title function_">trim</span>();
+        <span class="hljs-keyword">return</span> {
+          <span class="hljs-attr">code</span>: jsContent,
+        };
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    },
+  };
+}
+</code></pre>
+<p>最后，你可以重启 playground 项目，本地尝试修改 CSS 代码，可以看到类似如下的热更新效果:</p>
+<p><img src="img\ccdff357-ae61-11ed-bce5-342eb7027b95.jpg" alt="css-hmr1.gif"></p>
+<h2>小结</h2>
+<p>OK，本节的内容到这里就结束了，恭喜你完成了本次手写 Vite 的实战项目，最后我们来总结和回顾一下。</p>
+<p>在这一小节，我们完成了 CSS 编译插件、静态资源加载插件、模块依赖图、编译缓存、HMR 服务端和客户端的实现。其中，你需要重点掌握以下的开发要点:</p>
+<ol>
+<li>CSS 的模块热更新如何实现？</li>
+<li>静态资源的加载分为哪两种请求？no-bundle 服务中分别是如何处理的？</li>
+<li>HMR 服务端和客户端做了哪些事情？</li>
+<li>如何保证在 HMR 更新之后，刷新页面后依然能保证是最新的模块内容？</li>
+</ol>
+<p>最后，欢迎你把自己的学习心得打在评论区，大家一起来交流，我们下一节再见。</p>
+</div>
+</body>
+</html>

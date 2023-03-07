@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <p>在前面两节的内容中，我们一起手写了一个迷你版的 no-bundle 开发服务，也就是 Vite 开发阶段的 Dev Server，而在生产环境下面，处于页面性能的考虑，Vite 还是选择进行打包(bundle)，并且在底层使用 Rollup 来完成打包的过程。在接下来的篇幅中，我们就来实现一个 JavaScript Bundler，让你理解生产环境下 Vite/Rollup 的模块打包究竟是如何实现的。</p>
+<p>不过，需要提前声明的是，Bundler 的实现非常依赖于 AST 的实现，有相当多的地方需要解析模块 AST 并且操作 AST 节点，因此，我们有必要先完成 AST 解析的方案。目前在业界有诸多的 JavaScript AST 解析方案，如<code>acorn</code>、<code>@babel/parser</code>、<code>swc</code> 等，可以实现开箱即用，但为了让大家对其中的原理理解得更为深入，本小节会教大家一步步开发出 AST 的解析器，实现 <code>tokenize</code> 和 <code>parse</code> 的底层逻辑，而这本身也是一件非常有意思的事情，相信你经过本节的学习也能领略到前端编译领域的底层风光。</p>
+<h2>搭建开发测试环境</h2>
+<p>首先通过<code>pnpm init -y</code>新建项目，安装测试工具<code>vitest</code>:</p>
+<pre><code class="hljs language-ts">pnpm i vitest -D
+</code></pre>
+<p>新建 <code>src/__test__</code> 目录，之后所有的测试代码都会放到这个目录中。我们不妨先尝试编写一个测试文件:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/__test__/example.test.ts</span>
+<span class="hljs-keyword">import</span> { describe, test, expect } <span class="hljs-keyword">from</span> <span class="hljs-string">"vitest"</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">"example test"</span>, <span class="hljs-function">() =></span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">"should return correct result"</span>, <span class="hljs-function">() =></span> {
+    <span class="hljs-title function_">expect</span>(<span class="hljs-number">2</span> + <span class="hljs-number">2</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">4</span>);
+  });
+});
+</code></pre>
+<p>然后在<code>package.json</code>中增加如下的 <code>scripts</code>:</p>
+<pre><code class="hljs language-json"><span class="hljs-attr">"test"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"vitest"</span>
+</code></pre>
+<p>接着在命令行执行 <code>pnpm test</code>，如果你可以看到如下的终端界面，说明测试环境已经搭建成功:</p>
+<p><img src="img\ce0b48e2-ae61-11ed-9783-342eb7027b95.jpg" alt="image.png"></p>
+<h2>词法分析器开发</h2>
+<p>接下来，我们正式进入 AST 解析器的开发，主要分为两个部分来进行: <code>词法分析器</code>和<code>语法分析器</code>。</p>
+<p>首先是<code>词法分析器</code>，也叫分词器(Tokenizer)，它的作用是将代码划分为一个个词法单元，便于进行后续的语法分析。比如下面的这段代码:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">let</span> foo = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {}
+</code></pre>
+<p>在经过分词之后，代码会被切分为如下的 token 数组:</p>
+<pre><code class="hljs language-ts">[<span class="hljs-string">'let'</span>, <span class="hljs-string">'foo'</span>, <span class="hljs-string">'='</span>, <span class="hljs-string">'function'</span>, <span class="hljs-string">'('</span>, <span class="hljs-string">')'</span>, <span class="hljs-string">'{'</span>, <span class="hljs-string">'}'</span>]
+</code></pre>
+<p>从中你可以看到，原本一行普通的代码字符串被拆分成了拥有语法属性的 token 列表，不同的 token 之间也存在千丝万缕的联系，而后面所要介绍的<code>语法分析器</code>，就是来梳理各个 token 之间的联系，整理出 AST 数据结构。</p>
+<p>当下我们所要实现的词法分析器，本质上是<strong>对代码字符串进行逐个字符的扫描，然后根据一定的语法规则进行分组</strong>。其中，涉及到几个关键的步骤:</p>
+<ul>
+<li>确定语法规则，包括语言内置的关键词、单字符、分隔符等</li>
+<li>逐个代码字符扫描，根据语法规则进行 token 分组</li>
+</ul>
+<p>接下来我们以一个简单的语法为例，来初步实现如上的关键流程。需要解析的示例代码如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">let</span> foo = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {}
+</code></pre>
+<h3>1. 确定语法规则</h3>
+<p>新建<code>src/Tokenizer.ts</code>，首先声明一些必要的类型:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">TokenType</span> {
+  <span class="hljs-comment">// let</span>
+  <span class="hljs-title class_">Let</span> = <span class="hljs-string">"Let"</span>,
+  <span class="hljs-comment">// =</span>
+  <span class="hljs-title class_">Assign</span> = <span class="hljs-string">"Assign"</span>,
+  <span class="hljs-comment">// function</span>
+  <span class="hljs-title class_">Function</span> = <span class="hljs-string">"Function"</span>,
+  <span class="hljs-comment">// 变量名</span>
+  <span class="hljs-title class_">Identifier</span> = <span class="hljs-string">"Identifier"</span>,
+  <span class="hljs-comment">// (</span>
+  <span class="hljs-title class_">LeftParen</span> = <span class="hljs-string">"LeftParen"</span>,
+  <span class="hljs-comment">// )</span>
+  <span class="hljs-title class_">RightParen</span> = <span class="hljs-string">"RightParen"</span>,
+  <span class="hljs-comment">// {</span>
+  <span class="hljs-title class_">LeftCurly</span> = <span class="hljs-string">"LeftCurly"</span>,
+  <span class="hljs-comment">// }</span>
+  <span class="hljs-title class_">RightCurly</span> = <span class="hljs-string">"RightCurly"</span>,
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">Token</span> = {
+  <span class="hljs-attr">type</span>: <span class="hljs-title class_">TokenType</span>;
+  value?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">start</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">end</span>: <span class="hljs-built_in">number</span>;
+  raw?: <span class="hljs-built_in">string</span>;
+};
+</code></pre>
+<p>然后定义 Token 的生成器对象:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">const</span> <span class="hljs-attr">TOKENS_GENERATOR</span>: <span class="hljs-title class_">Record</span>&#x3C;<span class="hljs-built_in">string</span>, <span class="hljs-function">(<span class="hljs-params">...args: <span class="hljs-built_in">any</span>[]</span>) =></span> <span class="hljs-title class_">Token</span>> = {
+  <span class="hljs-title function_">let</span>(<span class="hljs-params">start: <span class="hljs-built_in">number</span></span>) {
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">type</span>: <span class="hljs-title class_">TokenType</span>.<span class="hljs-property">Let</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">"let"</span>, start, <span class="hljs-attr">end</span>: start + <span class="hljs-number">3</span> };
+  },
+  <span class="hljs-title function_">assign</span>(<span class="hljs-params">start: <span class="hljs-built_in">number</span></span>) {
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">type</span>: <span class="hljs-title class_">TokenType</span>.<span class="hljs-property">Assign</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">"="</span>, start, <span class="hljs-attr">end</span>: start + <span class="hljs-number">1</span> };
+  },
+  <span class="hljs-keyword">function</span>(<span class="hljs-params">start: <span class="hljs-built_in">number</span></span>) {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">type</span>: <span class="hljs-title class_">TokenType</span>.<span class="hljs-property">Function</span>,
+      <span class="hljs-attr">value</span>: <span class="hljs-string">"function"</span>,
+      start,
+      <span class="hljs-attr">end</span>: start + <span class="hljs-number">8</span>,
+    };
+  },
+  <span class="hljs-title function_">leftParen</span>(<span class="hljs-params">start: <span class="hljs-built_in">number</span></span>) {
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">type</span>: <span class="hljs-title class_">TokenType</span>.<span class="hljs-property">LeftParen</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">"("</span>, start, <span class="hljs-attr">end</span>: start + <span class="hljs-number">1</span> };
+  },
+  <span class="hljs-title function_">rightParen</span>(<span class="hljs-params">start: <span class="hljs-built_in">number</span></span>) {
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">type</span>: <span class="hljs-title class_">TokenType</span>.<span class="hljs-property">RightParen</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">")"</span>, start, <span class="hljs-attr">end</span>: start + <span class="hljs-number">1</span> };
+  },
+  <span class="hljs-title function_">leftCurly</span>(<span class="hljs-params">start: <span class="hljs-built_in">number</span></span>) {
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">type</span>: <span class="hljs-title class_">TokenType</span>.<span class="hljs-property">LeftCurly</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">"{"</span>, start, <span class="hljs-attr">end</span>: start + <span class="hljs-number">1</span> };
+  },
+  <span class="hljs-title function_">rightCurly</span>(<span class="hljs-params">start: <span class="hljs-built_in">number</span></span>) {
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">type</span>: <span class="hljs-title class_">TokenType</span>.<span class="hljs-property">RightCurly</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">"}"</span>, start, <span class="hljs-attr">end</span>: start + <span class="hljs-number">1</span> };
+  },
+  <span class="hljs-title function_">identifier</span>(<span class="hljs-params">start: <span class="hljs-built_in">number</span>, value: <span class="hljs-built_in">string</span></span>) {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">type</span>: <span class="hljs-title class_">TokenType</span>.<span class="hljs-property">Identifier</span>,
+      value,
+      start,
+      <span class="hljs-attr">end</span>: start + value.<span class="hljs-property">length</span>,
+    };
+  },
+}
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">SingleCharTokens</span> = <span class="hljs-string">"("</span> | <span class="hljs-string">")"</span> | <span class="hljs-string">"{"</span> | <span class="hljs-string">"}"</span> | <span class="hljs-string">"="</span>;
+
+<span class="hljs-comment">// 单字符到 Token 生成器的映射</span>
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">KNOWN_SINGLE_CHAR_TOKENS</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>&#x3C;
+  <span class="hljs-title class_">SingleCharTokens</span>,
+  <span class="hljs-keyword">typeof</span> <span class="hljs-variable constant_">TOKENS_GENERATOR</span>[keyof <span class="hljs-keyword">typeof</span> <span class="hljs-variable constant_">TOKENS_GENERATOR</span>]
+>([
+  [<span class="hljs-string">"("</span>, <span class="hljs-variable constant_">TOKENS_GENERATOR</span>.<span class="hljs-property">leftParen</span>],
+  [<span class="hljs-string">")"</span>, <span class="hljs-variable constant_">TOKENS_GENERATOR</span>.<span class="hljs-property">rightParen</span>],
+  [<span class="hljs-string">"{"</span>, <span class="hljs-variable constant_">TOKENS_GENERATOR</span>.<span class="hljs-property">leftCurly</span>],
+  [<span class="hljs-string">"}"</span>, <span class="hljs-variable constant_">TOKENS_GENERATOR</span>.<span class="hljs-property">rightCurly</span>],
+  [<span class="hljs-string">"="</span>, <span class="hljs-variable constant_">TOKENS_GENERATOR</span>.<span class="hljs-property">assign</span>],
+]);
+</code></pre>
+<h3>2. 代码字符扫描、分组</h3>
+<p>现在我们开始实现 Tokenizer 对象:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Tokenizer</span> {
+  <span class="hljs-keyword">private</span> <span class="hljs-attr">_tokens</span>: <span class="hljs-title class_">Token</span>[] = [];
+  <span class="hljs-keyword">private</span> <span class="hljs-attr">_currentIndex</span>: <span class="hljs-built_in">number</span> = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">private</span> <span class="hljs-attr">_source</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">input: <span class="hljs-built_in">string</span></span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">_source</span> = input;
+  }
+  <span class="hljs-title function_">tokenize</span>(): <span class="hljs-title class_">Token</span>[] {
+    <span class="hljs-keyword">while</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span> &#x3C; <span class="hljs-variable language_">this</span>.<span class="hljs-property">_source</span>.<span class="hljs-property">length</span>) {
+      <span class="hljs-keyword">let</span> currentChar = <span class="hljs-variable language_">this</span>.<span class="hljs-property">_source</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span>];
+      <span class="hljs-keyword">const</span> startIndex = <span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span>;
+      
+      <span class="hljs-comment">// 根据语法规则进行 token 分组</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">_tokens</span>;
+  }
+}
+</code></pre>
+<p>在扫描字符的过程，我们需要对不同的字符各自进行不同的处理，具体的策略如下：</p>
+<ul>
+<li>当前字符为分隔符，如<code>空格</code>，直接跳过，不处理；</li>
+<li>当前字符为字母，需要继续扫描，获取完整的单词:
+<ul>
+<li>如果单词为语法关键字，则新建相应关键字的 Token</li>
+<li>否则视为普通的变量名</li>
+</ul>
+</li>
+<li>当前字符为单字符，如<code>{</code>、<code>}</code>、<code>(</code>、<code>)</code>，则新建单字符对应的 Token</li>
+</ul>
+<p>接着我们在代码中实现:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// while 循环内部</span>
+<span class="hljs-keyword">let</span> currentChar = <span class="hljs-variable language_">this</span>.<span class="hljs-property">_source</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span>];
+<span class="hljs-keyword">const</span> startIndex = <span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span>;
+
+<span class="hljs-keyword">const</span> isAlpha = (<span class="hljs-attr">char</span>: <span class="hljs-built_in">string</span>): <span class="hljs-function"><span class="hljs-params">boolean</span> =></span> {
+  <span class="hljs-keyword">return</span> (char >= <span class="hljs-string">"a"</span> &#x26;&#x26; char &#x3C;= <span class="hljs-string">"z"</span>) || (char >= <span class="hljs-string">"A"</span> &#x26;&#x26; char &#x3C;= <span class="hljs-string">"Z"</span>);
+}
+
+<span class="hljs-comment">// 1. 处理空格</span>
+<span class="hljs-keyword">if</span> (currentChar === <span class="hljs-string">' '</span>) {
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span>++;
+  <span class="hljs-keyword">continue</span>;
+}
+<span class="hljs-comment">// 2. 处理字母</span>
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isAlpha</span>(currentChar)) {
+  <span class="hljs-keyword">let</span> identifier = <span class="hljs-string">''</span>;
+  <span class="hljs-keyword">while</span>(<span class="hljs-title function_">isAlpha</span>(currentChar)) {
+    identifier += currentChar;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span> ++;
+    currentChar = <span class="hljs-variable language_">this</span>.<span class="hljs-property">_source</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span>];
+  }
+  <span class="hljs-keyword">let</span> <span class="hljs-attr">token</span>: <span class="hljs-title class_">Token</span>;
+  <span class="hljs-keyword">if</span> (identifier <span class="hljs-keyword">in</span> <span class="hljs-variable constant_">TOKENS_GENERATOR</span>) {
+    <span class="hljs-comment">// 如果是关键字</span>
+    token =
+        <span class="hljs-variable constant_">TOKENS_GENERATOR</span>[identifier <span class="hljs-keyword">as</span> keyof <span class="hljs-keyword">typeof</span> <span class="hljs-variable constant_">TOKENS_GENERATOR</span>](
+          startIndex
+        );
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// 如果是普通标识符</span>
+    token = <span class="hljs-variable constant_">TOKENS_GENERATOR</span>[<span class="hljs-string">"identifier"</span>](startIndex, identifier);
+  }
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">_tokens</span>.<span class="hljs-title function_">push</span>(token);
+  <span class="hljs-keyword">continue</span>;
+}
+<span class="hljs-comment">// 3. 处理单字符</span>
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-variable constant_">KNOWN_SINGLE_CHAR_TOKENS</span>.<span class="hljs-title function_">has</span>(currentChar <span class="hljs-keyword">as</span> <span class="hljs-title class_">SingleCharTokens</span>)) {
+  <span class="hljs-keyword">const</span> token = <span class="hljs-variable constant_">KNOWN_SINGLE_CHAR_TOKENS</span>.<span class="hljs-title function_">get</span>(
+    currentChar <span class="hljs-keyword">as</span> <span class="hljs-title class_">SingleCharTokens</span>
+  )!(startIndex);
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">_tokens</span>.<span class="hljs-title function_">push</span>(token);
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span>++;
+  <span class="hljs-keyword">continue</span>;
+}
+</code></pre>
+<p>OK，接下来我们来增加测试用例，新建<code>src/__test__/tokenizer.test.ts</code>，内容如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-title function_">describe</span>(<span class="hljs-string">"testTokenizerFunction"</span>, <span class="hljs-function">() =></span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">"test example"</span>, <span class="hljs-function">() =></span> {
+    <span class="hljs-keyword">const</span> result = [
+      { <span class="hljs-attr">type</span>: <span class="hljs-string">"Let"</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">"let"</span>, <span class="hljs-attr">start</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">end</span>: <span class="hljs-number">3</span> },
+      { <span class="hljs-attr">type</span>: <span class="hljs-string">"Identifier"</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">"a"</span>, <span class="hljs-attr">start</span>: <span class="hljs-number">4</span>, <span class="hljs-attr">end</span>: <span class="hljs-number">5</span> },
+      { <span class="hljs-attr">type</span>: <span class="hljs-string">"Assign"</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">"="</span>, <span class="hljs-attr">start</span>: <span class="hljs-number">6</span>, <span class="hljs-attr">end</span>: <span class="hljs-number">7</span> },
+      { <span class="hljs-attr">type</span>: <span class="hljs-string">"Function"</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">"function"</span>, <span class="hljs-attr">start</span>: <span class="hljs-number">8</span>, <span class="hljs-attr">end</span>: <span class="hljs-number">16</span> },
+      { <span class="hljs-attr">type</span>: <span class="hljs-string">"LeftParen"</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">"("</span>, <span class="hljs-attr">start</span>: <span class="hljs-number">16</span>, <span class="hljs-attr">end</span>: <span class="hljs-number">17</span> },
+      { <span class="hljs-attr">type</span>: <span class="hljs-string">"RightParen"</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">")"</span>, <span class="hljs-attr">start</span>: <span class="hljs-number">17</span>, <span class="hljs-attr">end</span>: <span class="hljs-number">18</span> },
+      { <span class="hljs-attr">type</span>: <span class="hljs-string">"LeftCurly"</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">"{"</span>, <span class="hljs-attr">start</span>: <span class="hljs-number">19</span>, <span class="hljs-attr">end</span>: <span class="hljs-number">20</span> },
+      { <span class="hljs-attr">type</span>: <span class="hljs-string">"RightCurly"</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">"}"</span>, <span class="hljs-attr">start</span>: <span class="hljs-number">20</span>, <span class="hljs-attr">end</span>: <span class="hljs-number">21</span> },
+    ];
+    <span class="hljs-keyword">const</span> tokenizer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Tokenizer</span>(<span class="hljs-string">"let a = function() {}"</span>);
+    <span class="hljs-title function_">expect</span>(tokenizer.<span class="hljs-title function_">tokenize</span>()).<span class="hljs-title function_">toEqual</span>(result);
+  });
+});
+</code></pre>
+<p>然后在终端执行<code>pnpm test</code>，可以发现如下的测试结果:</p>
+<p><img src="img\ce3c3b18-ae61-11ed-b5c5-342eb7027b95.jpg" alt="image.png"></p>
+<p>说明此时一个简易版本的分词器已经被我们开发出来了，不过目前的分词器还比较简陋，仅仅支持有限的语法，不过在明确了核心的开发步骤之后，后面继续完善的过程就比较简单了。</p>
+<h2>语法分析器开发</h2>
+<p>在解析出词法 token 之后，我们就可以进入语法分析阶段了。在这个阶段，我们会依次遍历 token，对代码进行语法结构层面的分析，最后的目标是生成 AST 数据结构。至于代码的 AST 结构到底是什么样子，你可以去 <a href="https://astexplorer.net/" target="_blank" rel="nofollow noopener noreferrer">AST Explorer</a> 网站进行在线预览:</p>
+<p><img src="img\ce4f52fc-ae61-11ed-8fba-342eb7027b95.jpg" alt="image.png"></p>
+<p>接下来，我们要做的就是将 token 数组转换为上图所示的 AST 数据。</p>
+<p>首先新建<code>src/Parser.ts</code>，添加如下的类型声明代码及 <code>Parser</code> 类的初始化代码:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">NodeType</span> {
+  <span class="hljs-title class_">Program</span> = <span class="hljs-string">"Program"</span>,
+  <span class="hljs-title class_">VariableDeclaration</span> = <span class="hljs-string">"VariableDeclaration"</span>,
+  <span class="hljs-title class_">VariableDeclarator</span> = <span class="hljs-string">"VariableDeclarator"</span>,
+  <span class="hljs-title class_">Identifier</span> = <span class="hljs-string">"Identifier"</span>,
+  <span class="hljs-title class_">FunctionExpression</span> = <span class="hljs-string">"FunctionExpression"</span>,
+  <span class="hljs-title class_">BlockStatement</span> = <span class="hljs-string">"BlockStatement"</span>,
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Identifier</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Node</span> {
+  <span class="hljs-attr">type</span>: <span class="hljs-title class_">NodeType</span>.<span class="hljs-property">Identifier</span>;
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Expression</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Node</span> {}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Statement</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Node</span> {}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Program</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Node</span> {
+  <span class="hljs-attr">type</span>: <span class="hljs-title class_">NodeType</span>.<span class="hljs-property">Program</span>;
+  <span class="hljs-attr">body</span>: <span class="hljs-title class_">Statement</span>[];
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">VariableDeclarator</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Node</span> {
+  <span class="hljs-attr">type</span>: <span class="hljs-title class_">NodeType</span>.<span class="hljs-property">VariableDeclarator</span>;
+  <span class="hljs-attr">id</span>: <span class="hljs-title class_">Identifier</span>;
+  <span class="hljs-attr">init</span>: <span class="hljs-title class_">Expression</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">VariableDeclaration</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Node</span> {
+  <span class="hljs-attr">type</span>: <span class="hljs-title class_">NodeType</span>.<span class="hljs-property">VariableDeclaration</span>;
+  <span class="hljs-attr">kind</span>: <span class="hljs-string">"var"</span> | <span class="hljs-string">"let"</span> | <span class="hljs-string">"const"</span>;
+  <span class="hljs-attr">declarations</span>: <span class="hljs-title class_">VariableDeclarator</span>[];
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">FunctionExpression</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Node</span> {
+  <span class="hljs-attr">type</span>: <span class="hljs-title class_">NodeType</span>.<span class="hljs-property">FunctionExpression</span>;
+  <span class="hljs-attr">id</span>: <span class="hljs-title class_">Identifier</span> | <span class="hljs-literal">null</span>;
+  <span class="hljs-attr">params</span>: <span class="hljs-title class_">Expression</span>[] | <span class="hljs-title class_">Identifier</span>[];
+  <span class="hljs-attr">body</span>: <span class="hljs-title class_">BlockStatement</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">BlockStatement</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Node</span> {
+  <span class="hljs-attr">type</span>: <span class="hljs-title class_">NodeType</span>.<span class="hljs-property">BlockStatement</span>;
+  <span class="hljs-attr">body</span>: <span class="hljs-title class_">Statement</span>[];
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">VariableKind</span> = <span class="hljs-string">"let"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Parser</span> {
+  <span class="hljs-keyword">private</span> <span class="hljs-attr">_tokens</span>: <span class="hljs-title class_">Token</span>[] = [];
+  <span class="hljs-keyword">private</span> _currentIndex = <span class="hljs-number">0</span>;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">token: Token[]</span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">_tokens</span> = [...token];
+  }
+  
+  <span class="hljs-title function_">parse</span>(): <span class="hljs-title class_">Program</span> {
+    <span class="hljs-keyword">const</span> program = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_parseProgram</span>();
+    <span class="hljs-keyword">return</span> program;
+  }
+  
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">_parseProgram</span>(): <span class="hljs-title class_">Program</span> {
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">program</span>: <span class="hljs-title class_">Program</span> = {
+      <span class="hljs-attr">type</span>: <span class="hljs-title class_">NodeType</span>.<span class="hljs-property">Program</span>,
+      <span class="hljs-attr">body</span>: [],
+      <span class="hljs-attr">start</span>: <span class="hljs-number">0</span>,
+      <span class="hljs-attr">end</span>: <span class="hljs-title class_">Infinity</span>,
+    };
+    <span class="hljs-comment">// 解析 token 数组</span>
+    <span class="hljs-keyword">return</span> program;
+  }
+}
+</code></pre>
+<p>从中你可以看出，解析 AST 的核心逻辑就集中在 <code>_parseProgram</code> 方法中，接下来让我们一步步完善一个方法:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Parser</span> {
+  <span class="hljs-keyword">private</span> _parseProgram {
+    <span class="hljs-comment">// 省略已有代码</span>
+    <span class="hljs-keyword">while</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_isEnd</span>()) {
+      <span class="hljs-keyword">const</span> node = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_parseStatement</span>();
+      program.<span class="hljs-property">body</span>.<span class="hljs-title function_">push</span>(node);
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_isEnd</span>()) {
+        program.<span class="hljs-property">end</span> = node.<span class="hljs-property">end</span>;
+      }
+    }
+    <span class="hljs-keyword">return</span> program;
+  }
+  <span class="hljs-comment">// token 是否已经扫描完</span>
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">_isEnd</span>(): <span class="hljs-built_in">boolean</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span> >= <span class="hljs-variable language_">this</span>.<span class="hljs-property">_tokens</span>.<span class="hljs-property">length</span>;
+  }
+  <span class="hljs-comment">// 工具方法，表示消费当前 Token，扫描位置移动到下一个 token</span>
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">_goNext</span>(<span class="hljs-attr">type</span>: <span class="hljs-title class_">TokenType</span> | <span class="hljs-title class_">TokenType</span>[]): <span class="hljs-title class_">Token</span> {
+    <span class="hljs-keyword">const</span> currentToken = <span class="hljs-variable language_">this</span>.<span class="hljs-property">_tokens</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span>];
+    <span class="hljs-comment">// 断言当前 Token 的类型，如果不能匹配，则抛出错误</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(<span class="hljs-keyword">type</span>)) {
+      <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">type</span>.<span class="hljs-title function_">includes</span>(currentToken.<span class="hljs-property">type</span>)) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(
+          <span class="hljs-string">`Expect <span class="hljs-subst">${<span class="hljs-keyword">type</span>.join(<span class="hljs-string">","</span>)}</span>, but got <span class="hljs-subst">${currentToken.<span class="hljs-keyword">type</span>}</span>`</span>
+        );
+      }
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">if</span> (currentToken.<span class="hljs-property">type</span> !== <span class="hljs-keyword">type</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`Expect <span class="hljs-subst">${<span class="hljs-keyword">type</span>}</span>, but got <span class="hljs-subst">${currentToken.<span class="hljs-keyword">type</span>}</span>`</span>);
+      }
+    }
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span>++;
+    <span class="hljs-keyword">return</span> currentToken;
+  }
+  
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">_checkCurrentTokenType</span>(<span class="hljs-attr">type</span>: <span class="hljs-title class_">TokenType</span> | <span class="hljs-title class_">TokenType</span>[]): <span class="hljs-built_in">boolean</span> {
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_isEnd</span>()) {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">const</span> currentToken = <span class="hljs-variable language_">this</span>.<span class="hljs-property">_tokens</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span>];
+    <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(<span class="hljs-keyword">type</span>)) {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">type</span>.<span class="hljs-title function_">includes</span>(currentToken.<span class="hljs-property">type</span>);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">return</span> currentToken.<span class="hljs-property">type</span> === <span class="hljs-keyword">type</span>;
+    }
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">_getCurrentToken</span>(): <span class="hljs-title class_">Token</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">_tokens</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span>];
+  }
+  
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">_getPreviousToken</span>(): <span class="hljs-title class_">Token</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">_tokens</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">_currentIndex</span> - <span class="hljs-number">1</span>];
+  }
+}
+</code></pre>
+<p>一个程序(Program)实际上由各个语句(Statement)来构成，因此在<code>_parseProgram</code>逻辑中，我们主要做的就是扫描一个个语句，然后放到 Program 对象的 body 中。那么，接下来，我们将关注点放到语句的扫描逻辑上面。</p>
+<p>从之前的示例代码:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">let</span> a = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {}
+</code></pre>
+<p>我们可以知道这是一个变量声明语句，那么现在我们就在 <code>_parseStatement</code> 中实现这类语句的解析:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">NodeType</span> {
+  <span class="hljs-title class_">Program</span> = <span class="hljs-string">"Program"</span>,
+  <span class="hljs-title class_">VariableDeclarator</span> = <span class="hljs-string">"VariableDeclarator"</span>,
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Parser</span> {
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">_parseStatement</span>(): <span class="hljs-title class_">Statement</span> {
+    <span class="hljs-comment">// TokenType 来自 Tokenizer 的实现中</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_checkCurrentTokenType</span>(<span class="hljs-title class_">TokenType</span>.<span class="hljs-property">Let</span>)) {
+      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_parseVariableDeclaration</span>();
+    }
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">"Unexpected token"</span>);
+  }
+  
+  <span class="hljs-keyword">private</span> <span class="hljs-title function_">_parseVariableDeclaration</span>(): <span class="hljs-title class_">VariableDeclaration</span> {
+    <span class="hljs-comment">// 获取语句开始位置</span>
+    <span class="hljs-keyword">const</span> { start } = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_getCurrentToken</span>();
+    <span class="hljs-comment">// 拿到 let</span>
+    <span class="hljs-keyword">const</span> kind = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_getCurrentToken</span>().<span class="hljs-property">value</span>;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_goNext</span>(<span class="hljs-title class_">TokenType</span>.<span class="hljs-property">Let</span>);
+    <span class="hljs-comment">// 解析变量名 foo</span>
+    <span class="hljs-keyword">const</span> id = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_parseIdentifier</span>();
+    <span class="hljs-comment">// 解析 = </span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_goNext</span>(<span class="hljs-title class_">TokenType</span>.<span class="hljs-property">Assign</span>);
+    <span class="hljs-comment">// 解析函数表达式</span>
+    <span class="hljs-keyword">const</span> init = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_parseFunctionExpression</span>();
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">declarator</span>: <span class="hljs-title class_">VariableDeclarator</span> = {
+      <span class="hljs-attr">type</span>: <span class="hljs-title class_">NodeType</span>.<span class="hljs-property">VariableDeclarator</span>,
+      id,
+      init,
+      <span class="hljs-attr">start</span>: id.<span class="hljs-property">start</span>,
+      <span class="hljs-attr">end</span>: init ? init.<span class="hljs-property">end</span> : id.<span class="hljs-property">end</span>,
+    };
+    <span class="hljs-comment">// 构造 Declaration 节点</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">node</span>: <span class="hljs-title class_">VariableDeclaration</span> = {
+      <span class="hljs-attr">type</span>: <span class="hljs-title class_">NodeType</span>.<span class="hljs-property">VariableDeclaration</span>,
+      <span class="hljs-attr">kind</span>: kind <span class="hljs-keyword">as</span> <span class="hljs-title class_">VariableKind</span>,
+      <span class="hljs-attr">declarations</span>: [declarator],
+      start,
+      <span class="hljs-attr">end</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_getPreviousToken</span>().<span class="hljs-property">end</span>,
+    };
+    <span class="hljs-keyword">return</span> node;
+  }
+}
+</code></pre>
+<p>接下来主要的代码解析逻辑可以梳理如下:</p>
+<ul>
+<li>发现 <code>let</code> 关键词对应的 token，进入 <code>_parseVariableDeclaration</code></li>
+<li>解析变量名，如示例代码中的 <code>foo</code></li>
+<li>解析函数表达式，如示例代码中的 <code>function() {}</code></li>
+</ul>
+<p>其中，解析变量名的过程我们通过<code>_parseIdentifier</code> 方法实现，解析函数表达式的过程由<code>_parseFunctionExpression</code>来实现，代码如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// 1. 解析变量名</span>
+<span class="hljs-keyword">private</span> <span class="hljs-title function_">_parseIdentifier</span>(): <span class="hljs-title class_">Identifier</span> {
+  <span class="hljs-keyword">const</span> token = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_getCurrentToken</span>();
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">identifier</span>: <span class="hljs-title class_">Identifier</span> = {
+    <span class="hljs-attr">type</span>: <span class="hljs-title class_">NodeType</span>.<span class="hljs-property">Identifier</span>,
+    <span class="hljs-attr">name</span>: token.<span class="hljs-property">value</span>!,
+    <span class="hljs-attr">start</span>: token.<span class="hljs-property">start</span>,
+    <span class="hljs-attr">end</span>: token.<span class="hljs-property">end</span>,
+  };
+  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_goNext</span>(<span class="hljs-title class_">TokenType</span>.<span class="hljs-property">Identifier</span>);
+  <span class="hljs-keyword">return</span> identifier;
+}
+
+<span class="hljs-comment">// 2. 解析函数表达式</span>
+<span class="hljs-keyword">private</span> <span class="hljs-title function_">_parseFunctionExpression</span>(): <span class="hljs-title class_">FunctionExpression</span> {
+  <span class="hljs-keyword">const</span> { start } = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_getCurrentToken</span>();
+  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_goNext</span>(<span class="hljs-title class_">TokenType</span>.<span class="hljs-property">Function</span>);
+  <span class="hljs-keyword">let</span> id = <span class="hljs-literal">null</span>;
+  <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_checkCurrentTokenType</span>(<span class="hljs-title class_">TokenType</span>.<span class="hljs-property">Identifier</span>)) {
+    id = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_parseIdentifier</span>();
+  }
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">node</span>: <span class="hljs-title class_">FunctionExpression</span> = {
+    <span class="hljs-attr">type</span>: <span class="hljs-title class_">NodeType</span>.<span class="hljs-property">FunctionExpression</span>,
+    id,
+    <span class="hljs-attr">params</span>: [],
+    <span class="hljs-attr">body</span>: {
+      <span class="hljs-attr">type</span>: <span class="hljs-title class_">NodeType</span>.<span class="hljs-property">BlockStatement</span>,
+      <span class="hljs-attr">body</span>: [],
+      <span class="hljs-attr">start</span>: start,
+      <span class="hljs-attr">end</span>: <span class="hljs-title class_">Infinity</span>,
+    },
+    start,
+    <span class="hljs-attr">end</span>: <span class="hljs-number">0</span>,
+  };
+  <span class="hljs-keyword">return</span> node;
+}
+
+<span class="hljs-comment">// 用于解析函数参数</span>
+<span class="hljs-keyword">private</span> <span class="hljs-title function_">_parseParams</span>(): <span class="hljs-title class_">Identifier</span>[] | <span class="hljs-title class_">Expression</span>[] {
+  <span class="hljs-comment">// 消费 "("</span>
+  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_goNext</span>(<span class="hljs-title class_">TokenType</span>.<span class="hljs-property">LeftParen</span>);
+  <span class="hljs-keyword">const</span> params = [];
+  <span class="hljs-comment">// 逐个解析括号中的参数</span>
+  <span class="hljs-keyword">while</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_checkCurrentTokenType</span>(<span class="hljs-title class_">TokenType</span>.<span class="hljs-property">RightParen</span>)) {
+    <span class="hljs-keyword">let</span> param = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_parseIdentifier</span>();
+    params.<span class="hljs-title function_">push</span>(param);
+  }
+  <span class="hljs-comment">// 消费 ")"</span>
+  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_goNext</span>(<span class="hljs-title class_">TokenType</span>.<span class="hljs-property">RightParen</span>);
+  <span class="hljs-keyword">return</span> params;
+}
+
+<span class="hljs-comment">// 用于解析函数体</span>
+<span class="hljs-keyword">private</span> <span class="hljs-title function_">_parseBlockStatement</span>(): <span class="hljs-title class_">BlockStatement</span> {
+  <span class="hljs-keyword">const</span> { start } = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_getCurrentToken</span>();
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">blockStatement</span>: <span class="hljs-title class_">BlockStatement</span> = {
+    <span class="hljs-attr">type</span>: <span class="hljs-title class_">NodeType</span>.<span class="hljs-property">BlockStatement</span>,
+    <span class="hljs-attr">body</span>: [],
+    start,
+    <span class="hljs-attr">end</span>: <span class="hljs-title class_">Infinity</span>,
+  };
+  <span class="hljs-comment">// 消费 "{"</span>
+  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_goNext</span>(<span class="hljs-title class_">TokenType</span>.<span class="hljs-property">LeftCurly</span>);
+  <span class="hljs-keyword">while</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_checkCurrentTokenType</span>(<span class="hljs-title class_">TokenType</span>.<span class="hljs-property">RightCurly</span>)) {
+    <span class="hljs-comment">// 递归调用 _parseStatement 解析函数体中的语句(Statement)</span>
+    <span class="hljs-keyword">const</span> node = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_parseStatement</span>();
+    blockStatement.<span class="hljs-property">body</span>.<span class="hljs-title function_">push</span>(node);
+  }
+  blockStatement.<span class="hljs-property">end</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_getCurrentToken</span>().<span class="hljs-property">end</span>;
+  <span class="hljs-comment">// 消费 "}"</span>
+  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_goNext</span>(<span class="hljs-title class_">TokenType</span>.<span class="hljs-property">RightCurly</span>);
+  <span class="hljs-keyword">return</span> blockStatement;
+}
+</code></pre>
+<p>OK，一个简易的 Parser 现在就已经搭建出来了，你可以用如下的测试用例看看程序运行的效果，代码如下:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// src/__test__/parser.test.ts</span>
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">"testParserFunction"</span>, <span class="hljs-function">() =></span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">"test example code"</span>, <span class="hljs-function">() =></span> {
+    <span class="hljs-keyword">const</span> result = {
+      <span class="hljs-attr">type</span>: <span class="hljs-string">"Program"</span>,
+      <span class="hljs-attr">body</span>: [
+        {
+          <span class="hljs-attr">type</span>: <span class="hljs-string">"VariableDeclaration"</span>,
+          <span class="hljs-attr">kind</span>: <span class="hljs-string">"let"</span>,
+          <span class="hljs-attr">declarations</span>: [
+            {
+              <span class="hljs-attr">type</span>: <span class="hljs-string">"VariableDeclarator"</span>,
+              <span class="hljs-attr">id</span>: {
+                <span class="hljs-attr">type</span>: <span class="hljs-string">"Identifier"</span>,
+                <span class="hljs-attr">name</span>: <span class="hljs-string">"a"</span>,
+                <span class="hljs-attr">start</span>: <span class="hljs-number">4</span>,
+                <span class="hljs-attr">end</span>: <span class="hljs-number">5</span>,
+              },
+              <span class="hljs-attr">init</span>: {
+                <span class="hljs-attr">type</span>: <span class="hljs-string">"FunctionExpression"</span>,
+                <span class="hljs-attr">id</span>: <span class="hljs-literal">null</span>,
+                <span class="hljs-attr">params</span>: [],
+                <span class="hljs-attr">body</span>: {
+                  <span class="hljs-attr">type</span>: <span class="hljs-string">"BlockStatement"</span>,
+                  <span class="hljs-attr">body</span>: [],
+                  <span class="hljs-attr">start</span>: <span class="hljs-number">19</span>,
+                  <span class="hljs-attr">end</span>: <span class="hljs-number">21</span>,
+                },
+                <span class="hljs-attr">start</span>: <span class="hljs-number">8</span>,
+                <span class="hljs-attr">end</span>: <span class="hljs-number">21</span>,
+              },
+              <span class="hljs-attr">start</span>: <span class="hljs-number">0</span>,
+              <span class="hljs-attr">end</span>: <span class="hljs-number">21</span>,
+            },
+          ],
+          <span class="hljs-attr">start</span>: <span class="hljs-number">0</span>,
+          <span class="hljs-attr">end</span>: <span class="hljs-number">21</span>,
+        },
+      ],
+      <span class="hljs-attr">start</span>: <span class="hljs-number">0</span>,
+      <span class="hljs-attr">end</span>: <span class="hljs-number">21</span>,
+    };
+    <span class="hljs-keyword">const</span> code = <span class="hljs-string">`let a = function() {};`</span>;
+    <span class="hljs-keyword">const</span> tokenizer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Tokenizer</span>(code);
+    <span class="hljs-keyword">const</span> parser = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Parser</span>(tokenizer.<span class="hljs-title function_">tokenize</span>());
+    <span class="hljs-title function_">expect</span>(parser.<span class="hljs-title function_">parse</span>()).<span class="hljs-title function_">toEqual</span>(result);
+  });
+});
+</code></pre>
+<h2>小结</h2>
+<p>恭喜你，学习完了本小节的内容。在本小节中，你需要重点掌握 AST 解析器中<code>词法分析</code>和<code>语法分析</code>的核心原理与实现细节。</p>
+<p>虽然本节只是实现了一个比较简陋的 AST 解析器，但重点在于整个词法分析和语法分析代码框架的搭建。当核心的流程已经实现之后，接下来的事情就是基于已有的代码框架不断地完善语法细节，整体的难度降低了很多。</p>
+<p>另外，小册的 Github 仓库中在本小节的基础上已经实现了一个更加完整的 AST 解析器，虽然代码量远远多于本节的示例代码，但原理完全一样，很容易理解。当 AST 解析的功能被开发完成后，接下来要做的就是正式实现一个 Bundler 的功能了，让我们下一节不见不散👋🏻</p>
+</div>
+</body>
+</html>
