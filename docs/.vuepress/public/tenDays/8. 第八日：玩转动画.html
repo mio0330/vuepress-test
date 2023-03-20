@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <h1>第七天</h1>
+<h2>第一个故事：匀速圆周运动</h2>
+<p>动画是网页中常见的效果元素。我们在前面的故事中，也已经见过了一些动画，比如“让CSS做更多的事情”这一故事中，我们使用了CSS关键帧动画。</p>
+<p>现代浏览器支持很多种动画方式，比如：CSS过渡动画、CSS关键帧动画、SVG动画、Web Animation API，我们还可以用JS自己实现动画。另外还有许多使用方便和功能强大的第三方动画库可以供我们使用。</p>
+<p>今天的故事，我们将讲述两种最常用的动画模式：</p>
+<ul>
+<li>固定轨迹的动画</li>
+<li>连续的动画</li>
+</ul>
+<h3>圆周运动</h3>
+<p>第一个故事，我们先来看看固定轨迹动画的实现思路。这个动画效果是模拟地球围绕太阳做圆周运动：</p>
+<p><img src="img\a137a588-ae6f-11ed-871d-342eb7027b95.jpg" alt=""></p>
+<p>实现上图的动画的方式有很多，比较直接的是采用JS来实现，我们先来看一下JS实现的方案。</p>
+<p>首先，我们用HTML元素展示动画元素：</p>
+<pre><code class="hljs language-html"><span class="hljs-meta">&#x3C;!DOCTYPE <span class="hljs-meta-keyword">html</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">head</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">"X-UA-Compatible"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"ie=edge"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">title</span>></span>Document<span class="hljs-tag">&#x3C;/<span class="hljs-name">title</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">head</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"main"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"sun"</span>></span>🌞<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"earth"</span>></span>🌏<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">html</span>></span>
+</code></pre>
+<p>如上代码所示，我们用两个<code>div</code>元素分别代表太阳和地球两个对象。</p>
+<p>这是对应的CSS，设置了太阳和地球的初始位置和状态：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.main</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">512px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">512px</span>;
+  <span class="hljs-attribute">position</span>: relative;
+}
+<span class="hljs-selector-id">#sun</span>, <span class="hljs-selector-id">#earth</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>);
+}
+<span class="hljs-selector-id">#sun</span> {
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">5rem</span>;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">50%</span>;
+}
+<span class="hljs-selector-id">#earth</span> {
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">2rem</span>;
+}
+</code></pre>
+<p>在没有添加动画的时候，显示出来的界面是这样的：</p>
+<p><img src="img\a169acd9-ae6f-11ed-9338-342eb7027b95.jpg" alt=""></p>
+<p>太阳位于<code>div.main</code>元素正中间，因为我们用了一个经典的绝对定位实现水平垂直居中的方法：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#sun</span>, <span class="hljs-selector-id">#earth</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>);
+}
+<span class="hljs-selector-id">#sun</span> {
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">5rem</span>;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">50%</span>;
+}
+</code></pre>
+<p>我们将<code>#sun</code>元素的<code>position</code>设为<code>absolute</code>，<code>top</code>和<code>left</code>设为50%，此时它的左上角是位于<code>div.main</code>元素的中心点的。然后我们再通过<code>transform: translate(-50%, -50%)</code>将它左移、上移自身宽高的一半，这样它的中心点就位于<code>div.main</code>元素的中心了。</p>
+<p>接下来，我们要实现的效果是让地球的轨迹沿着围绕着太阳的环形运动，那么这个怎么实现呢？</p>
+<p>这里我们复习一下高中数学知识：</p>
+<p><img src="img\a17b8049-ae6f-11ed-9047-342eb7027b95.jpg" alt=""></p>
+<p>如图所示，在直角坐标系中，点p围绕半径r，圆心在原点的圆周运动，它任意时刻的坐标<code>px</code>，<code>py</code>满足：</p>
+<p><img src="img\a18bc5a0-ae6f-11ed-810b-342eb7027b95.jpg" alt=""></p>
+<p>⍺是原点到p点的线段与x轴的夹角。</p>
+<p>这是<strong>圆的参数方程</strong>。</p>
+<p>所以，我们要做的就是按照参数方程更新地球的位置就可以了。</p>
+<p>如果我们的动画让地球围绕太阳旋转一周的周期是T，那么，地球的角速度<code>⍵ = 2 * Math.PI / T</code>，所以，⍺角是：</p>
+<pre><code class="hljs language-js">⍺ = ⍵t = <span class="hljs-number">2</span> * <span class="hljs-built_in">Math</span>.PI * t / T
+</code></pre>
+<p>所以，我们就可以通过JS更新地球元素的<code>left</code>和<code>top</code>属性，让地球运动起来：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day08/index1-v1.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> earth = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'earth'</span>);
+<span class="hljs-keyword">const</span> x0 = <span class="hljs-number">256</span>;
+<span class="hljs-keyword">const</span> y0 = <span class="hljs-number">256</span>;
+<span class="hljs-keyword">const</span> radius = <span class="hljs-number">128</span>;
+<span class="hljs-keyword">const</span> T = <span class="hljs-number">5000</span>; <span class="hljs-comment">// 周期</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span>(<span class="hljs-params">t</span>) </span>{
+  <span class="hljs-keyword">const</span> alpha = <span class="hljs-number">2</span> * <span class="hljs-built_in">Math</span>.PI * t / T;
+  <span class="hljs-keyword">const</span> x = x0 + radius * <span class="hljs-built_in">Math</span>.cos(alpha);
+  <span class="hljs-keyword">const</span> y = y0 + radius * <span class="hljs-built_in">Math</span>.sin(alpha);
+  earth.style.left = <span class="hljs-string">`<span class="hljs-subst">${x}</span>px`</span>;
+  earth.style.top = <span class="hljs-string">`<span class="hljs-subst">${y}</span>px`</span>;
+  requestAnimationFrame(update);
+}
+update(<span class="hljs-number">0</span>);
+</code></pre>
+<p>上面的代码里，x0、y0是圆心，因为太阳不在坐标原点，所以最终的公式是：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> x = x0 + radius * <span class="hljs-built_in">Math</span>.cos(alpha);
+<span class="hljs-keyword">const</span> y = y0 + radius * <span class="hljs-built_in">Math</span>.sin(alpha);
+</code></pre>
+<p>然后我们通过<code>requestAnimationFrame</code>，计算x和y，不断更新<code>#earth</code>元素的<code>top、left</code>值：</p>
+<pre><code class="hljs language-js">earth.style.left = <span class="hljs-string">`<span class="hljs-subst">${x}</span>px`</span>;
+earth.style.top = <span class="hljs-string">`<span class="hljs-subst">${y}</span>px`</span>;
+</code></pre>
+<p><code>requestAnimationFrame</code>是浏览器的API，它的参数是一个回调函数。这个API告诉浏览器有一个动画需要执行执行，并且会在浏览器下次重绘之前调用指定的回调函数更新动画。</p>
+<p>现在我们来总结一下这种动画实现的思路：</p>
+<ol>
+<li>设计轨迹方程，找出动画变量和时间的关系</li>
+<li>确定动画周期和与动画变量对应的CSS属性</li>
+<li>通过<code>requestAnimationFrame</code>API，在浏览器重绘周期中更新动画变量，以实现我们需要的动画效果</li>
+</ol>
+<p>使用JS是实现固定轨迹动画的一种方法，我们还可以使用CSS动画来是实现这种类型的动画。这个故事的实例中，我们使用到了圆的参数方程，而CSS动画不太好实现正余弦计算。所以，为了使用CSS实现动画，我们需要调整我们的动画计算方式，那么要如何调整呢？</p>
+
+
+<h2>第二个故事：匀速圆周运动 2.0</h2>
+<p>使用CSS动画实现圆周运动，我们不能使用圆的参数方程，而需要使用圆的极坐标方程来实现。然后再通过CSS的transform和rotate，就能比较简单的实现圆周运动了。</p>
+
+<p>首先，我们需要调整一下我们的CSS样式，设置<code>transform-origin</code>属性改变元素旋转的参考点：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.main</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">512px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">512px</span>;
+  <span class="hljs-attribute">position</span>: relative;
+}
+<span class="hljs-selector-id">#sun</span>, <span class="hljs-selector-id">#earth</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+}
+<span class="hljs-selector-id">#sun</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">5rem</span>;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">50%</span>;
+}
+<span class="hljs-selector-id">#earth</span> {
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-number">50%</span> - <span class="hljs-number">128px</span>);
+  <span class="hljs-attribute">transform-origin</span>: <span class="hljs-number">50%</span> <span class="hljs-built_in">calc</span>(<span class="hljs-number">50%</span> + <span class="hljs-number">128px</span>);
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">2rem</span>;
+}
+</code></pre>
+<p>如上代码所示，我们调整了地球元素的初始位置和旋转参考点，使用了两个计算属性值: <code>top: calc(50% - 128px)</code> 和 <code>transform-origin: 50% calc(50% + 128px);</code>。</p>
+<p>👉🏻 CSS中，<code>calc</code>可以用来在CSS属性值中执行一些计算，特别有用的是，<code>calc</code>计算可以自动转换单位，所以我们可以将百分比单位的数值和px单位的值进行加减计算。</p>
+<p><code>top: calc(50% - 128px)</code>表示将<code>#earth</code>元素的<code>top</code>值设在父容器50%高度，并向上偏移128px的位置。于是地球出现在太阳的正上方，距离太阳中心点的距离是128px。</p>
+<p><img src="img\a19a0357-ae6f-11ed-ae19-342eb7027b95.jpg" alt=""></p>
+<p>默认情况下，<code>transform</code>属性是以元素自身盒子的左上角作为参考点的。而在我们的例子中，我们需要让地球元素以太阳的中心点作为旋转的参考点。所以我们需要使用<code>transform-origin</code>属性改变地球元素的参点。如下图所示：</p>
+<p><img src="img\a1ac46a5-ae6f-11ed-af70-342eb7027b95.jpg" alt=""></p>
+
+<p>从上图我们可以看出，以太阳中心作为旋转的参考点的位置位于<code>50% calc(50% + 128px)</code>。所以，<code>transform-origin: 50% calc(50% + 128px)</code>表示将地球的旋转参考点修改到太阳的中心点。这样执行地球的<code>transform</code>属性就能让地球围着太阳转了。</p>
+<p>然后，我们可以使用CSS关键帧动画，改变<code>tranform</code>的值：</p>
+<pre><code class="hljs language-css"><span class="hljs-keyword">@keyframes</span> rotate {
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1turn</span>)}
+}
+</code></pre>
+<p>然后我们给<code>#earth</code>元素增加动画：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#earth</span> {
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-number">50%</span> - <span class="hljs-number">128px</span>);
+  <span class="hljs-attribute">transform-origin</span>: <span class="hljs-number">50%</span> <span class="hljs-built_in">calc</span>(<span class="hljs-number">50%</span> + <span class="hljs-number">128px</span>);
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">2rem</span>;
+
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">0turn</span>);
+  <span class="hljs-attribute">animation</span>: rotate <span class="hljs-number">5s</span> linear infinite;
+}
+</code></pre>
+<p>最后，完整的CSS如下：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day08/index1-v2.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.main</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">512px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">512px</span>;
+  <span class="hljs-attribute">position</span>: relative;
+}
+<span class="hljs-selector-id">#sun</span>, <span class="hljs-selector-id">#earth</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+}
+<span class="hljs-selector-id">#sun</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">5rem</span>;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">50%</span>;
+}
+<span class="hljs-selector-id">#earth</span> {
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-number">50%</span> - <span class="hljs-number">128px</span>);
+  <span class="hljs-attribute">transform-origin</span>: <span class="hljs-number">50%</span> <span class="hljs-built_in">calc</span>(<span class="hljs-number">50%</span> + <span class="hljs-number">128px</span>);
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">2rem</span>;
+
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">0turn</span>);
+  <span class="hljs-attribute">animation</span>: rotate <span class="hljs-number">5s</span> linear infinite;
+}
+
+<span class="hljs-keyword">@keyframes</span> rotate {
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1turn</span>)}
+}
+</code></pre>
+<p>这样我们就实现了纯CSS版本的地球环绕太阳旋转的动画。</p>
+<p><img src="img\a1c037a8-ae6f-11ed-95f0-342eb7027b95.jpg" alt=""></p>
+<p>比较上图和第一个故事中的效果图，你可能会发现它们之间存在细微的差别。第一版是通过参数方程计算地球相对坐标位置，动态修改坐标位置来实现，所以地球本身，除了位置相对太阳旋转，其他的状态都保持不变。而这个版本是通过旋转来实现的，地球的旋转参考点始终是对着太阳的中心点的，所以看起来好像地球自身也在旋转。这就是效果上的细微差异。</p>
+
+<p>当然，这一版我们同样也可以不用CSS关键帧动画，改用JS来控制，我们只要将CSS动画去掉，添加以下JS代码：</p>
+<pre><code class="hljs language-js">  <span class="hljs-keyword">const</span> earth = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'earth'</span>);
+  <span class="hljs-keyword">const</span> T = <span class="hljs-number">5000</span>; <span class="hljs-comment">// 5秒</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span>(<span class="hljs-params">t</span>) </span>{
+    earth.style.transform = <span class="hljs-string">`translate(-50%, -50%) rotate(<span class="hljs-subst">${t / T}</span>turn)`</span>;
+    requestAnimationFrame(update);
+  }
+  update(<span class="hljs-number">0</span>);
+</code></pre>
+<p>如果你这么做，你会发现在一些浏览器（包括最新的chrome浏览器）上出现奇怪的现象：</p>
+<p><img src="img\a1df745a-ae6f-11ed-b056-342eb7027b95.jpg" alt=""></p>
+<p>如图所示，似乎地球在运动到某些位置的时候会突然抖动一下。不过这个不是我们代码的问题，而是chrome浏览器在处理emoji文字的<code>transform</code>属性时产生的bug。要解决这个问题，我们可以将<code>rotate</code>换成<code>rotate3d</code>:</p>
+<pre><code class="hljs language-js">  <span class="hljs-keyword">const</span> earth = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'earth'</span>);
+  <span class="hljs-keyword">const</span> T = <span class="hljs-number">5000</span>; <span class="hljs-comment">// 5秒</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span>(<span class="hljs-params">t</span>) </span>{
+    earth.style.transform = <span class="hljs-string">`translate(-50%, -50%) rotate3d(0, 0, 1, <span class="hljs-subst">${t / T}</span>turn)`</span>;
+    requestAnimationFrame(update);
+  }
+  update(<span class="hljs-number">0</span>);
+</code></pre>
+<p>这里我们用<code>rotate3d</code>来代替<code>rotate</code>。<code>rotate3d</code>接受4个参数，前三个参数定义一个三维向量，第四个参数表示围绕该向量旋转，我们是在平面上旋转，要围绕z轴，所以前三个参数是<code>0,0,1</code>。</p>
+<p>用<code>rotate3d</code>替代<code>rotate</code>之后，问题就消失了，这样我们依然可以用JS来控制动画。</p>
+<p>第一个和第二个故事阐述了固定轨迹动画的实现思路。规定轨迹动画不仅仅是圆周运动，它还包括了渐变动画，椭圆，贝塞尔曲线等等。这些动画既可以使用JS来实现，也可以采用CSS来实现。当然，如果采用CSS动画实现，你设计的动画变量需要被CSS支持，否则是无法实现用CSS来实现的。</p>
+<p>用JS或CSS来控制动画，各有各的好处，CSS动画更简单，能够保持WEB开发各司其职的原则，使得代码更加易于维护。而JS动画，在组合复杂的动画过程时，会更加灵活和方便。</p>
+<p>接下来，我们就来看看更加复杂的动画应该如何实现——连续动画。</p>
+<h2>第三个故事：自由落体和弹跳小球</h2>
+<p>在一般情况下，简单的动画使用CSS实现会比较方便，但是一些比较复杂的动画，还是需要使用JS来实现。</p>
+<p>比如我们实现一个模拟小球自由落体后弹跳的动画效果：</p>
+<p><img src="img\a1fed10c-ae6f-11ed-87ee-342eb7027b95.jpg" alt=""></p>
+<p>这是相关的HTML与CSS：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"sphere"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"ground"</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#sphere</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">20px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">20px</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#0af</span>;
+}
+
+<span class="hljs-selector-id">#ground</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">420px</span>;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">600px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">background</span>: black;
+}
+</code></pre>
+<p>这是一个连续的动画，连续的动画实际是由几个不同的阶段的轨迹动画组合而成。比如上面的例子，就是由若干个自由落体动画和匀减速动画组合而成。像这样的动画，使用CSS动画几乎没法实现，还是应该考虑使用JS动画。</p>
+<p>第一步，我们先实现一个自由落地动画。</p>
+<p>我们知道自由落体运动是一个初速度为0的匀加速运动，假设小球离地面高度为S，落地的时间为T，那么根据自由落体运动的公式，我们可以计算出小球的加速度为：</p>
+<p><img src="img\a213d518-ae6f-11ed-8b0d-342eb7027b95.jpg" alt=""></p>
+<p>那么经过t时间（t &#x3C;= T），小球运动的位移为：</p>
+<p><img src="img\a227475f-ae6f-11ed-aa09-342eb7027b95.jpg" alt=""></p>
+<p>所以，我们可以这样定义自由落体动画：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> S = <span class="hljs-number">400</span>; <span class="hljs-comment">// 小球离地的初始高度</span>
+<span class="hljs-keyword">const</span> T = <span class="hljs-number">1000</span>; <span class="hljs-comment">// 落地时间</span>
+
+<span class="hljs-keyword">const</span> target = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'sphere'</span>)
+
+<span class="hljs-keyword">let</span> startTime = <span class="hljs-built_in">Date</span>.now();
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> t = <span class="hljs-built_in">Date</span>.now() - startTime;
+  <span class="hljs-keyword">const</span> p = <span class="hljs-built_in">Math</span>.min(t / T, <span class="hljs-number">1</span>);
+  <span class="hljs-keyword">const</span> top = S * p ** <span class="hljs-number">2</span>;
+  target.style.top = <span class="hljs-string">`<span class="hljs-subst">${top}</span>px`</span>; <span class="hljs-comment">// 更新动画变量——top属性</span>
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">p &#x3C; <span class="hljs-number">1</span></span>)</span> {
+    requestAnimationFrame(update);
+  }
+}
+
+update();
+</code></pre>
+<p>一个自由落体的动画就实现了：</p>
+<p><img src="img\a23515a6-ae6f-11ed-bf07-342eb7027b95.jpg" alt=""></p>
+<p>以上是动画的第一阶段，现在我们需要执行动画的第二个阶段——弹起。</p>
+
+<p>因为弹起动画是在自由落体动画结束之后，所以弹起动画必须等待自由落体动画执行结束后才能开始执行。这就涉及到一个异步的过程。我们需要对动画过程进行一下简单的封装，让它实现一个<code>asyn/await</code>的过程。</p>
+<p>首先，利用我们之前学过的数据抽象和过程抽象，重构一下上面的代码：</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">/*
+  @target 目标动画元素
+  @duration 动画经历的时间
+  @progress 动画执行回调函数
+*/</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">animate</span>(<span class="hljs-params">target, duration, progress</span>) </span>{
+  <span class="hljs-keyword">const</span> startTime = <span class="hljs-built_in">Date</span>.now();
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =></span> {
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">const</span> t = <span class="hljs-built_in">Date</span>.now() - startTime;
+      <span class="hljs-keyword">const</span> p = <span class="hljs-built_in">Math</span>.min(t / duration, <span class="hljs-number">1</span>);
+      progress(target, p);
+      <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">p &#x3C; <span class="hljs-number">1</span></span>)</span> {
+        requestAnimationFrame(update);
+      } <span class="hljs-keyword">else</span> {
+        resolve(p);
+      }
+    }
+    update();
+  });
+}
+</code></pre>
+<p>这样，自由落体的动画就可以变成：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> sphere = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'sphere'</span>);
+
+animate(sphere, <span class="hljs-number">1000</span>, <span class="hljs-function">(<span class="hljs-params">target, p</span>) =></span> {
+  <span class="hljs-keyword">const</span> top = <span class="hljs-number">400</span> * p ** <span class="hljs-number">2</span>;
+  target.style.top = <span class="hljs-string">`<span class="hljs-subst">${top}</span>px`</span>;
+});
+</code></pre>
+<p>注意，我们在<code>animate</code>方法里返回了一个<code>Promise</code>对象，这样的话，我们就可以通过异步的<code>async/await</code>来连续执行动画。现在，我们就来实现弹起的动画。</p>
+<p>与自由落体运动相反，弹起的动画是一个“匀减速”运动，最终将初速度降为0。</p>
+<p>在这一阶段，小球的初速度与加速度分别是:</p>
+<p><img src="img\a247b473-ae6f-11ed-9940-342eb7027b95.jpg" alt=""></p>
+<p>那么经过t时间（t &#x3C;= T），小球运动的位移为：</p>
+<p><img src="img\a2587cb3-ae6f-11ed-bf93-342eb7027b95.jpg" alt=""></p>
+<p>所以，弹跳阶段的JS，我们可以这样写：</p>
+<pre><code class="hljs language-js">animate(sphere, <span class="hljs-number">1000</span>, <span class="hljs-function">(<span class="hljs-params">target, p</span>) =></span> {
+  <span class="hljs-comment">// 起点是400，反向运动，所以要用400减</span>
+  <span class="hljs-keyword">const</span> top = <span class="hljs-number">400</span> - <span class="hljs-number">400</span> * p * (<span class="hljs-number">2</span> - p);
+  target.style.top = <span class="hljs-string">`<span class="hljs-subst">${top}</span>px`</span>;
+});
+</code></pre>
+<p>然后，我们把两个动画连起来：</p>
+<pre><code class="hljs language-js">(<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-function"><span class="hljs-title">while</span>(<span class="hljs-params"><span class="hljs-number">1</span></span>)</span> {
+    <span class="hljs-keyword">await</span> animate(sphere, <span class="hljs-number">1000</span>, <span class="hljs-function">(<span class="hljs-params">target, p</span>) =></span> {
+      <span class="hljs-keyword">const</span> top = <span class="hljs-number">400</span> * p ** <span class="hljs-number">2</span>;
+      target.style.top = <span class="hljs-string">`<span class="hljs-subst">${top}</span>px`</span>;
+    });
+    <span class="hljs-keyword">await</span> animate(sphere, <span class="hljs-number">1000</span>, <span class="hljs-function">(<span class="hljs-params">target, p</span>) =></span> {
+      <span class="hljs-comment">// 起点是400，反向运动，所以要用400减</span>
+      <span class="hljs-keyword">const</span> top = <span class="hljs-number">400</span> - <span class="hljs-number">400</span> * p * (<span class="hljs-number">2</span> - p);
+      target.style.top = <span class="hljs-string">`<span class="hljs-subst">${top}</span>px`</span>;
+    });
+  }
+}());
+</code></pre>
+<p>最终实现的效果如下图：</p>
+<p><img src="img\a26a13db-ae6f-11ed-8fed-342eb7027b95.jpg" alt=""></p>
+<p>这个效果不是我们最终想要的，因为小球不停地弹跳而不会停止，所以我们需要给小球增加一个能量损耗。</p>
+<p>假设小球每次与地面碰撞后，它的动能损耗30%，那么根据能量守恒，它弹起的高度将变为之前的0.7，而它弹起的时间将变为之前的根号0.7：</p>
+<p>所以最后我们将动画修改为：</p>
+<pre><code class="hljs language-js">(<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">let</span> height = <span class="hljs-number">400</span>;
+  <span class="hljs-keyword">let</span> duration = <span class="hljs-number">1000</span>;
+
+  <span class="hljs-function"><span class="hljs-title">while</span>(<span class="hljs-params"><span class="hljs-number">1</span></span>)</span> {
+    <span class="hljs-keyword">await</span> animate(sphere, duration, <span class="hljs-function">(<span class="hljs-params">target, p</span>) =></span> {
+      <span class="hljs-keyword">const</span> top = (<span class="hljs-number">400</span> - height) + height * p ** <span class="hljs-number">2</span>;
+      target.style.top = <span class="hljs-string">`<span class="hljs-subst">${top}</span>px`</span>;
+    });
+
+    <span class="hljs-comment">// 能量损耗后的动画执行高度和时间</span>
+    height *= <span class="hljs-number">0.7</span>;
+    duration *= <span class="hljs-built_in">Math</span>.sqrt(<span class="hljs-number">0.7</span>);
+
+    <span class="hljs-keyword">await</span> animate(sphere, duration, <span class="hljs-function">(<span class="hljs-params">target, p</span>) =></span> {
+      <span class="hljs-comment">// 起点是400，反向运动，所以要用400减</span>
+      <span class="hljs-keyword">const</span> top = <span class="hljs-number">400</span> - height * p * (<span class="hljs-number">2</span> - p);
+      target.style.top = <span class="hljs-string">`<span class="hljs-subst">${top}</span>px`</span>;
+    });
+  }
+}());
+</code></pre>
+<p><img src="img\a27eb5d9-ae6f-11ed-b874-342eb7027b95.jpg" alt=""></p>
+<p>所以最终就实现了我们所期望的效果。<a href="https://junyux.github.io/FE-Advance/day08/index2-v1.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<p>现在我们来总结一下连续动画的思路：</p>
+<ol>
+<li>将连续的动画分解为若干个固定轨迹的动画</li>
+<li>为每个阶段的动画设计轨迹方程，找出动画变量和时间的关系</li>
+<li>确定每个阶段的动画周期（duration）和与动画变量对应的CSS属性</li>
+<li>利用异步的方式（Promise）连接每个阶段的动画，形成一个连续的动画效果</li>
+</ol>
+
+<h2>第四个故事：常用动画实现技巧</h2>
+<p>通过前面的三个故事，我们学习了两种非常常见的动画模式：固定轨迹动画和连续动画。</p>
+<p>连续动画实际上是由多段固定轨迹动画组合而成的。在第三个故事里，我们使用Promise来处理连续动画，这是一种最方便的异步处理方式，在第八日的故事中，我们会有更详细的讨论。</p>
+<p>而固定轨迹动画可以抽象为一个由<strong>动画周期(T)</strong>、<strong>动画执行时间(t)</strong>，以及<strong>时间与属性值的映射函数(progress)</strong> 共同决定的模型。</p>
+<h3>插值</h3>
+<p>在固定轨迹动画模型里，知道T、t以及progress，我们就能唯一确定动画元素target在t时刻的属性值。其中比较复杂的是progress，我们可以对它进行规范：</p>
+<ul>
+<li>progress可以由起始值（start）、结束值（end）、以及插值函数（interpolate）确定。</li>
+</ul>
+<p>我们用这个规范，重构一下上一个故事中的<code>animate</code>函数：</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">/*
+  @target 目标元素
+  @prop CSS属性
+  @duration 动画周期
+  @start 动画开始时，CSS属性的值
+  @end 动画结束时，CSS属性值
+  @interpolate 插值函数
+*/</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">animate</span>(<span class="hljs-params">{target, prop, duration, start, end, interpolate} = {}</span>) </span>{
+  <span class="hljs-keyword">const</span> startTime = <span class="hljs-built_in">Date</span>.now();
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =></span> {
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">const</span> t = <span class="hljs-built_in">Date</span>.now() - startTime;
+      <span class="hljs-keyword">const</span> p = <span class="hljs-built_in">Math</span>.min(t / duration, <span class="hljs-number">1</span>);
+      target.style[prop] = interpolate(start, end, p);
+      <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">p &#x3C; <span class="hljs-number">1</span></span>)</span> {
+        requestAnimationFrame(update);
+      } <span class="hljs-keyword">else</span> {
+        resolve(p);
+      }
+    }
+    update();
+  });
+}
+</code></pre>
+<p>如上代码所示，<code>interpolate(start, end, p)</code>这个函数的返回值就是根据<code>p</code>对应的比例落在<code>start</code>到<code>end</code>之间的值，也叫做<strong>插值</strong>。而<code>p</code>的值是在[t/duration, 1]之间 （也就是[0,1]之间)，所以这里的插值简单来说，表示根据动画的起始值（start）和动画的结束值（end)，在当前时间下计算出的位于start和end之间的值。</p>
+<p>下面，我们来看看这个插值是如何被计算出来的：</p>
+
+<pre><code class="hljs language-js">animate({
+  <span class="hljs-attr">target</span>: sphere,
+  <span class="hljs-attr">prop</span>: <span class="hljs-string">'top'</span>,
+  <span class="hljs-attr">duration</span>: <span class="hljs-number">1000</span>,
+  <span class="hljs-attr">start</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">end</span>: <span class="hljs-number">400</span>,
+  <span class="hljs-function"><span class="hljs-title">interpolate</span>(<span class="hljs-params">start, end, p</span>)</span> {
+    p **= <span class="hljs-number">2</span>; <span class="hljs-comment">//匀加速</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${start * (<span class="hljs-number">1</span> - p) + end * p}</span>px`</span>;
+  }
+});
+</code></pre>
+<p>上面的代码实现了第三个故事中自由落体的动画。其中，<code>start * (1 - p) + end * p</code>是一个最简单的插值公式，它的返回值是一个<strong>线性插值</strong>。如果我们不加<code>p **= 2</code>，那么返回的插值是线性的，这样的话小球就是匀速运动。</p>
+
+<p><img src="img\a29c115d-ae6f-11ed-b941-342eb7027b95.jpg" alt=""></p>
+<p>如果需要小球做匀加速运动，根据前面的公式：</p>
+<p><img src="img\a2ad1714-ae6f-11ed-8284-342eb7027b95.jpg" alt=""></p>
+<p>这里<code>t/T</code>就是<code>p</code>，当<code>p</code>等于<code>p ** 2</code>即<code>p</code>的平方，动画就变成匀加速了。</p>
+<p>同样的，如果我们要做弹起的动画，可以：</p>
+<pre><code class="hljs language-js">animate({
+  <span class="hljs-attr">target</span>: sphere,
+  <span class="hljs-attr">prop</span>: <span class="hljs-string">'top'</span>,
+  <span class="hljs-attr">duration</span>: <span class="hljs-number">1000</span>,
+  <span class="hljs-attr">start</span>: <span class="hljs-number">400</span>,
+  <span class="hljs-attr">end</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-function"><span class="hljs-title">interpolate</span>(<span class="hljs-params">start, end, p</span>)</span> {
+    p *= (<span class="hljs-number">2</span> - p); <span class="hljs-comment">//匀减速</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${start * (<span class="hljs-number">1</span> - p) + end * p}</span>px`</span>;
+  }
+});
+</code></pre>
+<p>插值不仅可以改变像<code>top</code>、<code>left</code>或者<code>width</code>、<code>height</code>这样的属性值，还可以处理更复杂的属性值，比如颜色：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">lerp</span>(<span class="hljs-params">start, end, p</span>) </span>{
+  <span class="hljs-keyword">return</span> start * (<span class="hljs-number">1</span> - p) + end * p;
+}
+
+animate({
+  <span class="hljs-attr">target</span>: sphere,
+  <span class="hljs-attr">prop</span>: <span class="hljs-string">'background'</span>,
+  <span class="hljs-attr">duration</span>: <span class="hljs-number">1000</span>,
+  <span class="hljs-attr">start</span>: [<span class="hljs-number">0</span>, <span class="hljs-number">170</span>, <span class="hljs-number">255</span>],
+  <span class="hljs-attr">end</span>: [<span class="hljs-number">255</span>, <span class="hljs-number">170</span>, <span class="hljs-number">0</span>],
+  <span class="hljs-function"><span class="hljs-title">interpolate</span>(<span class="hljs-params">start, end, p</span>)</span> {
+    <span class="hljs-keyword">const</span> color = start.map(<span class="hljs-function">(<span class="hljs-params">s, i</span>) =></span> {
+      <span class="hljs-keyword">return</span> lerp(s, end[i], p);
+    });
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`rgb(<span class="hljs-subst">${color}</span>)`</span>
+  }
+});
+</code></pre>
+<p>上面的代码给小球增加一个改变颜色的动画，这样我们会看到小球在弹起的同时，颜色也会发生改变。</p>
+<p><img src="img\a2bbb499-ae6f-11ed-9fe9-342eb7027b95.jpg" alt=""></p>
+<h3>缓动</h3>
+<p>我们看到，匀速运动使用线性插值<code>lerp</code>函数，匀加速运动在线性插值前将<code>p</code>改变为<code>p</code>平方，而匀减速运动在线性插值前将<code>p</code>改变为<code>p*(2-p)</code>，实际上其他的运动形式也可以用这个模型处理，所以我们可以将改变<code>p</code>的过程抽象出来，叫做<strong>缓动函数(easing)</strong>。</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">animate</span>(<span class="hljs-params">{target, prop, duration, start, end, easing, interpolate} = {}</span>) </span>{
+  <span class="hljs-keyword">const</span> startTime = <span class="hljs-built_in">Date</span>.now();
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =></span> {
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">const</span> t = <span class="hljs-built_in">Date</span>.now() - startTime;
+      <span class="hljs-keyword">const</span> p = <span class="hljs-built_in">Math</span>.min(t / duration, <span class="hljs-number">1</span>);
+
+      target.style[prop] = interpolate(start, end, easing ? easing(p) : p);
+      <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">p &#x3C; <span class="hljs-number">1</span></span>)</span> {
+        requestAnimationFrame(update);
+      } <span class="hljs-keyword">else</span> {
+        resolve(p);
+      }
+    }
+    update();
+  });
+}
+</code></pre>
+<p>这样，匀减速的小球弹起就改写为：</p>
+<pre><code class="hljs language-js">animate({
+  <span class="hljs-attr">target</span>: sphere,
+  <span class="hljs-attr">prop</span>: <span class="hljs-string">'top'</span>,
+  <span class="hljs-attr">duration</span>: <span class="hljs-number">1000</span>,
+  <span class="hljs-attr">start</span>: <span class="hljs-number">400</span>,
+  <span class="hljs-attr">end</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-function"><span class="hljs-title">easing</span>(<span class="hljs-params">p</span>)</span> {
+    <span class="hljs-keyword">return</span> p * (<span class="hljs-number">2</span> - p);
+  },
+  <span class="hljs-function"><span class="hljs-title">interpolate</span>(<span class="hljs-params">start, end, p</span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${start * (<span class="hljs-number">1</span> - p) + end * p}</span>px`</span>;
+  }
+});
+</code></pre>
+<p>除了匀加速、匀减速外，我们还可以实现其他的缓动函数，比如周期运动：</p>
+<pre><code class="hljs language-js">animate({
+  <span class="hljs-attr">target</span>: sphere,
+  <span class="hljs-attr">prop</span>: <span class="hljs-string">'background'</span>,
+  <span class="hljs-attr">duration</span>: <span class="hljs-number">100000</span>,
+  <span class="hljs-attr">start</span>: [<span class="hljs-number">0</span>, <span class="hljs-number">170</span>, <span class="hljs-number">255</span>],
+  <span class="hljs-attr">end</span>: [<span class="hljs-number">255</span>, <span class="hljs-number">170</span>, <span class="hljs-number">0</span>],
+  <span class="hljs-function"><span class="hljs-title">easing</span>(<span class="hljs-params">p</span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">100</span> * p % <span class="hljs-number">1</span>;
+  },
+  <span class="hljs-function"><span class="hljs-title">interpolate</span>(<span class="hljs-params">start, end, p</span>)</span> {
+    <span class="hljs-keyword">const</span> color = start.map(<span class="hljs-function">(<span class="hljs-params">s, i</span>) =></span> {
+      <span class="hljs-keyword">return</span> lerp(s, end[i], p);
+    });
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`rgb(<span class="hljs-subst">${color}</span>)`</span>
+  }
+});
+</code></pre>
+<p>如上代码所示，这是个执行100秒的动画，但是分为100个周期，每个周期背景色都是从<code>rgb(0, 170, 255)</code>线性渐变到<code>rgb(255, 170, 0)</code>。</p>
+<pre><code class="hljs language-js">animate({
+  <span class="hljs-attr">target</span>: sphere,
+  <span class="hljs-attr">prop</span>: <span class="hljs-string">'top'</span>,
+  <span class="hljs-attr">duration</span>: <span class="hljs-number">100000</span>,
+  <span class="hljs-attr">start</span>: <span class="hljs-number">250</span>,
+  <span class="hljs-attr">end</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-function"><span class="hljs-title">easing</span>(<span class="hljs-params">p</span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.sin(<span class="hljs-number">100</span> * <span class="hljs-built_in">Math</span>.PI * p);
+  },
+  <span class="hljs-function"><span class="hljs-title">interpolate</span>(<span class="hljs-params">start, end, p</span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${start * (<span class="hljs-number">1</span> - p) + end * p}</span>px`</span>;
+  }
+});
+</code></pre>
+<p>上面的代码是执行100秒的动画，分为50个周期，让小球以250点为起点，做幅度半径为150的简谐振动。</p>
+<p>我们可以将上面两个动画合起来，它的效果如下所示：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day08/index2-ex.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<p><img src="img\a2cacde0-ae6f-11ed-93c5-342eb7027b95.jpg" alt=""></p>
+<p>如果你熟悉CSS动画，你一定知道CSS动画中也是有缓动函数的概念的，而大多数缓动效果可以使用三阶贝塞尔曲线描述。</p>
+<p><img src="img\a2de81cc-ae6f-11ed-8573-342eb7027b95.jpg" alt=""></p>
+<p>三阶贝塞尔曲线是由P0、P3两个固定点和P2、P1两个动点表述的连续曲线，满足如下线性方程。</p>
+<p><img src="img\a2eeb3e7-ae6f-11ed-970b-342eb7027b95.jpg" alt=""></p>
+<p>在CSS动画中内置了贝塞尔曲线的缓动函数，比如我们可以写这样的动画：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"block"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#block</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">50px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">50px</span>;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">background</span>: red;
+  <span class="hljs-attribute">animation</span>: move <span class="hljs-number">3s</span> <span class="hljs-built_in">cubic-bezier</span>(<span class="hljs-number">0.68</span>, -<span class="hljs-number">0.55</span>, <span class="hljs-number">0.265</span>, <span class="hljs-number">1.55</span>);
+}
+
+<span class="hljs-keyword">@keyframes</span> move {
+  <span class="hljs-selector-tag">from</span> {<span class="hljs-attribute">left</span>: <span class="hljs-number">100px</span>}
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">left</span>: <span class="hljs-number">400px</span>}
+}
+</code></pre>
+<p><img src="img\a2fda788-ae6f-11ed-b154-342eb7027b95.jpg" alt=""></p>
+<p>有许多缓动函数都可以通过三阶贝塞尔曲线来实现：</p>
+<p><img src="img\a31057fe-ae6f-11ed-a52c-342eb7027b95.jpg" alt=""></p>
+<p>在JS中，我们也可以构造三阶贝塞尔曲线缓动函数，我们可以直接使用<a href="https://github.com/gre/bezier-easing" target="_blank" rel="nofollow noopener noreferrer">bezier-easing</a>这个开源库。</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://s5.ssl.qhres.com/!8cf7bfcd/bezier-easing.js"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre>
+<pre><code class="hljs language-js">animate({
+  <span class="hljs-attr">target</span>: sphere,
+  <span class="hljs-attr">prop</span>: <span class="hljs-string">'top'</span>,
+  <span class="hljs-attr">duration</span>: <span class="hljs-number">2000</span>,
+  <span class="hljs-attr">start</span>: <span class="hljs-number">400</span>,
+  <span class="hljs-attr">end</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">easing</span>: BezierEasing(<span class="hljs-number">0.68</span>, -<span class="hljs-number">0.55</span>, <span class="hljs-number">0.265</span>, <span class="hljs-number">1.55</span>),
+  <span class="hljs-function"><span class="hljs-title">interpolate</span>(<span class="hljs-params">start, end, p</span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${start * (<span class="hljs-number">1</span> - p) + end * p}</span>px`</span>;
+  }
+});
+</code></pre>
+<p>上面的代码产生的小球动画效果如下：<a href="https://junyux.github.io/FE-Advance/day08/index2-ex2.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<p><img src="img\a324a861-ae6f-11ed-8fb6-342eb7027b95.jpg" alt=""></p>
+<p>实际上，在较新的浏览器环境中，提供了JavaScript原生的动画API，叫做<a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API" target="_blank" rel="nofollow noopener noreferrer">Web Animation API</a>。这是一个目前还处在草案阶段的新特性，仅被部分较新的浏览器所支持。</p>
+<p>Web Animation API 为DOM元素提供了原生的animate方法，它接受keyframes和options两个参数，能够用JS实现和CSS基本上一致的关键帧动画：</p>
+<pre><code class="hljs language-js">sphere.animate([
+  {<span class="hljs-attr">top</span>: <span class="hljs-string">'400px'</span>},
+  {<span class="hljs-attr">top</span>: <span class="hljs-string">'100px'</span>},
+], {
+  <span class="hljs-attr">duration</span>: <span class="hljs-number">2000</span>,
+  <span class="hljs-attr">easing</span>: <span class="hljs-string">'cubic-bezier(0.68, -0.55, 0.265, 1.55)'</span>,
+  <span class="hljs-attr">fill</span>: <span class="hljs-string">'forwards'</span>,
+});
+</code></pre>
+<p>上面的代码和前一个例子实现的效果一致，但是不需要依赖我们自己实现的动画方法，直接用原生的<code>.animate</code>方法即可。</p>
+<p>💡因为现在Web Animation API仍然处于ED(Editor Draft)阶段，所以支持的浏览器有限，而且未来API可能还会有所变化，所以现在不建议直接使用。</p>
+<p>好在，通过前面的例子我们也看到，自己实现一个简单的JS动画函数，也不是什么困难的事情，有了通用灵活的动画机制，我们就可以实现各种有趣的动画效果。不过，有些特殊的动画效果，除了使用动画函数外，可能还需要运用一些特殊的CSS属性。</p>
+<h2>第五个故事：特殊的动画效果</h2>
+<p>前面说了动画的基本思路，基本上所有的动画都可以用前面思路来实现。这个故事，我将带你看一些用特殊的元素属性，实现比较神奇的动画效果。</p>
+<h3>元素渐显</h3>
+<p>最简单的渐显元素的方式是改变元素的透明度，通过操作CSS的opacity属性就能实现。</p>
+<p><img src="img\a339a472-ae6f-11ed-92b1-342eb7027b95.jpg" alt=""></p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"content"</span>></span>文字内容<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#content</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">1px</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1.5rem</span>;
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">animation</span>: fade-in <span class="hljs-number">5s</span> infinite;
+}
+
+<span class="hljs-keyword">@keyframes</span> fade-in {
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>};
+}
+</code></pre>
+<p>那么，如果我们要让元素从上往下，或者从左往右渐显出来，要如何实现呢：</p>
+<p><img src="img\a34d5a9f-ae6f-11ed-81ce-342eb7027b95.jpg" alt=""></p>
+<p>我们可以用伪元素遮盖住元素内容，然后用动画改变伪元素的宽或高：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day08/index3-v2.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#content</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">1px</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1.5rem</span>;
+}
+
+<span class="hljs-selector-id">#content</span><span class="hljs-selector-pseudo">::after</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">top</span>: -<span class="hljs-number">1px</span>;
+  <span class="hljs-attribute">right</span>: -<span class="hljs-number">1px</span>;
+  <span class="hljs-attribute">width</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-number">100%</span> + <span class="hljs-number">2px</span>);
+  <span class="hljs-attribute">height</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-number">100%</span> + <span class="hljs-number">2px</span>);
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">' '</span>;
+  <span class="hljs-attribute">background</span>: white;
+  <span class="hljs-attribute">animation</span>: slide <span class="hljs-number">2s</span> ease-in forwards;
+}
+
+<span class="hljs-keyword">@keyframes</span> slide {
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">width</span>: <span class="hljs-number">0</span>};
+}
+</code></pre>
+<p>上面的代码需要注意的细节是：</p>
+<ul>
+<li>如果元素有border，伪元素的宽高要设为100%加上border，对应的<code>top</code>和<code>right</code>要设置为负的border宽度。</li>
+<li>因为动画中，文字元素是从左往右显现，所以伪元素的宽度需要从左往右缩小，所以我们需要将伪元素的固定点设置在右上角或者右下角，即：设置<code>top</code>/<code>bottom</code>和<code>right</code>属性；如果动画要从右往左显现，则需要设置<code>top</code>/<code>bottom</code>和<code>left</code>属性；同样，如果从上往下显现，那么就设置<code>left</code>/<code>right</code>和<code>bottom</code>属性。</li>
+</ul>
+<h4>clip-path属性</h4>
+<p>上面这个方法有点不够完美，主要是我们给<code>after</code>伪元素设置了一个白色的背景，如果父元素的背景不是白色，或者改变了，我们就需要修改对应的属性值。实际上，这个问题有个更简单的解决方案，使用CSS的<code>clip-path</code>属性：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day08/index3-v3.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#content</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">1px</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1.5rem</span>;
+  <span class="hljs-attribute">clip-path</span>: <span class="hljs-built_in">polygon</span>(<span class="hljs-number">0%</span> <span class="hljs-number">0%</span>, <span class="hljs-number">0%</span> <span class="hljs-number">0%</span>, <span class="hljs-number">0%</span> <span class="hljs-number">100%</span>, <span class="hljs-number">0%</span> <span class="hljs-number">100%</span>);
+  <span class="hljs-attribute">animation</span>: slide <span class="hljs-number">2s</span> forwards;
+}
+
+<span class="hljs-keyword">@keyframes</span> slide {
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">clip-path</span>: <span class="hljs-built_in">polygon</span>(<span class="hljs-number">0%</span> <span class="hljs-number">0%</span>, <span class="hljs-number">100%</span> <span class="hljs-number">0%</span>, <span class="hljs-number">100%</span> <span class="hljs-number">100%</span>, <span class="hljs-number">0%</span> <span class="hljs-number">100%</span>)};
+}
+</code></pre>
+<p><code>clip-path</code> 属性可以创建一个只有元素的部分区域可以显示的剪切区域。区域内的部分显示，区域外的隐藏。剪切区域是被引用内嵌的URL定义的路径或者外部svg的路径，或者作为一个形状例如<code>polygon()</code>。而且，重要的是，<code>clip-path</code>支持CSS动画。</p>
+<p>上面的代码中，我们采用<code>polygon</code>方法剪切可视区域。这个方法接受8个参数，每两个分别表示一个点的坐标。所以，<code>polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)</code>分别表示前2个点在元素的左上角，后两个点在元素的左下角。<code>polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)}</code>这个是动画结束的状态，4个点分别位于元素的左上角、右上角、右下角和左下角。所以，这段CSS规则表示的是从左到右的渐显动画。</p>
+<p>稍微修改一下<code>clip-path</code>的初始值，我们还可以做斜向或者其他形式的渐显动画：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day08/index3-v4.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#content</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">1px</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1.5rem</span>;
+  <span class="hljs-attribute">clip-path</span>: <span class="hljs-built_in">polygon</span>(<span class="hljs-number">0%</span> <span class="hljs-number">0%</span>, <span class="hljs-number">0%</span> <span class="hljs-number">0%</span>, <span class="hljs-number">0%</span> <span class="hljs-number">0%</span>, <span class="hljs-number">0%</span> <span class="hljs-number">100%</span>);
+  <span class="hljs-attribute">animation</span>: slide <span class="hljs-number">2s</span> forwards;
+}
+
+<span class="hljs-keyword">@keyframes</span> slide {
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">clip-path</span>: <span class="hljs-built_in">polygon</span>(<span class="hljs-number">0%</span> <span class="hljs-number">0%</span>, <span class="hljs-number">100%</span> <span class="hljs-number">0%</span>, <span class="hljs-number">100%</span> <span class="hljs-number">100%</span>, <span class="hljs-number">0%</span> <span class="hljs-number">100%</span>)};
+}
+</code></pre>
+<p><img src="img\a35a7e9c-ae6f-11ed-af1e-342eb7027b95.jpg" alt=""></p>
+<p>或者：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day08/index3-v5.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#content</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">1px</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1.5rem</span>;
+  <span class="hljs-attribute">clip-path</span>: <span class="hljs-built_in">polygon</span>(<span class="hljs-number">50%</span> <span class="hljs-number">50%</span>, <span class="hljs-number">50%</span> <span class="hljs-number">50%</span>, <span class="hljs-number">50%</span> <span class="hljs-number">50%</span>, <span class="hljs-number">50%</span> <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">animation</span>: slide <span class="hljs-number">2s</span> forwards;
+}
+
+<span class="hljs-keyword">@keyframes</span> slide {
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">clip-path</span>: <span class="hljs-built_in">polygon</span>(<span class="hljs-number">0%</span> <span class="hljs-number">0%</span>, <span class="hljs-number">100%</span> <span class="hljs-number">0%</span>, <span class="hljs-number">100%</span> <span class="hljs-number">100%</span>, <span class="hljs-number">0%</span> <span class="hljs-number">100%</span>)};
+}
+</code></pre>
+<p><img src="img\a36c9395-ae6f-11ed-b825-342eb7027b95.jpg" alt=""></p>
+<h4>mask属性</h4>
+<p>更复杂的渐显动画可以使用CSS遮罩：<code>mask</code>属性，不过这是一个非标准属性，目前需要加-webkit前缀，只有Chorme和Safari等少数浏览器的新版本支持。</p>
+<p><code>mask</code>属性可以指定图片作为元素的遮罩，遮罩外的内容隐藏，而且我们可以把遮罩设置为渐变，所以我们就可以使用渐变遮罩来实现更复杂的渐显效果。</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#logo</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">164px</span>;
+  <span class="hljs-attribute">background-image</span>: <span class="hljs-built_in">url</span>(https://p1.ssl.qhimg.com/t01d64366d00102132a.png);
+  <span class="hljs-attribute">background-size</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">-webkit-mask</span>: <span class="hljs-built_in">linear-gradient</span>(to right, #<span class="hljs-number">000</span> <span class="hljs-number">0%</span>, transparent <span class="hljs-number">0</span>) <span class="hljs-number">0</span>/<span class="hljs-number">20px</span>;
+}
+</code></pre>
+<p>如上代码所示，<code>-webkit-mask</code>可以设置一张图片作为遮罩图片，这个图片可以是SVG图片、PNG图片、线性渐变或者其他渐变，我们这里使用线性渐变。除了设置遮罩图片，还可以设置遮罩位置/宽高，<code>0/20px</code>表示遮罩位置为<code>0,0</code>，遮罩宽为20px（这里省略了y轴的100%）。</p>
+<p>不过因为<code>linear-gradient</code>不支持CSS动画，所以我们还需要使用JS：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">animate</span>(<span class="hljs-params">{target, prop, duration, start, end, easing, interpolate} = {}</span>) </span>{
+  <span class="hljs-keyword">const</span> startTime = <span class="hljs-built_in">Date</span>.now();
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =></span> {
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">const</span> t = <span class="hljs-built_in">Date</span>.now() - startTime;
+      <span class="hljs-keyword">const</span> p = <span class="hljs-built_in">Math</span>.min(t / duration, <span class="hljs-number">1</span>);
+
+      target.style[prop] = interpolate(start, end, easing ? easing(p) : p);
+      <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">p &#x3C; <span class="hljs-number">1</span></span>)</span> {
+        requestAnimationFrame(update);
+      } <span class="hljs-keyword">else</span> {
+        resolve(p);
+      }
+    }
+    update();
+  });
+}
+
+animate({
+  <span class="hljs-attr">target</span>: logo,
+  <span class="hljs-attr">prop</span>: <span class="hljs-string">'webkitMask'</span>,
+  <span class="hljs-attr">duration</span>: <span class="hljs-number">1000</span>,
+  <span class="hljs-attr">start</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">end</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-function"><span class="hljs-title">interpolate</span>(<span class="hljs-params">start, end, p</span>)</span> {
+    <span class="hljs-keyword">const</span> v = start * (<span class="hljs-number">1</span> - p) + end * p;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`linear-gradient(to right, #000 <span class="hljs-subst">${v}</span>%, transparent 0) 0/20px`</span>;
+  }
+});
+</code></pre>
+<p>最终实现的效果如下：<a href="https://junyux.github.io/FE-Advance/day08/index3-v6.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<p><img src="img\a37a0c4e-ae6f-11ed-bb8f-342eb7027b95.jpg" alt=""></p>
+<h3>描边动画</h3>
+<p>描边动画是指演示描绘某个图形的动画，比如实现下面的描绘五角星动画。</p>
+<p><img src="img\a390c09a-ae6f-11ed-9764-342eb7027b95.jpg" alt=""></p>
+<p>这样的描边动画可以通过改变SVG元素的<code>stroke-dasharray</code>和<code>stroke-dashoffset</code>两个属性来实现。</p>
+<p><a href="https://junyux.github.io/FE-Advance/day08/index4.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">svg</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">"http://www.w3.org/2000/svg"</span> <span class="hljs-attr">version</span>=<span class="hljs-string">"1.1"</span> <span class="hljs-attr">width</span>=<span class="hljs-string">"500"</span> <span class="hljs-attr">height</span>=<span class="hljs-string">"500"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">g</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">"none"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">polygon</span> <span class="hljs-attr">points</span>=<span class="hljs-string">"100,10 40,180 190,60 10,60 160,180"</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">g</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">svg</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-tag">svg</span> <span class="hljs-selector-tag">polygon</span> {
+  <span class="hljs-attribute">stroke</span>: red;
+  <span class="hljs-attribute">stroke-dasharray</span>: <span class="hljs-number">1000</span>;
+  <span class="hljs-attribute">stroke-dashoffset</span>: <span class="hljs-number">1000</span>;
+  <span class="hljs-attribute">stroke-width</span>: <span class="hljs-number">5</span>;
+  <span class="hljs-attribute">animation</span>: stroke-path <span class="hljs-number">5s</span> linear infinite;
+}
+
+<span class="hljs-keyword">@keyframes</span> stroke-path {
+  <span class="hljs-selector-tag">to</span> {
+    <span class="hljs-attribute">stroke-dashoffset</span>: <span class="hljs-number">0</span>;
+  }
+}
+</code></pre>
+<p><code>stroke-dasharray</code>表示将图形以虚线描绘，<code>stroke-dasharray:1000</code>表示虚线实线每一个线段长度都是<code>1000px</code>，一开始第一条线段是实线，第二条线段是虚线，第三条线段是实线...这样依次交替。</p>
+<p><code>stroke-dashoffset</code>表示虚线的偏移，将它也设置为<code>1000</code>，那么第一条线就被移出了可见区域，从虚线（即第二条线）开始展示，所以此时的五角星并没有显示出来，然后我们以动画的方式改小虚线的偏移量，这样的话，第一条线（实线）就被慢慢移回可视区域，于是图形的线条就逐步展示出来了。</p>
+<p><img src="img\a3a4e4d3-ae6f-11ed-bba7-342eb7027b95.jpg" alt=""></p>
+<p>SVG元素除了使用CSS、JS动画，还可以使用SVG支持的SMIL动画，SMIL是Synchronized Multimedia Integration Language的简称。关于SVG的SMIL动画，超过了本课程讨论的范畴，在这里不做进一步讨论，在后续专门讨论SVG的课程中，会有深入的讨论。</p>
+</div>
+</body>
+</html>

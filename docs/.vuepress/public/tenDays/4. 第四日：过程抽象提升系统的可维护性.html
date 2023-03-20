@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <h1>第四天 过程抽象提升系统的可维护性</h1>
+
+<h2>第一个故事：只执行一次</h2>
+<p>上一节我们说过函数是处理数据的最小单元。为了能够让函数具备通用性，我们可以抽象数据或者抽象过程。今天我们就来探讨一下过程是如何抽象的。</p>
+<p>在前端开发中，我们经常遇到一些事件处理函数只能执行一次的情况。比如下面的这个例子：</p>
+<p>这是一个页面，它处理一个用户事项的清单，大致的代码实现如下：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day04/index1-v1.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">button</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">button</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">span</span>></span>任务一：学习HTML<span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">button</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">button</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">span</span>></span>任务二：学习CSS<span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">button</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">button</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">span</span>></span>任务三：学习JavaScript<span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-tag">ul</span> {
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">list-style</span>: none;
+}
+
+<span class="hljs-selector-tag">li</span> <span class="hljs-selector-tag">button</span> {
+  <span class="hljs-attribute">border</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">background</span>: transparent;
+  <span class="hljs-attribute">cursor</span>: pointer;
+  <span class="hljs-attribute">outline</span>: <span class="hljs-number">0</span> none;
+}
+
+<span class="hljs-selector-tag">li</span><span class="hljs-selector-class">.completed</span> {
+  <span class="hljs-attribute">transition</span>: opacity <span class="hljs-number">2s</span>;
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-selector-tag">li</span> <span class="hljs-selector-tag">button</span><span class="hljs-selector-pseudo">:before</span> {
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">'☑️'</span>;
+}
+
+<span class="hljs-selector-tag">li</span><span class="hljs-selector-class">.completed</span> <span class="hljs-selector-tag">button</span><span class="hljs-selector-pseudo">:before</span> {
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">'✅'</span>;
+}
+</code></pre>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'ul'</span>);
+<span class="hljs-keyword">const</span> buttons = list.querySelectorAll(<span class="hljs-string">'button'</span>);
+buttons.forEach(<span class="hljs-function">(<span class="hljs-params">button</span>) =></span> {
+  button.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+    <span class="hljs-keyword">const</span> target = evt.target;
+    target.parentNode.className = <span class="hljs-string">'completed'</span>;
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+      list.removeChild(target.parentNode);
+    }, <span class="hljs-number">2000</span>);
+  });
+});
+</code></pre>
+<p>这是一个非常简单的功能，我们在列表项的按钮上注册click事件，当用户点击到列表项前面的button的时候，显示一个淡出动画，然后将列表项从list中删除。</p>
+<p>从下面这个张效果来看，似乎没什么问题：</p>
+<p><img src="img\9bb39c5e-ae6f-11ed-99af-342eb7027b95.jpg" alt=""></p>
+<p>但是，测试工程师却发现了一个问题 —— 在列表项消失前，如果快速地点击多次列表元素，在控制台上会出现异常信息：</p>
+<p><img src="img\9bcdeb21-ae6f-11ed-be74-342eb7027b95.jpg" alt=""></p>
+<p>这条信息的出现，是因为当元素还没消失的时候，如果再次被点击，依然会响应事件。所以在事件处理函数中，会启动多个setTimeout定时器。但是当第一次执行<code>list.removeChild(target.parentNode)</code>时，target.parentNode就已经从list中移除了，所以当后续定时器回调函数再被执行时，就会抛出异常了。</p>
+<p>要解决这个问题其实很简单，就必须让click回调函数只执行一次。而让click回调函数只执行一次的方式有很多种：</p>
+<h3>1. once参数</h3>
+<p>在新的浏览器里，可以通过<code>addEventListener</code>的<code>once</code>参数实现：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day04/index1-v2.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'ul'</span>);
+<span class="hljs-keyword">const</span> buttons = list.querySelectorAll(<span class="hljs-string">'button'</span>);
+buttons.forEach(<span class="hljs-function">(<span class="hljs-params">button</span>) =></span> {
+  button.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+    <span class="hljs-keyword">const</span> target = evt.target;
+    target.parentNode.className = <span class="hljs-string">'completed'</span>;
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+      list.removeChild(target.parentNode);
+    }, <span class="hljs-number">2000</span>);
+  }, {<span class="hljs-attr">once</span>: <span class="hljs-literal">true</span>});
+});
+</code></pre>
+<p>但是在部分老的浏览器中，可能不支持once参数。这时候，也可以有别的方法，比如：</p>
+<h3>2. removeEventListener方法</h3>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'ul'</span>);
+<span class="hljs-keyword">const</span> buttons = list.querySelectorAll(<span class="hljs-string">'button'</span>);
+buttons.forEach(<span class="hljs-function">(<span class="hljs-params">button</span>) =></span> {
+  button.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params">evt</span>) </span>{
+    <span class="hljs-keyword">const</span> target = evt.target;
+    target.parentNode.className = <span class="hljs-string">'completed'</span>;
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+      list.removeChild(target.parentNode);
+    }, <span class="hljs-number">2000</span>);
+    target.removeEventListener(<span class="hljs-string">'click'</span>, f);
+  });
+});
+</code></pre>
+<p>在click事件处理函数中，通过<code>target.removeEventListener('click', f);</code>将处理函数本身从事件监听中移除。</p>
+<h3>3. disabled属性</h3>
+<p>我们也可以使用元素的<code>disabled</code>属性来实现目标元素只被点击一次的效果：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day04/index1-v3.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'ul'</span>);
+<span class="hljs-keyword">const</span> buttons = list.querySelectorAll(<span class="hljs-string">'button'</span>);
+buttons.forEach(<span class="hljs-function">(<span class="hljs-params">button</span>) =></span> {
+  button.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+    <span class="hljs-keyword">const</span> target = evt.target;
+    target.parentNode.className = <span class="hljs-string">'completed'</span>;
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+      list.removeChild(target.parentNode);
+    }, <span class="hljs-number">2000</span>);
+    target.disabled = <span class="hljs-literal">true</span>;
+  });
+});
+</code></pre>
+<p>事件处理方法只执行一次的需求还有很多，比如一个购物车提交数据给服务器，按钮点击一次后，我们也要将按钮置为<code>disabled</code>或者移除监听器：</p>
+<pre><code class="hljs language-js">formEl.addEventListener(<span class="hljs-string">'submit'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">submitData</span>(<span class="hljs-params">evt</span>) </span>{
+  fetch(<span class="hljs-string">'path/to/url'</span>, {
+    <span class="hljs-attr">method</span>: <span class="hljs-string">'POST'</span>,
+    <span class="hljs-attr">body</span>: <span class="hljs-built_in">JSON</span>.stringify(formData),
+    ...
+  });
+  formEl.removeEventListener(<span class="hljs-string">'submit'</span>, submitData);
+});
+</code></pre>
+<p>上述的这些解决方式在不同的需求中都必须不断的重复。那么，有没有通用的办法覆盖所有只需执行一次的需求呢？</p>
+<h2>第二个故事：函数装饰器——once函数</h2>
+<p>为了能够让第一个故事中的“只执行一次“的需求能覆盖不同的事件处理，我们需要将这个需求从事件处理函数中剥离出来。这个过程我们称为<strong>过程抽象</strong>。下面，我们就来看看过程抽象是如何实现的。</p>
+
+<p>once函数：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">once</span>(<span class="hljs-params">fn</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">...args</span>) </span>{
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">fn</span>)</span> {
+      <span class="hljs-keyword">const</span> ret = fn.apply(<span class="hljs-built_in">this</span>, args);
+      fn = <span class="hljs-literal">null</span>;
+      <span class="hljs-keyword">return</span> ret;
+    }
+  };
+}
+</code></pre>
+
+<p>如上代码所示，这个<code>once</code>函数的参数<code>fn</code>是一个函数，它就是我们的事件处理函数。<code>once</code>的返回值也是一个函数。这个返回函数就是“只执行一次”的过程抽象。所以我们把这个返回函数称作是<code>fn</code>的<strong>修饰函数</strong>，而把<code>once</code>称为<strong>函数的装饰器</strong>。</p>
+<p>我们来分析一下这段代码是如何实现”只执行一次”的需求的：当事件被触发，第一次调用<code>fn</code>的修饰函数的时候，<code>fn</code>存在，于是执行<code>fn</code>，然后将<code>fn</code>设置为<code>null</code>，并返回<code>fn</code>的执行结果。当再次执行这个修饰函数的时候，由于<code>fn</code>已经是<code>null</code>，就不会再次执行了，这样就实现了只调用一次的过程。</p>
+<p><img src="img\9be23b5a-ae6f-11ed-83c7-342eb7027b95.jpg" alt=""></p>
+<p>如上图所示。注意，蓝色的部分并不是<code>once</code>本身，而是<code>once</code>调用<code>fn</code>函数后返回的那个函数，也就是前面说的修饰函数，或者也可以说是一个代理函数，它根据情况决定是否将输入的参数传给原函数<code>fn</code>。</p>
+
+<p>现在，我们就可以用它来实现前面的需求：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day04/index1-v4.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'ul'</span>);
+<span class="hljs-keyword">const</span> buttons = list.querySelectorAll(<span class="hljs-string">'button'</span>);
+buttons.forEach(<span class="hljs-function">(<span class="hljs-params">button</span>) =></span> {
+  button.addEventListener(<span class="hljs-string">'click'</span>, once(<span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+    <span class="hljs-keyword">const</span> target = evt.target;
+    target.parentNode.className = <span class="hljs-string">'completed'</span>;
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+      list.removeChild(target.parentNode);
+    }, <span class="hljs-number">2000</span>);
+  }));
+});
+</code></pre>
+<pre><code class="hljs language-js">formEl.addEventListener(<span class="hljs-string">'submit'</span>, once(<span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+  fetch(<span class="hljs-string">'path/to/url'</span>, {
+    <span class="hljs-attr">method</span>: <span class="hljs-string">'POST'</span>,
+    <span class="hljs-attr">body</span>: <span class="hljs-built_in">JSON</span>.stringify(formData),
+    ...
+  });
+}));
+</code></pre>
+<p>如上代码所示，将“只执行一次”的过程抽象出来后，不论是我们的事件处理函数还是表单提交函数都只需要关注业务逻辑，而不需要添加<code>target.disabled=false</code>或则<code>target.removeEventListener</code>等语句了。我们的代码也不会因为疏忽了这些非业务逻辑的语句而报错。</p>
+<p>除了上面这些情况，我们还可以对once方法做一些扩展。比如：我们定义了一个对象的初始化方法，这个方法只允许执行一次，如果用户不小心多次执行，我们想让函数抛出异常。我们修改once方法如下代码所示：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">once</span>(<span class="hljs-params">fn, replacer = <span class="hljs-literal">null</span></span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">...args</span>) </span>{
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">fn</span>)</span> {
+      <span class="hljs-keyword">const</span> ret = fn.apply(<span class="hljs-built_in">this</span>, args);
+      fn = <span class="hljs-literal">null</span>;
+      <span class="hljs-keyword">return</span> ret;
+    }
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">replacer</span>)</span> {
+      <span class="hljs-keyword">return</span> replacer.apply(<span class="hljs-built_in">this</span>, args);
+    }
+  };
+}
+</code></pre>
+<p>那么我们就可以这样用：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> obj = {
+  <span class="hljs-attr">init</span>: once(<span class="hljs-function">() =></span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Initializer has been called.'</span>);
+  }, <span class="hljs-function">() =></span> {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'This method should be called only once.'</span>);
+  }),
+}
+
+obj.init();
+obj.init();
+</code></pre>
+<p>这样当我们第二次调用<code>obj.init()</code>时，就会抛出异常<code>new Error('This method should be called only once.');</code>。</p>
+
+<p>函数的装饰器是一种新的抽象思路，那么除了<code>once</code>外，函数装饰器的这种思路还能应用在哪些场景呢？</p>
+<h2>第三个故事：节流和防抖函数装饰器</h2>
+
+<p>除了<code>once</code>装饰器外，这一讲我们来认识另外两种常见的函数装饰器：节流和防抖。</p>
+
+<h3>节流</h3>
+<p>什么是节流，我们用一个例子来解释一下：</p>
+
+
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"panel"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-tag">html</span>, <span class="hljs-selector-tag">body</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+}
+<span class="hljs-selector-id">#panel</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">360px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">360px</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">0</span>, <span class="hljs-number">50%</span>, <span class="hljs-number">50%</span>);
+}
+</code></pre>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> panel = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'panel'</span>);
+panel.addEventListener(<span class="hljs-string">'mousemove'</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+  <span class="hljs-keyword">const</span> {x, y} = e;
+  e.target.style.background = <span class="hljs-string">`linear-gradient(<span class="hljs-subst">${y}</span>deg, 
+    hsl(0, 50%, 50%),
+    hsl(<span class="hljs-subst">${<span class="hljs-number">0.5</span> * x}</span>, 50%, 50%))`</span>;
+});
+</code></pre>
+<p>上面的代码是一个从真实的业务中抽象出来的一个简单的例子。我们监听panel元素的<code>mousemove</code>方法，然后根据鼠标移动的（<code>x、y</code>）位置改变元素的背景色，它的效果如下：</p>
+<p><img src="img\9bf910ed-ae6f-11ed-aebe-342eb7027b95.jpg" alt=""></p>
+<p>因为在这个例子中，仅仅只是修改元素的背景色，并没有负责的业务逻辑，所以频繁的响应<code>mousemove</code>事件没什么问题。</p>
+<p>可是，假设现在我们需要将更改后的颜色发送给服务器保存，那么频繁触发送过多的<code>mousemove</code>事件，会导致过多的http请求，给服务器带来比较大的负担。在这种情况下，我们就要设计一个机制，来限制<code>mousemove</code>被频繁触发。这个限制的过程就是我们说的<strong>节流</strong></p>
+
+<pre><code class="hljs language-js">panel.addEventListener(<span class="hljs-string">'mousemove'</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+  <span class="hljs-comment">// 省略改变颜色的代码...</span>
+
+  <span class="hljs-comment">//向服务器发送当前颜色</span>
+  saveToServer(...data);  <span class="hljs-comment">// 应避免请求被频繁发起</span>
+});
+</code></pre>
+<p>那么，我们怎样实现节流呢？ 我们来看看下面的代码：</p>
+
+<p><a href="https://junyux.github.io/FE-Advance/day04/index2-v1.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> panel = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'panel'</span>);
+<span class="hljs-keyword">let</span> throttleTimer = <span class="hljs-literal">null</span>;
+panel.addEventListener(<span class="hljs-string">'mousemove'</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">!throttleTimer</span>)</span> {
+    <span class="hljs-keyword">const</span> {x, y} = e;
+    e.target.style.background = <span class="hljs-string">`linear-gradient(<span class="hljs-subst">${y}</span>deg, 
+      hsl(0, 50%, 50%),
+      hsl(<span class="hljs-subst">${<span class="hljs-number">0.5</span> * x}</span>, 50%, 50%))`</span>;
+    throttleTimer = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+      throttleTimer = <span class="hljs-literal">null</span>;
+    }, <span class="hljs-number">100</span>);
+  }
+});
+</code></pre>
+<p>如上代码所示，我们使用定时器作为限制。当<code>throttleTimer</code>等于<code>null</code>时，执行<code>mousemove</code>事件函数。然后，我们启动定时器。当<code>mousemove</code>事件在100毫秒内再次触发的时候，因为<code>throttleTimer</code>还未被设置为<code>null</code>，所以这次的<code>mousemove</code>事件被忽略。直到100毫秒之后，<code>throttleTimer</code>再次被设置为<code>null</code>时，才能触发<code>mousemove</code>事件。</p>
+<p>上面的代码，虽然我们使用定时器解决了节流的问题，但是并不通用。当下次再遇到需要节流功能的地方时，我们需要复制这个定时器代码。所以，我们需要将这个节流的过程抽象出来，让它成为通用的节流装饰方法。</p>
+
+<p>和<code>once</code>类似，我们实现一个<code>throttle</code>函数装饰器，它限制某个函数在<code>ms</code>间隔中只执行一次：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">throttle</span>(<span class="hljs-params">fn, ms = <span class="hljs-number">100</span></span>) </span>{
+  <span class="hljs-keyword">let</span> throttleTimer = <span class="hljs-literal">null</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">...args</span>) </span>{
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">!throttleTimer</span>)</span> {
+      <span class="hljs-keyword">const</span> ret = fn.apply(<span class="hljs-built_in">this</span>, args);
+      throttleTimer = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+        throttleTimer = <span class="hljs-literal">null</span>;
+      }, ms);
+      <span class="hljs-keyword">return</span> ret;
+    }
+  };
+}
+</code></pre>
+<p>与<code>once</code>一样，<code>throttle</code>的第一个参数是个函数，返回值也是一个函数，它返回的函数修饰了参数<code>fn</code>。当每次成功调用后，产生一个<code>ms</code>毫秒后执行回调的定时器，并赋给<code>throttleTimer</code>。在定时器回调函数未执行时，因为t<code>hrottleTimer</code>变量有值，函数<code>fn</code>就不会被次执行。</p>
+<p><img src="img\9c39d8ac-ae6f-11ed-aec6-342eb7027b95.jpg" alt=""></p>
+<p>有了这个函数，我们就可以使用它来实现节流了：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day04/index2-v2.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> panel = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'panel'</span>);
+panel.addEventListener(<span class="hljs-string">'mousemove'</span>, throttle(<span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+  <span class="hljs-keyword">const</span> {x, y} = e;
+  e.target.style.background = <span class="hljs-string">`linear-gradient(<span class="hljs-subst">${y}</span>deg, 
+    hsl(0, 50%, 50%),
+    hsl(<span class="hljs-subst">${<span class="hljs-number">0.5</span> * x}</span>, 50%, 50%))`</span>;
+}));
+</code></pre>
+<p>有趣的是，我们还可以使用这个<code>throttle</code>来实现我们上一个故事里的<code>once</code>：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">throttle</span>(<span class="hljs-params">fn, ms = <span class="hljs-number">100</span></span>) </span>{
+  <span class="hljs-keyword">let</span> throttleTimer = <span class="hljs-literal">null</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">...args</span>) </span>{
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">!throttleTimer</span>)</span> {
+      <span class="hljs-keyword">const</span> ret = fn.apply(<span class="hljs-built_in">this</span>, args);
+      throttleTimer = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+        throttleTimer = <span class="hljs-literal">null</span>;
+      }, ms);
+      <span class="hljs-keyword">return</span> ret;
+    }
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">once</span>(<span class="hljs-params">fn</span>) </span>{
+  <span class="hljs-keyword">return</span> throttle(fn, <span class="hljs-literal">Infinity</span>);
+}
+</code></pre>
+<p>这时的<code>once</code>就相当于一个定时器永不过期的<code>throttle</code>，从这一点上来说，<code>throttle</code>是比<code>once</code>更抽象的函数。</p>
+
+<h3>防抖</h3>
+<p>除了<code>throttle</code>，与之类似的有防抖函数<code>debounce</code>。那么什么是防抖，我们也通过例子来了解一下：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"panel"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">canvas</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">canvas</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-tag">html</span>, <span class="hljs-selector-tag">body</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+}
+<span class="hljs-selector-id">#panel</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">padding-bottom</span>: <span class="hljs-number">100%</span>;
+}
+</code></pre>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> panel = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'panel'</span>);
+<span class="hljs-keyword">const</span> canvas = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'canvas'</span>);
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">resize</span>(<span class="hljs-params"></span>) </span>{
+  canvas.width = panel.clientWidth;
+  canvas.height = panel.clientHeight;
+}
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> context = canvas.getContext(<span class="hljs-string">'2d'</span>);
+  <span class="hljs-keyword">const</span> radius = canvas.width / <span class="hljs-number">2</span>;
+  context.save();
+  context.translate(radius, radius);
+  <span class="hljs-function"><span class="hljs-title">for</span>(<span class="hljs-params"><span class="hljs-keyword">let</span> i = radius; i >= <span class="hljs-number">0</span>; i -= <span class="hljs-number">5</span></span>)</span> {
+    context.fillStyle = <span class="hljs-string">`hsl(<span class="hljs-subst">${i % <span class="hljs-number">360</span>}</span>, 50%, 50%)`</span>;
+    context.beginPath();
+    context.arc(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, i, i, <span class="hljs-number">0</span>, <span class="hljs-built_in">Math</span>.PI * <span class="hljs-number">2</span>);
+    context.fill();
+  }
+  context.restore();
+}
+
+resize();
+draw();
+
+<span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">'resize'</span>, <span class="hljs-function">() =></span> {
+  resize();
+  draw();
+});
+</code></pre>
+<p>在这例子里，我们在画布Canvas上实现一个不同色彩叠加的圆环，且允许画布的大小随页面宽度弹性改变，它的效果如下：</p>
+<p><img src="img\9c4d6d59-ae6f-11ed-97ce-342eb7027b95.jpg" alt=""></p>
+<p>如上图所示，在我们通过拖拽窗口改变窗口大小时，页面有些卡顿。这是因为（同<code>mousemove</code>类似）在拖拽窗口时，<code>resize</code>事件会反复触发，而每次触发的时候，Canvas都要重新绘制，而且绘制是一个耗时的过程，所以出现了图像卡顿。</p>
+<p>那么如何解决这种卡顿的现象呢？我们可以让用户在操作过程中，不绘制Canvas，只在用户最后一次改变窗口大小的操作后才重新绘制Canvas。这一过程就是<strong>防抖</strong>。</p>
+
+<p>同样，我们先用常规方式改写代码，让它具备防抖功能：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day04/index3-v1.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// 省略前面的代码...</span>
+
+resize();
+draw();
+
+<span class="hljs-keyword">let</span> debounceTimer = <span class="hljs-literal">null</span>;
+<span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">'resize'</span>, <span class="hljs-function">() =></span> {
+  <span class="hljs-keyword">if</span>(debounceTimer) <span class="hljs-built_in">clearTimeout</span>(debounceTimer);
+  debounceTimer = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+    resize();
+    draw();
+  }, <span class="hljs-number">500</span>);
+});
+</code></pre>
+<p>与<code>throttle</code>类似，我们还是使用一个定时器<code>debounceTimer</code>，但是它的逻辑有所变化。在<code>debounceTimer</code>定时器存在时，如果<code>resize</code>操作被触发，那么我们先清除上一次的<code>debounceTimer</code>，创建一个新的<code>debounceTimer</code>。这样的话，如果<code>resize</code>事件反复被触发，那么<code>debounceTimer</code>定时器就会被一直替换成新的，它的回调就不会被执行，只有当<code>resize</code>不再被触发超过一定时间（这里是500毫秒）后，它的回调才会被执行。简单来说，就是Canvas的绘制只发生在最后一次操作之后，中间的操作Canvas绘制都不会触发。这样就不会出现抖动现象了。</p>
+<p>接下来，我们像之前一样，把<code>debounce</code>过程抽象出来：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span>(<span class="hljs-params">fn, ms</span>) </span>{
+  <span class="hljs-keyword">let</span> debounceTimer = <span class="hljs-literal">null</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">...args</span>) </span>{
+    <span class="hljs-keyword">if</span>(debounceTimer) <span class="hljs-built_in">clearTimeout</span>(debounceTimer);
+
+    debounceTimer = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+      fn.apply(<span class="hljs-built_in">this</span>, args);
+    }, ms);
+  };
+}
+</code></pre>
+<p><img src="img\9ca0d526-ae6f-11ed-91d1-342eb7027b95.jpg" alt=""></p>
+<p>然后，我们就可以用<code>debounce</code>来实现防抖了：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day04/index3-v2.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">'resize'</span>, debounce(<span class="hljs-function">() =></span> {
+  resize();
+  draw();
+}, <span class="hljs-number">500</span>));
+</code></pre>
+
+<p>因为节流和防抖的函数非常相似，可能你会混淆。这里就再次前调一下它们的区别：</p>
+<ul>
+<li>节流是让事件处理函数隔一个指定毫秒再触发</li>
+<li>防抖则忽略中间的操作，只响应用户最后一次操作</li>
+</ul>
+
+<p>回顾第一、二故事，我们了解了三种函数装饰器：<code>once</code>、<code>debounce</code>、<code>throttle</code>。这些函数装饰器有一个共同点：它们的参数是函数，返回值也是函数。我们把这种参数和返回值都是函数的函数，叫做<strong>高阶函数（High Ordered Functions）</strong>。</p>
+<p>高阶函数除了修饰函数外，还有哪些应用和好处呢？</p>
+<h2>第四个故事：函数拦截器</h2>
+<p>这个故事，我们将带你了解高阶函数的另外一个应用 —— 函数拦截器。</p>
+<p>最近我们遇到一个头疼的问题，我们维护的一个工具库面临一次大的升级。这次版本升级中，一部分API将发生变化，旧的用法会被新的用法所取代。但是，由于很多业务中使用了老版本的工具库，不可能一次升级完，因此我们需要做一个平缓过渡：在当前这个版本中，先不取消这些旧的API，而是给它们增加一个提示信息，告诉调用它们的用户，这些API将会在下一次升级中被废弃。</p>
+<p>要输出提示信息，可以使用<code>console.warn</code>。</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deprecate</span>(<span class="hljs-params">oldApi, newApi</span>) </span>{
+  <span class="hljs-keyword">const</span> message = <span class="hljs-string">`The <span class="hljs-subst">${oldApi}</span> is deprecated.
+Please use the <span class="hljs-subst">${newApi}</span> instead.`</span>;
+  <span class="hljs-built_in">console</span>.warn(message);
+}
+</code></pre>
+<p>我们设计了一个<code>deprecate</code>的函数，如上代码所示。如果某个API需要废弃，那么在库中，修改该API的代码，在调用时输出信息，比如：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>{
+  deprecate(<span class="hljs-string">'foo'</span>, <span class="hljs-string">'bar'</span>);
+  <span class="hljs-comment">// do sth...</span>
+}
+</code></pre>
+<p>这样，当用户调用<code>foo</code>的时候，控制台上就会输出警告信息：</p>
+<p><img src="img\9cb42609-ae6f-11ed-b709-342eb7027b95.jpg" alt=""></p>
+<p>这么做当然是可以的，但是这么做是有风险的。因为这样做，我们需要找出库中所有要废弃的API，然后一一手动添加<code>deprecate</code>方法。这样做增加了手误的风险，导致原有的API出现错误。</p>
+<p>所以我们需要思考：如何可以不改动原来库中API，又可以在这些废弃的API调用前显示提示信息呢？</p>
+
+<pre><code class="hljs language-js"><span class="hljs-comment">// deprecation.js</span>
+<span class="hljs-comment">// 引入要废弃的 API</span>
+<span class="hljs-keyword">import</span> {foo, bar} <span class="hljs-keyword">from</span> <span class="hljs-string">'./foo'</span>;
+...
+<span class="hljs-comment">// 用高阶函数修饰</span>
+<span class="hljs-keyword">const</span> _foo = deprecate(foo, <span class="hljs-string">'foo'</span>, <span class="hljs-string">'newFoo'</span>);
+<span class="hljs-keyword">const</span> _bar = deprecate(bar, <span class="hljs-string">'bar'</span>, <span class="hljs-string">'newBar'</span>);
+
+<span class="hljs-comment">// 重新导出修饰过的API</span>
+<span class="hljs-keyword">export</span> {
+  <span class="hljs-attr">foo</span>: _foo,
+  <span class="hljs-attr">bar</span>: _bar,
+  ...
+}
+</code></pre>
+<p>如上代码所示，我们将库中要废弃的API导入到<code>deprecation</code>模块中。然后将这些废弃的方法，和提示信息丢到<code>deprecate</code>这个沙箱中处理，返回一个修饰过的函数，并将这些函数以相同的名字导出。这样当其他用户调用这些方法时，就会先经过<code>deprecate</code>这个沙箱，显示提示信息，然后再执行<code>foo</code>或<code>bar</code>方法的内容。</p>
+<p>那么，这个<code>deprecate</code>函数是如何实现的呢，我们来看一下它的代码：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deprecate</span>(<span class="hljs-params">fn, oldApi, newApi</span>) </span>{
+  <span class="hljs-keyword">const</span> message = <span class="hljs-string">`The <span class="hljs-subst">${oldApi}</span> is deprecated.
+Please use the <span class="hljs-subst">${newApi}</span> instead.`</span>;
+  <span class="hljs-keyword">const</span> notice = once(<span class="hljs-built_in">console</span>.warn);
+
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">...args</span>) </span>{
+    notice(message);
+    <span class="hljs-keyword">return</span> fn.apply(<span class="hljs-built_in">this</span>, args);
+  }
+}
+</code></pre>
+<p>从上面的代码，我们可以看出，<code>deprecate</code>也是一个高阶函数。它输入一个<code>fn</code>函数，返回一个函数。<code>fn</code>就是要废弃的API。返回的函数是一个包含了打印提示信息，和<code>fn</code>调用的函数。这样，当我们执行这个返回的函数的时候，先执行了提示信息的打印，然后才执行原有的API方法。</p>
+<p><img src="img\9cc9740f-ae6f-11ed-976a-342eb7027b95.jpg" alt=""></p>
+<p>这里我们还添加了一个小细节，定义<code>notice = once(console.warn)</code>，用<code>notice</code>输出，这样的话，调用相同的函数只会在控制台显示一遍警告，就避免了输出太多重复的信息。</p>
+<p>从这个例子，我们可以看到高阶函数另一个经典的使用场景，那就是，<strong>当我们想要修改函数库中的某个API，我们可以选择不修改代码本身，而是对这个API进行修饰，修饰的过程可以抽象为拦截它的输入或输出。</strong></p>
+<p>这和web开发中的拦截器的思路不谋而合。基于这个思路，我们也可以设计一个简单的通用函数拦截器：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">intercept</span>(<span class="hljs-params">fn, {beforeCall = <span class="hljs-literal">null</span>, afterCall = <span class="hljs-literal">null</span>}</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">...args</span>) </span>{
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">!beforeCall || beforeCall.call(<span class="hljs-built_in">this</span>, args) !== <span class="hljs-literal">false</span></span>)</span> {
+      <span class="hljs-comment">// 如果beforeCall返回false，不执行后续函数</span>
+      <span class="hljs-keyword">const</span> ret = fn.apply(<span class="hljs-built_in">this</span>, args);
+      <span class="hljs-keyword">if</span>(afterCall) <span class="hljs-keyword">return</span> afterCall.call(<span class="hljs-built_in">this</span>, ret);
+      <span class="hljs-keyword">return</span> ret;
+    }
+  };
+}
+</code></pre>
+<p><code>intercept</code>函数是一个高阶函数，它的第二个参数是一个对象，可以提供<code>beforeCall</code>、<code>afterCall</code>两个拦截器函数，分别“拦截”<code>fn</code>函数的执行前和执行后两个阶段。</p>
+<p><img src="img\9cd9c3dd-ae6f-11ed-8e18-342eb7027b95.jpg" alt=""></p>
+<p>在执行前阶段，我们可以通过返回<code>false</code>阻止<code>fn</code>执行，在执行后阶段，我们可以用<code>afterCall</code>返回值替代<code>fn</code>函数返回值。</p>
+<p><code>intercept</code>有很多用途：</p>
+<ol>
+<li>我们可以随时监控一个函数的执行过程，不修改代码的情况下获取函数的执行信息：</li>
+</ol>
+<p><a href="https://junyux.github.io/FE-Advance/day04/index4-v1.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sum</span>(<span class="hljs-params">...list</span>) </span>{
+  <span class="hljs-keyword">return</span> list.reduce(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =></span> a + b);
+}
+
+sum = intercept(sum, {
+  <span class="hljs-function"><span class="hljs-title">beforeCall</span>(<span class="hljs-params">args</span>)</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`The argument is <span class="hljs-subst">${args}</span>`</span>);
+    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">'sum'</span>); <span class="hljs-comment">// 监控性能</span>
+  },
+  <span class="hljs-function"><span class="hljs-title">afterCall</span>(<span class="hljs-params">ret</span>)</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`The resulte is <span class="hljs-subst">${ret}</span>`</span>);
+    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">'sum'</span>);
+  }
+});
+
+sum(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>);
+</code></pre>
+<p><img src="img\9cf12558-ae6f-11ed-8d47-342eb7027b95.jpg" alt=""></p>
+<ol start="2">
+<li>我们可以调整参数顺序：</li>
+</ol>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> mySetTimeout = intercept(<span class="hljs-built_in">setTimeout</span>,  {
+  <span class="hljs-function"><span class="hljs-title">beforeCall</span>(<span class="hljs-params">args</span>)</span> {
+    [args[<span class="hljs-number">0</span>], args[<span class="hljs-number">1</span>]] = [args[<span class="hljs-number">1</span>], args[<span class="hljs-number">0</span>]];
+  }
+});
+
+mySetTimeout(<span class="hljs-number">1000</span>, <span class="hljs-function">() =></span> {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'done'</span>);
+});
+</code></pre>
+<p>上面的代码，重新定义了一个新的定时器函数<code>mySetTimeout</code>，它的参数恰好和<code>setTimeout</code>相反。</p>
+<ol start="3">
+<li>我们可以校验函数的参数类型：</li>
+</ol>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> foo = intercept(foo, {
+  <span class="hljs-function"><span class="hljs-title">beforeCall</span>(<span class="hljs-params">args</span>)</span> {
+    assert(<span class="hljs-keyword">typeof</span> args[<span class="hljs-number">1</span>] === <span class="hljs-string">'string'</span>);
+  }
+});
+</code></pre>
+<p>除了上述三点用途外，它可以根据你的业务需求，有很多用途。但最关键的是，这些事情是在不修改原函数代码的基础上做到的！</p>
+<p>通过这三个例子，我们了解了高阶函数的一个基础应用，下一讲，我们将谈谈高阶函数在应用中的意义。</p>
+
+<h2>第五个故事：函数的“纯度”、可测试性和可维护性</h2>
+
+<p>在前端开发中，我们都会积累一些方便好用的工具函数，且会将它们添加到工具函数库中，以方便在其它项目中复用。</p>
+<p>其中有两个工具函数是这样的：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setStyle</span>(<span class="hljs-params">el, key, value</span>) </span>{
+  el.style[key] = value;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setStyles</span>(<span class="hljs-params">els, key, value</span>) </span>{
+  els.forEach(<span class="hljs-function"><span class="hljs-params">el</span> =></span> setStyle(el, key, value));
+}
+</code></pre>
+<p>这两个函数的功能是给元素设置样式的，其中<code>setStyle</code>只给一个元素设置样式，而<code>setStyles</code>则给多个元素设置样式。</p>
+<p>这两个函数功能单一，看起来非常简单，但是它们有一个共同的缺点——那就是它们都依赖外部的环境（参数<code>el</code>元素），同时也改变这个环境。这样定义函数有什么问题呢？</p>
+<p>把自己想象成测试人员，如果需要给<code>setStyle</code>或者<code>setStyles</code>这样的函数进行<strong>黑盒测试</strong>，我们必须给它构建测试的环境。比如，针对上面两个函数，我们需要构建不同的DOM元素结构，然后获取元素或元素列表，然后根据操作后DOM元素的呈现结果判定函数的实现是否正确。这必然导致测试成本的提高。所以，为了降低工具库测试的成本，提高函数的<strong>测试性</strong>，我们需要对工具库进行重构。</p>
+<p>要提高函数的可测试性，需要提高函数的<strong>纯度</strong>，也就是需要减少函数对外部环境的依赖，以及减少该函数对外部环境的改变。这样的函数我们成为<strong>纯函数</strong>。</p>
+<p>一个严格的纯函数，是具有<strong>确定性</strong>、<strong>无副作用</strong>，<strong>幂等</strong>的特点。也就是说，纯函数不依赖外部环境，也不改变外部环境，不管调用几次，不管什么时候调用，只要参数确定，返回值就确定。这样的函数，就是纯函数。</p>
+<p>下面的代码就是我们针对上面两个工具函数的重构：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">batch</span>(<span class="hljs-params">fn</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">subject, ...args</span>) </span>{
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params"><span class="hljs-built_in">Array</span>.isArray(subject)</span>)</span> {
+      <span class="hljs-keyword">return</span> subject.map(<span class="hljs-function">(<span class="hljs-params">s</span>) =></span> {
+        <span class="hljs-keyword">return</span> fn.call(<span class="hljs-built_in">this</span>, s, ...args);
+      });
+    }
+    <span class="hljs-keyword">return</span> fn.call(<span class="hljs-built_in">this</span>, subject, ...args);
+  }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> setStyle = batch(<span class="hljs-function">(<span class="hljs-params">el, key, value</span>) =></span> {
+  el.style[key] = value;
+});
+</code></pre>
+<p>如上代码所示，<code>batch</code>是一个高阶函数。在它的返回函数中，第一个参数<code>subject</code><strong>如果是一个数组，则以这个数组的每个元素为第一个参数，依次迭代调用<code>fn</code>，将结果作为数组返回</strong>。如果<code>subject</code>不是数组，那么直接调用<code>fn</code>，并将结果返回。</p>
+<p><img src="img\9d010f38-ae6f-11ed-a4c7-342eb7027b95.jpg" alt=""></p>
+<p>所以经过<code>batch</code>之后的<code>setStyle</code>函数拥有了单个操作或者批量操作元素的能力，相当于原先的<code>setStyle</code>和<code>setStyles</code>的结合。</p>
+<p>我们来看一个完整的例子 —— 将<code>ul</code>元素下所有的奇数行的<code>li</code>元素的字体颜色修改为红色：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day04/index5-v1.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>1<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>2<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>3<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>4<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>5<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>6<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>7<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+</code></pre>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">batch</span>(<span class="hljs-params">fn</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">subject, ...args</span>) </span>{
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params"><span class="hljs-built_in">Array</span>.isArray(subject)</span>)</span> {
+      <span class="hljs-keyword">return</span> subject.map(<span class="hljs-function">(<span class="hljs-params">s</span>) =></span> {
+        <span class="hljs-keyword">return</span> fn.call(<span class="hljs-built_in">this</span>, s, ...args);
+      });
+    }
+    <span class="hljs-keyword">return</span> fn.call(<span class="hljs-built_in">this</span>, subject, ...args);
+  };
+}
+
+<span class="hljs-keyword">const</span> setStyle = batch(<span class="hljs-function">(<span class="hljs-params">el, key, value</span>) =></span> {
+  el.style[key] = value;
+});
+
+<span class="hljs-keyword">const</span> items = <span class="hljs-built_in">document</span>.querySelectorAll(<span class="hljs-string">'li:nth-child(2n+1)'</span>);
+
+setStyle([...items], <span class="hljs-string">'color'</span>, <span class="hljs-string">'red'</span>);
+</code></pre>
+<p>上面的代码中，虽然<code>setStyle</code>依然不是纯函数，但是<code>batch</code>是一个纯函数。也就是说，经过重构的代码，减少了工具库的<strong>非纯函数</strong>，提升了库中纯函数的数量，这样就提升了函数库的可测试性和可维护性。</p>
+<p>以<code>batch</code>函数为例，我们来看看这时的黑盒测试是多么的简单：</p>
+
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> list = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>];
+<span class="hljs-keyword">const</span> double = batch(<span class="hljs-function"><span class="hljs-params">num</span> =></span> num * <span class="hljs-number">2</span>);
+
+double(list); <span class="hljs-comment">// 2, 4, 6, 8</span>
+</code></pre>
+<p>如上代码所示，我们只需要给<code>batch</code>传入参数，判断它的返回结果是否和预期一致即可，并不需要为它构建HTML环境。</p>
+<p>可能这时，你会问，如果只是合并<code>setStyle</code>和<code>setStyles</code>，也可简单的将这两个方法合并为如下形式：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setStyle</span>(<span class="hljs-params">el, key, value</span>) </span>{
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params"><span class="hljs-built_in">Array</span>.isArray(el)</span>)</span> {
+    <span class="hljs-keyword">return</span> el.forEach(<span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+      setStyle(e, key, value);
+    });
+  }
+  el.style[key] = value;
+}
+</code></pre>
+<p>这么做，首先它破坏了函数职责单一性的原则。其次，工具库里还有其他类似的函数，比如：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addState</span>(<span class="hljs-params">el, state</span>) </span>{
+  removeState(el, state);
+  el.className = el.className ? <span class="hljs-string">`<span class="hljs-subst">${el.className}</span> <span class="hljs-subst">${state}</span>`</span> : state;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeState</span>(<span class="hljs-params">el, state</span>) </span>{
+  el.className = el.className.replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">`(^|\\s)<span class="hljs-subst">${state}</span>(\\s|$)`</span>, <span class="hljs-string">'g'</span>), <span class="hljs-string">''</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addStates</span>(<span class="hljs-params">els, state</span>) </span>{
+  els.forEach(<span class="hljs-function"><span class="hljs-params">el</span> =></span> addState(el, state));
+}
+</code></pre>
+<p>如果要修改，那么还得把这些方法一起修改为下面的样子：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addState</span>(<span class="hljs-params">el, state</span>) </span>{
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params"><span class="hljs-built_in">Array</span>.isArray(el)</span>)</span> {
+    <span class="hljs-keyword">return</span> el.forEach(<span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+      addState(e, state);
+    });
+  }
+  removeState(el, state);
+  el.className = el.className ? <span class="hljs-string">`<span class="hljs-subst">${el.className}</span> <span class="hljs-subst">${state}</span>`</span> : state;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeState</span>(<span class="hljs-params">el, state</span>) </span>{
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params"><span class="hljs-built_in">Array</span>.isArray(el)</span>)</span> {
+    <span class="hljs-keyword">return</span> el.forEach(<span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+      removeState(e, state);
+    });
+  }
+  el.className = el.className.replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">`(^|\\s)<span class="hljs-subst">${state}</span>(\\s|$)`</span>, <span class="hljs-string">'g'</span>), <span class="hljs-string">''</span>);
+}
+</code></pre>
+<p>而有了<code>batch</code>方法后，因为<code>const setStyle = batch(...)</code>是通过函数装饰器的修饰将函数变换为具有批量处理功能，并不违反定义时的职责单一原则，而且测试的时候，只要保证纯函数<code>batch</code>的正确性，就完全不用担心被<code>batch</code>变换后的函数的正确性。</p>
+<p>而且，修改其他的函数也不用那么麻烦了。把所有需要拥有批量处理功能的函数统统用<code>batch</code>装饰一下就可以了：</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// 统一的批量化处理</span>
+addState = batch(addState);
+removeState = batch(removeState);
+</code></pre>
+<p>这样我们通过设计<code>batch</code>高阶函数，让这个库的纯函数增加，非纯函数减少了，这最终大大提升了库的可测试性和可维护性。这就是我们为什么需要使用高阶函数过程抽象来设计和重构函数库的原因。</p>
+<p><code>batch</code>只是其中一个高阶函数，就像前面的<code>once</code>、<code>throttle</code>、<code>debounce</code>一样，只是众多函数装饰器中的一个，我们还可以实现其他更多的函数装饰器，用它们来一步一步改造我们的工具函数库。</p>
+<h2>第六个故事：高阶函数的范式</h2>
+<p>前面的几个故事中，我们得到了几个高阶函数，包括<code>once</code>、<code>throttle</code>、<code>debounce</code>和<code>batch</code>，它们的功能各不相同，但是也有共同点，从中我们可以抽取出创建高阶函数的<strong>范式</strong>：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">HOF0</span>(<span class="hljs-params">fn</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">...args</span>) </span>{
+    <span class="hljs-keyword">return</span> fn.apply(<span class="hljs-built_in">this</span>, args);
+  }
+}
+</code></pre>
+<p><code>HOF0</code>是高阶函数的<strong>等价范式</strong>，或者说，<code>HOF0</code>修饰的函数功能和原函数<code>fn</code>的功能完全相同。因为被修饰后的函数就只是采用调用的<code>this</code>上下文和参数来调用<code>fn</code>，并将结果返回。也就是说，执行它和直接执行<code>fn</code>完全没区别。</p>
+<p><img src="img\9d15e7aa-ae6f-11ed-9395-342eb7027b95.jpg" alt=""></p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params">...args</span>) </span>{
+  <span class="hljs-comment">// do anything.</span>
+}
+<span class="hljs-keyword">const</span> bar = HOF0(foo);
+
+<span class="hljs-built_in">console</span>.log(foo(<span class="hljs-string">'something'</span>), bar(<span class="hljs-string">'something'</span>)); <span class="hljs-comment">// 调用foo和调用bar完全等价</span>
+</code></pre>
+<p>所以<code>HOF0</code>是基础范式，其他的函数装饰器就是在它的基础上，要么对<strong>参数进行修改</strong>，如<code>batch</code>，要么对<strong>返回结果进行修改</strong>，如<code>once</code>、<code>throttle</code>、<code>debounce</code>和<code>batch</code>。</p>
+<p><img src="img\9d27e9ee-ae6f-11ed-800b-342eb7027b95.jpg" alt=""></p>
+<p>那么同样，其他的高阶函数也可以在这基础上设计出来。</p>
+<p>比如，我们可以设计出连续执行的函数，用来递归执行，类似于数组的<code>reduce</code>方法，但更灵活。</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">continous</span>(<span class="hljs-params">reducer</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">...args</span>) </span>{
+    <span class="hljs-keyword">return</span> args.reduce(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =></span> reducer(a, b));
+  };
+}
+</code></pre>
+<p>有了<code>continous</code>，我们可以创建能够递归处理输入的函数，如：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> add = continous(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =></span> a + b);
+<span class="hljs-keyword">const</span> multiply = continous(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =></span> a * b);
+
+<span class="hljs-built_in">console</span>.log(add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>)); <span class="hljs-comment">// 1 + 2 + 3 + 4 = 10</span>
+
+<span class="hljs-built_in">console</span>.log(multiply(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>)); <span class="hljs-comment">// 1 * 2 * 3 * 4 * 5 = 120</span>
+</code></pre>
+<p>与<code>batch</code>类似，<code>continous</code>也可以用来创建批量操作元素的方法，只不过参数和用法需要调整一下，用起来也没有<code>batch</code>那么好用。如下代码所示：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day04/index5-v2.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> setStyle = continous(<span class="hljs-function">(<span class="hljs-params">[key, value], el</span>) =></span> {
+  el.style[key] = value;
+  <span class="hljs-keyword">return</span> [key, value];
+});
+
+<span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.querySelectorAll(<span class="hljs-string">'li:nth-child(2n+1)'</span>);
+setStyle([<span class="hljs-string">'color'</span>, <span class="hljs-string">'red'</span>], ...list);
+</code></pre>
+<p>注意到因为continous是递归迭代执行，我们要把<code>list</code>展开传入<code>setStyle</code>。</p>
+<p>如果我们想要直接使用<code>list</code>作为参数而不是传<code>...list</code>，我们可以再实现一个高阶函数来处理它：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fold</span>(<span class="hljs-params">fn</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">...args</span>) </span>{
+    <span class="hljs-keyword">const</span> lastArg = args[args.length - <span class="hljs-number">1</span>];
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">lastArg.length</span>)</span> {
+      <span class="hljs-keyword">return</span> fn.call(<span class="hljs-built_in">this</span>, ...args.slice(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>), ...lastArg);
+    }
+    <span class="hljs-keyword">return</span> fn.call(<span class="hljs-built_in">this</span>, ...args);
+  };
+}
+</code></pre>
+<p><code>fold</code>函数判断最后一个参数是一个数组或类数组（如NodeList），那么将它展开传给原函数<code>fn</code>（相对于被修饰的原函数而言是折叠了参数，所以用<code>fold</code>命名这个高阶函数）。</p>
+<p>所以我们再改一下<code>setStyle</code>:</p>
+<p><a href="https://junyux.github.io/FE-Advance/day04/index5-v3.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> setStyle = fold(continous(<span class="hljs-function">(<span class="hljs-params">[key, value], el</span>) =></span> {
+  el.style[key] = value;
+  <span class="hljs-keyword">return</span> [key, value];
+}));
+
+<span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.querySelectorAll(<span class="hljs-string">'li:nth-child(2n+1)'</span>);
+
+setStyle([<span class="hljs-string">'color'</span>, <span class="hljs-string">'red'</span>], list);
+</code></pre>
+<p>我们给<code>setStyle</code>在<code>continous</code>基础上再加一个<code>fold</code>的装饰，就可以达到我们的目的，list不用<code>...</code>展开。</p>
+<p>那么接下来，我们可以调整一下参数顺序，让setStyle更接近batch那一版：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reverse</span>(<span class="hljs-params">fn</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">...args</span>) </span>{
+    <span class="hljs-keyword">return</span> fn.apply(<span class="hljs-built_in">this</span>, args.reverse());
+  };
+}
+</code></pre>
+<p><code>reverse</code>是另一个高阶函数，它将函数的参数调用顺序颠倒：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day04/index5-v4.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> setStyle = reverse(fold(continous(<span class="hljs-function">(<span class="hljs-params">[key, value], el</span>) =></span> {
+  el.style[key] = value;
+  <span class="hljs-keyword">return</span> [key, value];
+})));
+
+<span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.querySelectorAll(<span class="hljs-string">'li:nth-child(2n+1)'</span>);
+
+setStyle(list, [<span class="hljs-string">'color'</span>, <span class="hljs-string">'red'</span>]);
+</code></pre>
+<p>如上代码所示，setStyle的参数变成了<code>list</code>和<code>['color','red']</code>。</p>
+<p>然后，我们可以把参数<code>['color', 'red']</code>展开，所有我们需要实现一个与<code>fold</code>相反的<code>spread</code>高阶函数：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">spread</span>(<span class="hljs-params">fn</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">first, ...rest</span>) </span>{
+    <span class="hljs-keyword">return</span> fn.call(<span class="hljs-built_in">this</span>, first, rest);
+  };
+}
+</code></pre>
+<p>所以最终我们得到了和上一个故事一样的效果的<code>setStyle</code>方法：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day04/index5-v5.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> setStyle = spread(reverse(fold(continous(<span class="hljs-function">(<span class="hljs-params">[key, value], el</span>) =></span> {
+  el.style[key] = value;
+  <span class="hljs-keyword">return</span> [key, value];
+}))));
+
+<span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.querySelectorAll(<span class="hljs-string">'li:nth-child(2n+1)'</span>);
+
+setStyle(list, <span class="hljs-string">'color'</span>, <span class="hljs-string">'red'</span>);
+</code></pre>
+<p>只不过我们这一次给原始函数套了四个装饰器 <code>spread(reverse(fold(continous(...))))</code>。</p>
+<p><img src="img\9d3ac9e2-ae6f-11ed-9034-342eb7027b95.jpg" alt=""></p>
+<p>所以，就这个例子来说，相当于：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">batch</span>(<span class="hljs-params">fn</span>) </span>{
+  <span class="hljs-keyword">return</span> spread(reverse(fold(continous(fn))));
+}
+<span class="hljs-keyword">const</span> setStyle = batch(setStyle);
+</code></pre>
+<p>当然这里还有个细微差异，就是这一版原始函数的参数顺序不一样，而且要求有返回值:</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// 这是原始函数</span>
+([key, value], el) => {
+  el.style[key] = value;
+  <span class="hljs-keyword">return</span> [key, value];
+}
+</code></pre>
+<p>不过这也已经足够说明<strong>高阶函数可以任意组合</strong>，形成更强大的功能。</p>
+<p>另外，像这样<code>spread(reverse(fold(continous...)))</code>嵌套的写法，我们也可以用高阶函数改变成更加友好的形式：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pipe</span>(<span class="hljs-params">...fns</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">input</span>) </span>{
+    <span class="hljs-keyword">return</span> fns.reduce(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =></span> {
+      <span class="hljs-keyword">return</span> b.call(<span class="hljs-built_in">this</span>, a);
+    }, input);
+  }
+}
+</code></pre>
+<p>我们定义一个叫<code>pipe</code>的高阶函数，它的参数是一个函数列表，返回一个函数，这个函数以参数input对列表中的函数依次迭代，并将最终结果返回。</p>
+<p>例如：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> double = <span class="hljs-function">(<span class="hljs-params">x</span>) =></span> x * <span class="hljs-number">2</span>;
+<span class="hljs-keyword">const</span> half = <span class="hljs-function">(<span class="hljs-params">x</span>) =></span> x / <span class="hljs-number">2</span>;
+<span class="hljs-keyword">const</span> pow2 = <span class="hljs-function">(<span class="hljs-params">x</span>) =></span> x ** <span class="hljs-number">2</span>;
+
+<span class="hljs-keyword">const</span> cacl = pipe(double, pow2, half);
+<span class="hljs-keyword">const</span> result = cacl(<span class="hljs-number">10</span>); <span class="hljs-comment">// (10 * 2) ** 2 / 2 = 200</span>
+</code></pre>
+<p><img src="img\9d4e459d-ae6f-11ed-99cd-342eb7027b95.jpg" alt=""></p>
+<p>👉🏻_pipe_就像一根管道一样，输入的数据顺序经过一系列函子，得到最终输出。实际上这个模型也是<strong>函数式编程</strong>的基本模型，高阶函数是函数式编程的基础，关于函数式编程，后续我们会在其他课程中深入讨论。</p>
+<p>有了<code>pipe</code>，我们可以运用<code>pipe</code>到前面的几个高阶函数，将<code>batch</code>用<code>pipe</code>来表示为：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> batch = pipe(continous, fold, reverse, spread);
+</code></pre>
+<p><img src="img\9d60a66d-ae6f-11ed-89e1-342eb7027b95.jpg" alt=""></p>
+<p>更有趣的是，<code>pipe</code>本身也可以用高阶函数<code>continous</code>重新定义为：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> pipe = continous(<span class="hljs-function">(<span class="hljs-params">prev, next</span>) =></span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">input</span>) </span>{
+    <span class="hljs-keyword">return</span> next.call(<span class="hljs-built_in">this</span>, prev.call(<span class="hljs-built_in">this</span>, input));
+  }
+});
+</code></pre>
+<p>在这里，我们再一次看到高阶函数组合的威力。如果要类比的话，就像数学中，定义少数几条基本公理就能够推导并建立整个系统一样，我们也可以通过定义几个基本的高阶函数，创造出一整套图灵完备的高阶函数系统，并用它来彻底重构我们的基础库，让基础库中只有高阶纯函数和一些基本的原子操作（就像<code>(el, key, value）=> {el.style[key] = value;}</code>这种简单操作）。如果这样做，那么我们的基础库的可维护性就会非常高。</p>
+</div>
+</body>
+</html>

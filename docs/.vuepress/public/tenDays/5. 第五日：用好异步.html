@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <h1>第五天</h1>
+<h2>第一个故事：多个异步间的状态同步</h2>
+<p>第三天中，我们了解了JS中的三种异步方式：定时器、Promise和async/wait。</p>
+<p>在不过多考虑代码的复用性和扩展性的时候，其实这三种实现方式差别不大。第一种方式因为有回调嵌套，结构上稍稍不那么美观，而第二、三种方式结构实际差不多，第三种方式之所以好，是因为它更接近于自然语言，以及人思考问题的模式。但本质上，这三种异步表达方式并没有太大的区别。不过，这是因为我们的问题比较简单。</p>
+<p>如果我们考虑更复杂的问题，比如一个小游戏中需要几个异步操作，而这几个异步操作又同时需要维护了一个状态，（比如：游戏结束的状态）。这时候，我们需要一种机制来维护异步操作间的状态控制。一个最简单粗暴的做法就是维护一个全局变量，让每个异步操作监控这个变量。只要其中一个异步操作结束时，这个变量就被置为结束状态，然后其他异步操作在监控到这个状态的时候，也中止自身的异步进程。但是使用这样的局部变量不仅增加了代码的复杂度，也使得模块间的耦合更高。所以，我们应该尽量避免使用这样的全局变量。</p>
+<p>下面，我们通过一个简单的打字游戏来看看有没有其他方式能够实现各异步过程之间的状态同步。</p>
+<p>这个游戏是这样的：界面上会随机出现一段文本，用户如果在规定时间内打完这段文本，那么用户胜出，否则失败。</p>
+<p>这个游戏的HTML和CSS结构如下：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"main"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"panel"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span> <span class="hljs-comment">&#x3C;!-- 显示系统生成的文本 --></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"typed"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span> <span class="hljs-comment">&#x3C;!-- 显示用户实际打印的文本 --></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"starting"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span> <span class="hljs-comment">&#x3C;!-- 显示开场倒计动画 --></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"countdown"</span>></span>00:00<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-tag">html</span>, <span class="hljs-selector-tag">body</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">6px</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">overflow</span>: hidden;
+}
+
+<span class="hljs-selector-id">#main</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">display</span>: inline-block;
+}
+
+<span class="hljs-selector-id">#panel</span>, <span class="hljs-selector-id">#typed</span> {
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">1px</span> <span class="hljs-number">#000</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">1.5</span>;
+  <span class="hljs-attribute">white-space</span>: pre-wrap;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">18px</span> <span class="hljs-number">6px</span> <span class="hljs-number">6px</span> <span class="hljs-number">6px</span>;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#0006</span>;
+}
+
+<span class="hljs-selector-id">#panel</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">600px</span>;
+  <span class="hljs-attribute">min-height</span>: <span class="hljs-number">400px</span>;
+}
+<span class="hljs-selector-id">#panel</span><span class="hljs-selector-pseudo">:empty</span> {
+  <span class="hljs-attribute">cursor</span>: pointer;
+}
+<span class="hljs-selector-id">#panel</span><span class="hljs-selector-pseudo">:empty</span><span class="hljs-selector-pseudo">::after</span> {
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">'鼠标点击后开始'</span>;
+}
+
+<span class="hljs-selector-id">#typed</span> {
+  <span class="hljs-attribute">max-width</span>: <span class="hljs-number">600px</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">border-color</span>: transparent;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#008</span>;
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#eea6</span>;
+  <span class="hljs-attribute">background-clip</span>: content-box;
+  <span class="hljs-attribute">overflow</span>: hidden;
+}
+<span class="hljs-selector-id">#typed</span><span class="hljs-selector-pseudo">:empty</span> {
+  <span class="hljs-attribute">background-color</span>: transparent;
+}
+
+<span class="hljs-selector-id">#starting</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">3rem</span>;
+}
+
+<span class="hljs-selector-id">#countdown</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">right</span>: <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0.3</span>;
+}
+</code></pre>
+<p>游戏界面分为4个部分，<code>#panel</code>显示要打的文章，<code>#typed</code>显示已经打出的部分，<code>#starting</code>是用来显示开始时倒计时的界面，<code>#countdown</code>是显示正在打字时的倒计时界面。游戏效果如下所示：</p>
+<p><img src="img\9d80ac58-ae6f-11ed-9ddf-342eb7027b95.jpg" alt=""></p>
+<p>这个游戏包含3个异步操作：</p>
+<ol>
+<li>游戏开场动画</li>
+<li>游戏时间倒计</li>
+<li>用户输入操作</li>
+</ol>
+
+
+<p>首先，我们先来实现游戏开动画的异步过程：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> text = <span class="hljs-string">`If you already have experience making drawings with computers, you know that in that process you draw a circle, then a rectangle...
+...
+...Each pipe is also known as a thread.`</span>
+
+<span class="hljs-comment">// 将一段文本赋值给panel元素</span>
+<span class="hljs-keyword">const</span> panel = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'panel'</span>);
+panel.addEventListener(<span class="hljs-string">'click'</span>, main);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wait</span>(<span class="hljs-params">ms</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =></span> {
+    <span class="hljs-built_in">setTimeout</span>(resolve, ms);
+  });
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">starting</span>(<span class="hljs-params">el, count = <span class="hljs-number">3</span></span>) </span>{
+  el.innerText = count;
+  <span class="hljs-function"><span class="hljs-title">while</span>(<span class="hljs-params">count--</span>)</span> {
+    <span class="hljs-keyword">await</span> wait(<span class="hljs-number">1000</span>);
+    el.innerText = count;
+  }
+  el.innerText = <span class="hljs-string">''</span>;
+}
+
+<span class="hljs-keyword">const</span> startingEl = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'starting'</span>);
+
+<span class="hljs-comment">// 游戏主体</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params"></span>) </span>{
+  panel.innerText = text;
+  <span class="hljs-keyword">await</span> starting(startingEl);
+}
+</code></pre>
+<p>这段代码中，我们定义一个开始前倒计时的异步函数<code>starting</code>。它有两个参数，一个参数是要更新状态的元素，另一个参数是倒计时执行的秒数，默认是3秒。我们通过执行定时器异步函数<code>await wait(1000)</code>来每隔1秒钟更新一次倒计时。然后，我们在游戏的主体<code>main</code>函数中执行，这样游戏的开场动画（3秒倒计时）就完成了。</p>
+<p>接着，我们还要实现两个异步过程，一个是打字中的倒计时，另一个是打字时的键盘输入，我们先实现其中简单的，打字中的倒计时：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">countDown</span>(<span class="hljs-params">el, sec</span>) </span>{
+  <span class="hljs-function"><span class="hljs-title">while</span>(<span class="hljs-params">sec--</span>)</span> {
+    <span class="hljs-keyword">const</span> minute = <span class="hljs-built_in">Math</span>.floor(sec / <span class="hljs-number">60</span>);
+    <span class="hljs-keyword">const</span> second = sec % <span class="hljs-number">60</span>;
+    <span class="hljs-keyword">const</span> time = <span class="hljs-string">`<span class="hljs-subst">${minute > <span class="hljs-number">10</span> ? minute: <span class="hljs-string">`0<span class="hljs-subst">${minute}</span>`</span>}</span>:<span class="hljs-subst">${second > <span class="hljs-number">10</span> ? second: <span class="hljs-string">`0<span class="hljs-subst">${second}</span>`</span>}</span>`</span>;
+    el.innerText = time;
+    <span class="hljs-keyword">await</span> wait(<span class="hljs-number">1000</span>);
+  }
+}
+</code></pre>
+<p>打字中的倒计时和开始前的倒计时原理差不多，我们仍然是使用<code>await wait(1000)</code>这个异步方法来每秒更新一次对应的元素的内容，不过我们要将时间给格式化成<code>分:秒</code>的形式。</p>
+<p>然后，我们实现打字中的键盘输入：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">typings</span>(<span class="hljs-params">el, text</span>) </span>{
+  <span class="hljs-function"><span class="hljs-title">for</span>(<span class="hljs-params"><span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &#x3C; text.length; i++</span>)</span> {
+    <span class="hljs-keyword">const</span> char = text[i];
+    el.innerText = <span class="hljs-string">'_'</span>;
+    <span class="hljs-keyword">const</span> key = <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =></span> {
+      <span class="hljs-built_in">document</span>.addEventListener(<span class="hljs-string">'keydown'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params">{key}</span>) </span>{
+        <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">key ===  char</span>)</span> {
+          <span class="hljs-built_in">document</span>.removeEventListener(<span class="hljs-string">'keydown'</span>, f);
+          resolve(key);
+        }
+      });
+    });
+    el.innerText = el.innerText.slice(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>) + key + <span class="hljs-string">'_'</span>;
+  }
+}
+</code></pre>
+<p>如上代码所示，异步函数<code>typings</code>等待键盘输入。如果用户输入的键值与文本内容中当前应输入的字符相同，那么我们更新<code>#typed</code>元素（这里的el参数）中的<code>innerText</code>并等待下一个字符的输入。</p>
+<p>最后，我们在<code>main</code>函数中组合这三个异步内容：</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// ...省略其他代码...</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params"></span>) </span>{
+  panel.innerText = text;
+  <span class="hljs-keyword">await</span> starting(startingEl); <span class="hljs-comment">//开场动画</span>
+  <span class="hljs-keyword">const</span> countDownPromise = countDown(countdownEl, <span class="hljs-number">10</span>); <span class="hljs-comment">// 游戏倒计时</span>
+  <span class="hljs-keyword">const</span> typingPromise = typings(typedEl, text); <span class="hljs-comment">// 用户输入操作</span>
+  <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.race([countDownPromise, typingPromise]);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'结束'</span>);
+}
+</code></pre>
+<p>在<code>main</code>函数中，我们用<code>Promise.race</code>来执行倒计时和打字输入两个异步函数。<code>Promise.race</code>表示当其中一个异步函数<code>resove</code>时，它就会<code>resolve</code>，所以，不论是倒计时还是打字输入，哪一个先结束，游戏就会结束。</p>
+<p>可能你认为到这里我们的打字游戏就完成了。但是，上述的代码却存在这样一个问题：虽然游戏结束了，但是游戏倒计时和用户输入的这两个异步操作的状态却没有同步。</p>
+<p>当用户并未在游戏时间内完成打字任务时，虽然<code>countDown</code>的异步已经结束，但是<code>typingPromise</code>却还在不断地监听<code>keydown</code>事件。所以，即使游戏结束了，用户依然能继续打字。这显然不符合游戏的逻辑。</p>
+<p>要解决这个问题，就像前面叙述的，我们可以采取简单粗暴的方式，通过外部状态告诉<code>typingPromise</code>不要继续监听输入事件。或者，我们发送游戏结束的消息给<code>typingPromise</code>。不过这两种方法无论哪一种，都增加额外的代码复杂度。</p>
+<p>一个更加优雅的做法是，通过JavaScript的生成器函数来避免这种状态耦合。</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> * <span class="hljs-title">typings</span>(<span class="hljs-params">text</span>) </span>{
+  <span class="hljs-function"><span class="hljs-title">for</span>(<span class="hljs-params"><span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &#x3C; text.length; i++</span>)</span> {
+    <span class="hljs-keyword">const</span> char = text[i];
+    <span class="hljs-keyword">yield</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =></span> {
+      <span class="hljs-built_in">document</span>.addEventListener(<span class="hljs-string">'keydown'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params">{key}</span>) </span>{
+        <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">key ===  char</span>)</span> {
+          <span class="hljs-built_in">document</span>.removeEventListener(<span class="hljs-string">'keydown'</span>, f);
+          resolve(key);
+        }
+      });
+    });
+  }
+}
+</code></pre>
+<p>上面的代码中，我们去掉了<code>typings</code>直接操作<code>#typed</code>元素的代码，并将<code>async</code>函数修改为生成器函数，它的<code>yield</code>操作每次返回一个<code>Promise</code>对象。</p>
+<p>然后我们修改<code>main</code>函数：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params"></span>) </span>{
+  panel.innerText = text;
+  <span class="hljs-keyword">await</span> starting(startingEl);
+  <span class="hljs-keyword">const</span> countDownPromise = countDown(countdownEl, <span class="hljs-number">10</span>);
+  typedEl.innerText = <span class="hljs-string">'_'</span>;
+  <span class="hljs-function"><span class="hljs-title">for</span>(<span class="hljs-params"><span class="hljs-keyword">const</span> typing <span class="hljs-keyword">of</span> typings(text)</span>)</span> {
+    <span class="hljs-keyword">const</span> key = <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.race([countDownPromise, typing]);
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">key</span>)</span> {
+      typedEl.innerText = <span class="hljs-string">`<span class="hljs-subst">${typedEl.innerText.slice(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>)}</span><span class="hljs-subst">${key}</span>_`</span>;
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">break</span>;
+    }
+  }
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'结束'</span>);
+}
+</code></pre>
+<p>我们通过<code>for...of</code>来迭代生成器，每次循环拿到一次输入的<code>Promise</code>，将它和<code>countDownPromise</code>做<code>Promise.race</code>操作。如果是输入的<code>Promise</code>先返回，那么我们可以拿到一个<code>key</code>值，用这个<code>key</code>值去更新<code>typedEl</code>的内容。否则，就是倒计时结束，那么我们用<code>break</code>来跳出循环结束游戏。这样就能保证当游戏结束时，不论是倒计时或者用户输入的操作都中止了。</p>
+<p>完整的JS代码如下：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day05/index1.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> text = <span class="hljs-string">`If you already have experience making drawings with computers, you know that in that process you draw a circle, then a rectangle, a line, some triangles until you compose the image you want. That process is very similar to writing a letter or a book by hand - it is a set of instructions that do one task after another.
+
+Shaders are also a set of instructions, but the instructions are executed all at once for every single pixel on the screen. That means the code you write has to behave differently depending on the position of the pixel on the screen. Like a type press, your program will work as a function that receives a position and returns a color, and when it's compiled it will run extraordinarily fast. 
+
+Why are shaders fast? To answer this, I present the wonders of parallel processing.
+
+Imagine the CPU of your computer as a big industrial pipe, and every task as something that passes through it - like a factory line. Some tasks are bigger than others, which means they require more time and energy to deal with. We say they require more processing power. Because of the architecture of computers the jobs are forced to run in a series; each job has to be finished one at a time. Modern computers usually have groups of four processors that work like these pipes, completing tasks one after another to keeping things running smoothly. Each pipe is also known as a thread.`</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wait</span>(<span class="hljs-params">ms</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =></span> {
+    <span class="hljs-built_in">setTimeout</span>(resolve, ms);
+  });
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">starting</span>(<span class="hljs-params">el, count = <span class="hljs-number">3</span></span>) </span>{
+  el.innerText = count;
+  <span class="hljs-function"><span class="hljs-title">while</span>(<span class="hljs-params">count--</span>)</span> {
+    <span class="hljs-keyword">await</span> wait(<span class="hljs-number">1000</span>);
+    el.innerText = count;
+  }
+  el.innerText = <span class="hljs-string">''</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span>* <span class="hljs-title">typings</span>(<span class="hljs-params">text</span>) </span>{
+  <span class="hljs-function"><span class="hljs-title">for</span>(<span class="hljs-params"><span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &#x3C; text.length; i++</span>)</span> {
+    <span class="hljs-keyword">const</span> char = text[i];
+    <span class="hljs-keyword">yield</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =></span> {
+      <span class="hljs-built_in">document</span>.addEventListener(<span class="hljs-string">'keydown'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params">{key}</span>) </span>{
+        <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">key === char</span>)</span> {
+          <span class="hljs-built_in">document</span>.removeEventListener(<span class="hljs-string">'keydown'</span>, f);
+          resolve(key);
+        }
+      });
+    });
+  }
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">countDown</span>(<span class="hljs-params">el, sec</span>) </span>{
+  <span class="hljs-function"><span class="hljs-title">while</span>(<span class="hljs-params">sec--</span>)</span> {
+    <span class="hljs-keyword">const</span> minute = <span class="hljs-built_in">Math</span>.floor(sec / <span class="hljs-number">60</span>);
+    <span class="hljs-keyword">const</span> second = sec % <span class="hljs-number">60</span>;
+    <span class="hljs-keyword">const</span> time = <span class="hljs-string">`<span class="hljs-subst">${minute > <span class="hljs-number">10</span> ? minute : <span class="hljs-string">`0<span class="hljs-subst">${minute}</span>`</span>}</span>:<span class="hljs-subst">${second > <span class="hljs-number">10</span> ? second : <span class="hljs-string">`0<span class="hljs-subst">${second}</span>`</span>}</span>`</span>;
+    el.innerText = time;
+    <span class="hljs-keyword">await</span> wait(<span class="hljs-number">1000</span>);
+  }
+}
+
+<span class="hljs-keyword">const</span> typedEl = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'typed'</span>);
+<span class="hljs-keyword">const</span> startingEl = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'starting'</span>);
+<span class="hljs-keyword">const</span> countdownEl = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'countdown'</span>);
+
+<span class="hljs-keyword">const</span> panel = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'panel'</span>);
+panel.addEventListener(<span class="hljs-string">'click'</span>, start);
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">start</span>(<span class="hljs-params"></span>) </span>{
+  panel.innerText = text;
+  <span class="hljs-keyword">await</span> starting(startingEl);
+  <span class="hljs-keyword">const</span> countDownPromise = countDown(countdownEl, <span class="hljs-number">10</span>);
+  typedEl.innerText = <span class="hljs-string">'_'</span>;
+  <span class="hljs-function"><span class="hljs-title">for</span>(<span class="hljs-params"><span class="hljs-keyword">const</span> typing <span class="hljs-keyword">of</span> typings(text)</span>)</span> {
+    <span class="hljs-keyword">const</span> key = <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.race([countDownPromise, typing]);
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">key</span>)</span> {
+      typedEl.innerText = <span class="hljs-string">`<span class="hljs-subst">${typedEl.innerText.slice(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>)}</span><span class="hljs-subst">${key}</span>_`</span>;
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">break</span>;
+    }
+  }
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'结束'</span>);
+}
+</code></pre>
+
+<p>我们可以看到，虽然使用异步<code>Promise</code>和<code>async/await</code>可以以非常简单的方式处理这种需要持续与用户交互的场景，但是也需要注意多个异步间的状态同步，不要让我们代码存在潜在的逻辑错误或者隐患。</p>
+<h2>第二个故事：异步信号</h2>
+
+<p>这个故事，我们想通过一个简单的例子，让你了解Promise的另一个应用场景：异步信号。</p>
+<p>这个例子很简单：有若干个用户参与，每个用户从1到10中选择一个数字作为幸运数字，而系统一秒钟随机产生一个1到10的数字，若这个数字和用户的幸运数字相同，则该用户胜出。</p>
+<p>这个任务很简单，我们可以不使用Promise，直接将每一秒钟生成的数字与用户的数字逐一比较，选出胜出的用户。但是如果这样做，我们需要在定时器模块维护一个用户列表信息，这增加了代码的耦合。如果使用异步信号，则可以避免这样的耦合。</p>
+
+<p>下面我们就来看看这个异步信号是如何实现的。</p>
+
+
+
+<p>我们知道，一般的 Promise 对象，其状态是在作用域内部控制的：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> promise = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =></span> {
+  <span class="hljs-comment">// 在这里调用 resolve、 reject 来改变状态</span>
+});
+</code></pre>
+<p>这么设计能够避免 Promise 状态的泄漏导致滥用。</p>
+<p>但是现在，我们需要利用它作用为异步信号，那么我们就必须在外部控制这个 promise 状态。</p>
+
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defer</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> deferred = {};
+  deferred.promise = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =></span> {
+    deferred.resolve = resolve;
+    deferred.reject = reject;
+  });
+  <span class="hljs-keyword">return</span> deferred;
+}
+
+<span class="hljs-keyword">const</span> deferred = defer();
+deferred.resolve(); <span class="hljs-comment">// 在外部控制 promise 状态</span>
+</code></pre>
+<p>如上代码所示，<code>defer()</code>函数返回一个<code>deferred</code>对象。它包含 <code>{promise, resolve, reject}</code> 三个属性。然后，我们可以通过<code>deferred.resolve()</code>在外部控制<code>deferred</code>中的<code>promise</code>的状态了（即<code>deferred.promise</code>）。</p>
+<p>有了这个<code>deferred</code>对象后，我们就可以用它来实现异步信号类 Singal：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defer</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> deferred = {};
+  deferred.promise = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =></span> {
+    deferred.resolve = resolve;
+    deferred.reject = reject;
+  });
+  <span class="hljs-keyword">return</span> deferred;
+}
+
+<span class="hljs-keyword">const</span> _state = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'state'</span>);
+<span class="hljs-keyword">const</span> _checkers = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'checker'</span>);
+
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Signal</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">initState</span>)</span> {
+    <span class="hljs-built_in">this</span>[_state] = initState;
+    <span class="hljs-built_in">this</span>[_checkers] = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>();
+  }
+
+  <span class="hljs-keyword">get</span> <span class="hljs-title">state</span>() {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>[_state];
+  }
+
+  <span class="hljs-keyword">set</span> <span class="hljs-title">state</span>(<span class="hljs-params">value</span>) {
+    <span class="hljs-comment">// 每次状态变化时，检查未结束的 defer 对象</span>
+    [...this[_checkers]].forEach(<span class="hljs-function">(<span class="hljs-params">[promise, {type, deferred, state}]</span>) =></span> {
+      <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">type === <span class="hljs-string">'while'</span> &#x26;&#x26; value !== state <span class="hljs-comment">// 当信号状态改变时，while 信号结束</span>
+        || type === <span class="hljs-string">'until'</span> &#x26;&#x26; value === state <span class="hljs-comment">// 当信号状态改变为对应的 state 时，until 信号结束</span>
+      </span>)</span> {
+        deferred.resolve(value);
+        <span class="hljs-built_in">this</span>[_checkers].delete(promise);
+      }
+    });
+    <span class="hljs-built_in">this</span>[_state] = value;
+  }
+
+  <span class="hljs-function"><span class="hljs-title">while</span>(<span class="hljs-params">state</span>)</span> {
+    <span class="hljs-keyword">const</span> deferred = defer();
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">state !== <span class="hljs-built_in">this</span>[_state]</span>)</span> {
+      <span class="hljs-comment">// 如果当前状态不是 while 状态， while 的 deferred 结束</span>
+      deferred.resolve(<span class="hljs-built_in">this</span>[_state]);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">// 否则将它添加到 checkers 列表中等待后续检查</span>
+      <span class="hljs-built_in">this</span>[_checkers].set(deferred.promise, {<span class="hljs-attr">type</span>: <span class="hljs-string">'while'</span>, deferred, state});
+    }
+    <span class="hljs-keyword">return</span> deferred.promise;
+  }
+
+  <span class="hljs-function"><span class="hljs-title">until</span>(<span class="hljs-params">state</span>)</span> {
+    <span class="hljs-keyword">const</span> deferred = defer();
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">state === <span class="hljs-built_in">this</span>[_state]</span>)</span> {
+      <span class="hljs-comment">// 如果当前状态就是 until 状态， until 的 deferred 结束</span>
+      deferred.resolve(<span class="hljs-built_in">this</span>[_state]);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">// 否则将它添加到 checkers 列表中等待后续检查</span>
+      <span class="hljs-built_in">this</span>[_checkers].set(deferred.promise, {<span class="hljs-attr">type</span>: <span class="hljs-string">'until'</span>, deferred, state});
+    }
+    <span class="hljs-keyword">return</span> deferred.promise;
+  }
+
+  <span class="hljs-function"><span class="hljs-title">delete</span>(<span class="hljs-params">promise</span>)</span> {
+    <span class="hljs-built_in">this</span>[_checkers].delete(promise);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">deleteAll</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>[_checkers].clear();
+  }
+}
+</code></pre>
+<p>这个类很长，我们一步步来分析它。</p>
+<p>首先是它的构造函数：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> _state = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'state'</span>);
+<span class="hljs-keyword">const</span> _checkers = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'checker'</span>);
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Signal</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">initState</span>)</span> {
+    <span class="hljs-built_in">this</span>[_state] = initState;
+    <span class="hljs-built_in">this</span>[_checkers] = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>();
+  }
+  ...
+}
+</code></pre>
+<p>这个类有两个私有属性——<code>_state</code>和<code>_checkers</code>。就我们这个例子来说，前者用来存储当前定时器发出的幸运数字。后者用来保存用户给出数字（这个数字信息被保持在<code>deferred</code>对象中）。</p>
+
+<p>然后，Signal提供了两种信号“原语”：<code>while</code>和<code>until</code>:</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-title">while</span>(<span class="hljs-params">state</span>)</span> {
+  <span class="hljs-keyword">const</span> deferred = defer();
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">state !== <span class="hljs-built_in">this</span>[_state]</span>)</span> {
+    <span class="hljs-comment">// 如果当前状态不是 while 状态， while 的 deferred 结束</span>
+    deferred.resolve(<span class="hljs-built_in">this</span>[_state]);
+  }
+  <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// 否则将它添加到 checkers 列表中等待后续检查</span>
+    <span class="hljs-built_in">this</span>[_checkers].set(deferred.promise, {<span class="hljs-attr">type</span>: <span class="hljs-string">'while'</span>, deferred, state});
+  }
+  <span class="hljs-keyword">return</span> deferred.promise;
+}
+
+<span class="hljs-function"><span class="hljs-title">until</span>(<span class="hljs-params">state</span>)</span> {
+  <span class="hljs-keyword">const</span> deferred = defer();
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">state === <span class="hljs-built_in">this</span>[_state]</span>)</span> {
+    <span class="hljs-comment">// 如果当前状态就是 until 状态， until 的 deferred 结束</span>
+    deferred.resolve(<span class="hljs-built_in">this</span>[_state]);
+  }
+  <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">// 否则将它添加到 checkers 列表中等待后续检查</span>
+    <span class="hljs-built_in">this</span>[_checkers].set(deferred.promise, {<span class="hljs-attr">type</span>: <span class="hljs-string">'until'</span>, deferred, state});
+  }
+  <span class="hljs-keyword">return</span> deferred.promise;
+}
+</code></pre>
+<p>这段代码中，<code>while(state)</code>表示当信号的状态保持在<code>state</code>状态时，将<code>deferred</code>对象保存到<code>_checkers</code>集合中，并返回<code>deferred.promise</code>，否则<code>resolve</code>这个<code>deferred</code>对象。</p>
+<p><code>until(state)</code>表示当信号的状态保持直到<code>state</code>状态后，将<code>deferred</code>对象<code>resolve</code>，否则将<code>deferred</code>保存到<code>_checkers</code>集合中，并返回<code>deferred.promise</code>。</p>
+<p>这两个方法主要是提供给外部使用者使用。使用者可以选择采用<code>while</code>类型信号或者<code>util</code>类型信号来控制自身的状态。</p>
+<p>然后，Signal通过<code>state</code>的<code>setter</code>接收其它模块发来的信号（比如：定时器模块）：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">set</span> <span class="hljs-title">state</span>(<span class="hljs-params">value</span>) {
+  <span class="hljs-comment">// 每次状态变化时，检查未结束的 defer 对象</span>
+  [...this[_checkers]].forEach(<span class="hljs-function">(<span class="hljs-params">[promise, {type, deferred, state}]</span>) =></span> {
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">type === <span class="hljs-string">'while'</span> &#x26;&#x26; value !== state <span class="hljs-comment">// 当信号状态改变的时，while 信号结束</span>
+      || type === <span class="hljs-string">'until'</span> &#x26;&#x26; value === state <span class="hljs-comment">// 当信号状态改变为对应的 state 时，until 信号结束</span>
+    </span>)</span> {
+      deferred.resolve(value); 
+      <span class="hljs-built_in">this</span>[_checkers].delete(promise);
+    }
+  });
+  <span class="hljs-built_in">this</span>[_state] = value;
+}
+</code></pre>
+<p>如上代码所示，当Signal收到信号后，先遍历<code>_checkers</code>集合。如果当前是<code>while</code>原语，且新状态不等于<code>while</code>的状态，那么执行<code>resolve</code>将<code>promise</code>状态改变，并将这个<code>deferred</code>对象从<code>Map</code>中移除。同样，如果是<code>until</code>原语，且新状态等于<code>until</code>状态，也执行<code>resolve</code>将<code>promise</code>状态改变，并将这个<code>deferred</code>对象从<code>Map</code>中移除。这样，我们就可以在<code>Signal</code>状态改变时，触发对应的<code>promise</code>状态改变了。</p>
+<p>有了这个Signal类，我们就可以非常简单地实现前面的需求。</p>
+<p>首先，创建一个Signal对象，这个对象每隔一秒钟接受一次定时器发出的数字：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> lucky = <span class="hljs-keyword">new</span> Signal();
+
+<span class="hljs-keyword">const</span> timerID = <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =></span> {
+  <span class="hljs-keyword">const</span> num = <span class="hljs-built_in">Math</span>.ceil(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">10</span>);
+  <span class="hljs-built_in">console</span>.log(num);
+  lucky.state = num;
+}, <span class="hljs-number">1000</span>);
+</code></pre>
+<p>然后我们添加若干个比较数字的“人”：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addLuckyBoy</span>(<span class="hljs-params">name, num</span>) </span>{
+  <span class="hljs-keyword">await</span> lucky.until(num);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${name}</span> is lucky boy!`</span>);
+  <span class="hljs-built_in">clearInterval</span>(timerID);
+  lucky.deleteAll(); <span class="hljs-comment">// 删除checkers中的所有promise对象</span>
+}
+
+addLuckyBoy(<span class="hljs-string">'张三'</span>, <span class="hljs-number">3</span>);
+addLuckyBoy(<span class="hljs-string">'李四'</span>, <span class="hljs-number">5</span>);
+addLuckyBoy(<span class="hljs-string">'王五'</span>, <span class="hljs-number">7</span>);
+</code></pre>
+<p>这里我们采用了<code>until</code>的信号模式：每个用户手持自己的幸运数字，直到其中一个用户的数字和系统给出的数字相符的时候，暂停定时器，并将这个用户的<code>deferred</code>对象<code>resolve</code>，同时将其他没有中签的用户的<code>deferred</code>对象从集合中删除。这样我们的幸运者就被选出了。</p>
+<p><img src="img\9df191ad-ae6f-11ed-b1d9-342eb7027b95.jpg" alt=""></p>
+
+<p>从这个例子我们可以看出，利用异步信号，我们的状态发生器模块（比如：定时器函数）只需要单纯地改变信号的状态，不再需要关心具体细节（比如有多少“人”参与这个游戏）。当状态变化时，可以由信号为媒介，通过<code>deferred</code>对象异步地通知对应的组件作出反应。</p>
+<p>当然多组件之间的状态控制可以通过状态机或者第六日中的“中间人”模式实现。但是如果这种状态控制是纯异步的情况下，异步信号还是比较简单且直观的选择。</p>
+</div>
+</body>
+</html>

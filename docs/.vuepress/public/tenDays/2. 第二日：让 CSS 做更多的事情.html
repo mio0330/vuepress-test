@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <h1>第二天</h1>
+<p>通过第一天的故事，我们了解了元素的class属性可以用来定义元素的某种业务状态或者业务模式，然后通过CSS的类选择器根据业务需求将元素设置成对应的样式，从而避免了将这些本该由CSS完成的任务交由JS完成，保持了HTML、CSS、JS各司其职的原则。</p>
+<p>其实，CSS的职责是负责定义元素如何展现，页面上所有元素的样式不管是依赖业务需求还是静态的，都要尽可能的交由CSS来完成。作为初级前端工程师的你可能觉得这有点夸张，但其实CSS还是非常强大的，它可以完成更多的事情。所以，今天的内容将带你了解一下CSS强大的功能，希望它能启发你打开前端开发的新思路。</p>
+<h2>树形结构与三角标</h2>
+
+<p>同样，我们也是通过一个实际例子来说明。这个任务是实现一个树形展开的列表，大概的界面是如下形式：</p>
+<p><img src="img\9892aa9d-ae6f-11ed-976a-342eb7027b95.jpg" alt=""></p>
+<p>实现这张页面的HTML很简单， 如下代码所示：</p>
+<pre><code class="hljs language-html"><span class="hljs-meta">&#x3C;!DOCTYPE <span class="hljs-meta-keyword">html</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">head</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">"X-UA-Compatible"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"ie=edge"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">title</span>></span>树UI<span class="hljs-tag">&#x3C;/<span class="hljs-name">title</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">head</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"tree"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>项目1<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>项目2<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"expand"</span>></span>项目3
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>子项3.1<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>子项3.2<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>子项3.3<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>项目4
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>子项4.1<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>子项4.2<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>项目5<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">html</span>></span>
+</code></pre>
+<p>页面的HTML结构非常容易，但是我们却遇上了难题。因为浏览器上列表元素默认的样式是小圆点，而不是小三角。那么这个小三角的样式该如何实现呢？</p>
+<p>最直接的做法是：给每个<code>&#x3C;li></code>元素的<code>list-style</code>属性设置一张图片：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-tag">html</span>, <span class="hljs-selector-tag">body</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-selector-tag">ul</span> {
+  <span class="hljs-attribute">list-style</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">"https://p5.ssl.qhimg.com/t018438001db494c5f3.png"</span>);
+}
+
+<span class="hljs-selector-tag">li</span><span class="hljs-selector-class">.expand</span> {
+  <span class="hljs-attribute">list-style</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">"https://p4.ssl.qhimg.com/t0167b045701562f010.png"</span>)
+}
+<span class="hljs-selector-class">.tree</span> <span class="hljs-selector-tag">li</span> > <span class="hljs-selector-tag">ul</span> {
+  <span class="hljs-attribute">display</span>: none;
+}
+
+<span class="hljs-selector-class">.tree</span> <span class="hljs-selector-tag">li</span><span class="hljs-selector-class">.expand</span> > <span class="hljs-selector-tag">ul</span> {
+  <span class="hljs-attribute">display</span>: block;
+}
+</code></pre>
+<p>如上代码所示：默认情况下，列表元素的<code>list-style</code>属性被设置为右三角图标，当<code>&#x3C;li></code>元素的<code>class</code>属性被设置为<code>expend</code>的时候，将该<code>&#x3C;li></code>元素的<code>list-style</code>属性设置成下三角图标。这样就达到了设计图的效果。</p>
+<p>这样做虽然实现了需求，但是我们发现，这样做有几个缺点：</p>
+<ul>
+<li>
+<p>第一，因为<code>list-style</code>属性不能设置图片的大小，所以，我们必须根据元素里的文字大小事先设定图标的大小。如果将来文字大小改变了，那么图标的大小也需要跟着调整。</p>
+</li>
+<li>
+<p>第二，因为要下载图片，所以多了一些HTTP请求，HTTP请求多，网页的性能就比较差</p>
+</li>
+</ul>
+<p>所以，通过图片的方式改变列表的样式非常不灵活而且还很消耗性能。那么，还有没有其他的更加高效且灵活方式可以实现同样的效果呢？</p>
+<h2>第二个故事：用CSS实现三角标</h2>
+<p>如果不使用图片定制列表元素的样式，还有没有其他的方法定制呢？有。我们可以利用伪元素和CSS的border属性来绘制小三角。</p>
+<p>我们先来了解一下border属性的特点。看一个简单的例子，我们定义了一个div元素：</p>
+<pre><code class="hljs language-html">  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"block"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<p>然后，我们给这个<code>&#x3C;div></code>元素设置了宽，高和上下边框：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#block</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">50px</span>;
+  <span class="hljs-attribute">border-top</span>: solid <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">border-bottom</span>: solid <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#ccc</span>;
+}
+</code></pre>
+<p>正常情况下，你可能会凭直觉认为，直角border应该是直线，而在只有一边或者平行两边border的情况下确实如此：</p>
+<p><img src="img\98a45728-ae6f-11ed-8f2a-342eb7027b95.jpg" alt=""></p>
+<p>上图中，上下两条黑色边就是block元素的上下边框。</p>
+<p>但是，如果我们将上面的上下边框修改为相邻两边（即：上边框和右边框）的情况的呢：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#block</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">50px</span>;
+  <span class="hljs-attribute">border-top</span>: solid <span class="hljs-number">10px</span> blue;
+  <span class="hljs-attribute">border-right</span>: solid <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#ccc</span>;
+}
+</code></pre>
+<p><img src="img\98b37a7b-ae6f-11ed-b0fc-342eb7027b95.jpg" alt=""></p>
+<p>如上图所示，我们看到<code>border-top</code>和<code>border-right</code>交界的地方是一个斜角。</p>
+<p>如果我们再修改一下上面的CSS代码，将它4条边框分别设置为不同的的颜色：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#block</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">50px</span>;
+  <span class="hljs-attribute">border-top</span>: solid <span class="hljs-number">10px</span> blue;
+  <span class="hljs-attribute">border-right</span>: solid <span class="hljs-number">10px</span> green;
+  <span class="hljs-attribute">border-bottom</span>: solid <span class="hljs-number">10px</span> red;
+  <span class="hljs-attribute">border-left</span>: solid <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#ccc</span>;
+}
+</code></pre>
+<p>它的效果是这样的：</p>
+<p><img src="img\98c24994-ae6f-11ed-a981-342eb7027b95.jpg" alt=""></p>
+<p>这时，如果我们把这个div元素的宽高都设置为0，会出现怎样的效果呢？</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-id">#block</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">0px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">0px</span>;
+  <span class="hljs-attribute">border-top</span>: solid <span class="hljs-number">10px</span> blue;
+  <span class="hljs-attribute">border-right</span>: solid <span class="hljs-number">10px</span> green;
+  <span class="hljs-attribute">border-bottom</span>: solid <span class="hljs-number">10px</span> red;
+  <span class="hljs-attribute">border-left</span>: solid <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#ccc</span>;
+}
+</code></pre>
+<p><img src="img\98d1a1b9-ae6f-11ed-a739-342eb7027b95.jpg" alt=""></p>
+<p>这时，你会发现block元素的四个边框缩成了4个小三角形。如果我们将上、右、下的边框都隐藏起来，那么不是我们需要的小三角形的效果吗？</p>
+<p><img src="img\98df0b74-ae6f-11ed-8876-342eb7027b95.jpg" alt=""></p>
+<p>如果我们希望得到不同角度的三角形，我们还可以改变相邻的border的宽度，比如我们要得到正三角形，我们可以将上下边框（<code>border-top</code>）和左右边框（<code>border-left</code>）的比例维持在1比根号3。</p>
+<p><img src="img\98f1a0b5-ae6f-11ed-94ab-342eb7027b95.jpg" alt=""></p>
+<p>现在，我们来修改<code>&#x3C;li></code>元素的CSS样式：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.tree</span> <span class="hljs-selector-tag">li</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#999</span>;
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">border-style</span>: solid;
+  <span class="hljs-attribute">border-width</span>: <span class="hljs-number">6px</span> <span class="hljs-number">10.4px</span>;
+  <span class="hljs-attribute">border-color</span>: transparent;
+  <span class="hljs-attribute">border-left-color</span>: currentColor;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateX</span>(<span class="hljs-number">6px</span>);
+}
+</code></pre>
+<p>上面的代码，我们使用<code>li</code>元素的<code>::before</code>伪元素来绘制小三角。我们来分析一下这段CSS规则：</p>
+<ul>
+<li>
+<p><code>border-width: 6px 10.4px</code>表示将这个伪元素的上下边框设置为6px，左右边框设置为10.4px</p>
+</li>
+<li>
+<p><code>border-color: transparent</code>表示将这个伪元素的4个边框的颜色设置为透明色</p>
+</li>
+<li>
+<p><code>border-left-color: currentColor</code>表示将这个伪元素的左边框的颜色设置为当前元素的文字颜色</p>
+</li>
+<li>
+<p><code>transform: translateX(6px)</code>表示将这个伪元素向右偏移6px, 这样使得这个小三角和列表项的文字中间的间隔不至于太宽</p>
+</li>
+</ul>
+<p>这时的页面效果就是下面这样：</p>
+<p><img src="img\990b829e-ae6f-11ed-8980-342eb7027b95.jpg" alt=""></p>
+<p>根据需求，当列表中的子列表项被展开的时候，它前面的右三角要变成向下的三角。这个只要通过调整transform属性，对<code>::before</code>伪元素进行旋转就能实现：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.tree</span> <span class="hljs-selector-tag">li</span><span class="hljs-selector-class">.expand</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">90deg</span>) <span class="hljs-built_in">translateX</span>(<span class="hljs-number">6px</span>) ;
+}
+</code></pre>
+<p>所以最终，得到树形UI的完整效果代码：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day02/index1-v2.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-html"><span class="hljs-meta">&#x3C;!DOCTYPE <span class="hljs-meta-keyword">html</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">head</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">"X-UA-Compatible"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"ie=edge"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">title</span>></span>树UI<span class="hljs-tag">&#x3C;/<span class="hljs-name">title</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">style</span>></span><span class="css">
+  <span class="hljs-selector-tag">html</span>, <span class="hljs-selector-tag">body</span> {
+    <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+    <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;
+    <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+    <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+  }
+
+  <span class="hljs-selector-tag">ul</span> {
+    <span class="hljs-attribute">list-style</span>: none;
+  }
+
+  <span class="hljs-selector-class">.tree</span> <span class="hljs-selector-tag">li</span><span class="hljs-selector-pseudo">::before</span> {
+    <span class="hljs-attribute">color</span>: <span class="hljs-number">#999</span>;
+    <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+    <span class="hljs-attribute">display</span>: inline-block;
+    <span class="hljs-attribute">width</span>: <span class="hljs-number">0</span>;
+    <span class="hljs-attribute">height</span>: <span class="hljs-number">0</span>;
+    <span class="hljs-attribute">border-style</span>: solid;
+    <span class="hljs-attribute">border-width</span>: <span class="hljs-number">6px</span> <span class="hljs-number">10.4px</span>;
+    <span class="hljs-attribute">border-color</span>: transparent;
+    <span class="hljs-attribute">border-left-color</span>: currentColor;
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateX</span>(<span class="hljs-number">6px</span>);
+  }
+
+  <span class="hljs-selector-class">.tree</span> <span class="hljs-selector-tag">li</span><span class="hljs-selector-class">.expand</span><span class="hljs-selector-pseudo">::before</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">90deg</span>) <span class="hljs-built_in">translateX</span>(<span class="hljs-number">6px</span>) ;
+  }
+
+  <span class="hljs-selector-class">.tree</span> <span class="hljs-selector-tag">li</span> > <span class="hljs-selector-tag">ul</span> {
+    <span class="hljs-attribute">display</span>: none;
+  }
+
+  <span class="hljs-selector-class">.tree</span> <span class="hljs-selector-tag">li</span><span class="hljs-selector-class">.expand</span> > <span class="hljs-selector-tag">ul</span> {
+    <span class="hljs-attribute">display</span>: block;
+  }
+  </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">style</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">head</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"tree"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>项目1<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>项目2<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"expand"</span>></span>项目3
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>子项3.1<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>子项3.2<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>子项3.3<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>项目4
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>子项4.1<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>子项4.2<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>项目5<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">html</span>></span>
+</code></pre>
+<p>使用border来绘制三角形是一种比较简单的效果，但它代表一种使用CSS绘制UI的思路，延续这种思路，我们还可以绘制其他比较复杂的图形，比如：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"icon star"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"icon arrow"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"icon pacman"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.icon</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">position</span>: relative; 
+  <span class="hljs-attribute">margin-right</span>: <span class="hljs-number">20px</span>;
+}
+
+<span class="hljs-selector-class">.star</span> {
+  <span class="hljs-attribute">border-left</span>: <span class="hljs-number">50px</span> solid transparent;
+  <span class="hljs-attribute">border-right</span>: <span class="hljs-number">50px</span> solid transparent;
+  <span class="hljs-attribute">border-bottom</span>: <span class="hljs-number">100px</span> solid red;
+}
+
+<span class="hljs-selector-class">.star</span><span class="hljs-selector-pseudo">::after</span> {
+  <span class="hljs-attribute">border-left</span>: <span class="hljs-number">50px</span> solid transparent;
+  <span class="hljs-attribute">border-right</span>: <span class="hljs-number">50px</span> solid transparent;
+  <span class="hljs-attribute">border-top</span>: <span class="hljs-number">100px</span> solid red;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">""</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">30px</span>; <span class="hljs-attribute">left</span>: -<span class="hljs-number">50px</span>;
+}
+
+<span class="hljs-selector-class">.arrow</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">40px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">40px</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> <span class="hljs-number">40px</span>;
+  <span class="hljs-attribute">background-color</span>: red;
+}
+
+<span class="hljs-selector-class">.arrow</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">left</span>: -<span class="hljs-number">40px</span>;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">20px</span> red;
+  <span class="hljs-attribute">border-left-color</span>: transparent;
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">""</span>;
+}
+
+<span class="hljs-selector-class">.arrow</span><span class="hljs-selector-pseudo">::after</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">right</span>: -<span class="hljs-number">40px</span>;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">20px</span> transparent;
+  <span class="hljs-attribute">border-left-color</span>: red;
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">""</span>;
+}
+
+<span class="hljs-selector-class">.pacman</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">0px</span>; <span class="hljs-attribute">height</span>: <span class="hljs-number">0px</span>;
+  <span class="hljs-attribute">border-right</span>: <span class="hljs-number">40px</span> solid transparent;
+  <span class="hljs-attribute">border-top</span>: <span class="hljs-number">40px</span> solid red;
+  <span class="hljs-attribute">border-left</span>: <span class="hljs-number">40px</span> solid red;
+  <span class="hljs-attribute">border-bottom</span>: <span class="hljs-number">40px</span> solid red;
+  <span class="hljs-attribute">border-top-left-radius</span>: <span class="hljs-number">40px</span>;
+  <span class="hljs-attribute">border-top-right-radius</span>: <span class="hljs-number">40px</span>;
+  <span class="hljs-attribute">border-bottom-left-radius</span>: <span class="hljs-number">40px</span>;
+  <span class="hljs-attribute">border-bottom-right-radius</span>: <span class="hljs-number">40px</span>;
+}
+</code></pre>
+<p><img src="img\991c7e2a-ae6f-11ed-aa7d-342eb7027b95.jpg" alt=""></p>
+<p>上面的代码分别实现了六角星、箭头和吃豆人图案。<a href="https://junyux.github.io/FE-Advance/day02/index1-ex.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<p>CSS的border能够实现的图案还有很多，其思路和三角形并没有什么本质的区别。如果再加上box-shadow等其他属性，能实现的效果就更多了。</p>
+
+<p>附：</p>
+<p>上面的例子是一个静态的树状列表，如果我们要实现列表项的展开和收起该如何实现呢？</p>
+<p>因为展开状态的列表项被定义为<code>class=expend</code>。所以，我们可以给状态是expend的<code>li</code>元素和普通<code>li</code>元素分别设置对应的展示样式：</p>
+<pre><code class="hljs language-css">  <span class="hljs-selector-class">.tree</span> <span class="hljs-selector-tag">li</span> > <span class="hljs-selector-tag">ul</span> {
+    <span class="hljs-attribute">display</span>: none;
+  }
+
+  <span class="hljs-selector-class">.tree</span> <span class="hljs-selector-tag">li</span><span class="hljs-selector-class">.expand</span> > <span class="hljs-selector-tag">ul</span> {
+    <span class="hljs-attribute">display</span>: block;
+  }
+</code></pre>
+<p>如上代码所示，第一条规则表示隐藏普通状态的<code>li</code>元素下的子元素。第二表规则表示，显示状态为<code>expend</code>的<code>li</code>元素下的子元素。</p>
+<p>然后，修改我们的JS代码，让<code>li</code>元素在展开和隐藏状态间切换：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> tree = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'.tree'</span>);
+
+tree.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">evt.target.tagName === <span class="hljs-string">'LI'</span></span>)</span> {
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">evt.target.className === <span class="hljs-string">'expand'</span></span>)</span> {
+      evt.target.className = <span class="hljs-string">''</span>;
+    } <span class="hljs-keyword">else</span> {
+      evt.target.className = <span class="hljs-string">'expand'</span>;
+    }
+  }
+});
+</code></pre>
+<p>这样就实现了一个动态展开收起的树状列表。<a href="https://junyux.github.io/FE-Advance/day02/index1-v3.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<h2>第三个故事：用CSS绘制静态饼图</h2>
+<p>了解了border属性的特性后，我们将利用这个特性，完成一个更加复杂的任务。这个任务是这样的：要在网页上显示四张图表，这是一个数据统计图表里常见的饼图，大概是如下这个样子：</p>
+<p><img src="img\993118e8-ae6f-11ed-bce7-342eb7027b95.jpg" alt=""></p>
+<p>关于上图的这个效果，我们可以通过比较复杂的HTML结构加上一些JS来完成这个工作。但是如果考虑到代码可维护性，像这样纯UI的工作最好交由CSS完成，让HTML元素尽量保持简洁，比如，保持一个简单的HTML标签：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span>></span>25%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<p>💡在一个项目里，通常HTML结构保持越简单，项目的JS代码也会相应简洁，代码的可维护性就会大大增强。所以，保持HTML结构简单，尽量不增加冗余标签，是每个前端工程师必须要思考并努力去做到的。</p>
+<p>那么，如何使用CSS实现饼图的效果呢？比较直接的思路是采用颜色拼接和旋转来实现。</p>
+<p>首先，我们先实现一个单色饼图。这个效果非常容易实现，可以使用CSS的<code>border-radius</code>属性将元素的边框四角分别设置为1/4圆弧，如下代码所示：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-number">#3c7</span>;
+}
+</code></pre>
+<p><img src="img\994638e9-ae6f-11ed-bf69-342eb7027b95.jpg" alt=""></p>
+<p>在这里，为了方便描述，我们暂时把HTML元素中的文字去掉，因为它的显示有些问题需要解决，后续我们再来讨论它。</p>
+<p>有了单色饼图，那么双色饼图该怎么做呢？还记得上一个故事里我们使用border来做三角形和其他有趣图案吗？结合border-radius，我们可以将三角形变成扇形！</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-number">#3c7</span>;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">border-color</span>: red blue orange green;
+  <span class="hljs-attribute">box-sizing</span>: border-box;
+}
+</code></pre>
+<p>上面的代码中，我们先给<code>.pie</code>元素的上、右、下、左边框设置不同颜色，以及边框大小10px。它的效果如下图所示：</p>
+<p><img src="img\99563a65-ae6f-11ed-b3e9-342eb7027b95.jpg" alt=""></p>
+<p>然后，我们将元素的width、height属性都修改为0，并将border的大小设置为75px：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: red blue orange green;
+  <span class="hljs-attribute">box-sizing</span>: border-box;
+}
+</code></pre>
+<p>这时<code>.pie</code>元素的效果就是下面这个样子——四个扇形：</p>
+<p><img src="img\99661b02-ae6f-11ed-a1b1-342eb7027b95.jpg" alt=""></p>
+<p>然后，再将上边框和右边框的颜色设置为绿色（#3c7），下边框和左边框的颜色设置为蓝色（#37c），如下代码所示：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#3c7</span> <span class="hljs-number">#3c7</span> <span class="hljs-number">#37c</span> <span class="hljs-number">#37c</span>;
+  <span class="hljs-attribute">box-sizing</span>: border-box;
+}
+</code></pre>
+<p>这样，<code>.pie</code>元素就变成下面的样子：</p>
+<p><img src="img\997705d6-ae6f-11ed-ad0f-342eb7027b95.jpg" alt=""></p>
+<p>再通过<code>transform</code>属性将这个元素旋转45度：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#3c7</span> <span class="hljs-number">#3c7</span> <span class="hljs-number">#37c</span> <span class="hljs-number">#37c</span> ;
+  <span class="hljs-attribute">box-sizing</span>: border-box;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">45deg</span>);
+}
+</code></pre>
+<p>这就得到我们要的两色饼图：</p>
+<p><img src="img\9984c951-ae6f-11ed-9bf1-342eb7027b95.jpg" alt=""></p>
+
+<p>现在，我们需要思考的是：如何让两种颜色，按照给定的进度数据，显示对应的比例呢？</p>
+<p>它的基本思路是这样的：</p>
+<ol>
+<li>在这个元素上叠加一层饼图；</li>
+<li>初始状态下，我们将这张饼图的右半边（即，上、右边框）的颜色设置为蓝色；左半边（即，下、左边框）的颜色设置为透明色。这样初始情况下，<code>.pie</code>元素右半边绿色的部分，被这一叠加层覆盖为蓝色，从视觉上看<code>.pie</code>元素此时的进度是0；</li>
+<li>根据需求，以不同角度旋转这个叠加层，这样就实现了不同百分比的饼图。</li>
+</ol>
+<p>首先，叠加的饼图可以用<strong>伪元素</strong>来实现：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span>,
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+}
+
+<span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#3c7</span> <span class="hljs-number">#3c7</span> <span class="hljs-number">#37c</span> <span class="hljs-number">#37c</span>;
+  <span class="hljs-attribute">box-sizing</span>: border-box;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">45deg</span>);
+}
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#37c</span> <span class="hljs-number">#37c</span> transparent transparent;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>);
+}
+</code></pre>
+<p>如上代码所示，我们将<code>.pie::before</code>伪元素盖在<code>.pie</code>元素上，这个伪元素的border一半是透明色，一半是蓝色，恰好是<code>.pie</code>元素左边的颜色，那么这样饼图看起来又恰好是一个整圆了。</p>
+<p>在<code>.pie::before</code>规则中，还需要注意的是这个声明——<code>transform: translate(-50%, -50%)</code>。因为元素的定位在元素边框（border-box）的左上角，而相对位置（0,0）则在元素内容区（content-box）的左上角。因为<code>.pie</code>元素的<code>width</code>和<code>height</code>都是0，所以content-box的左上角正好是<code>.pie</code>的中心点。因此要给伪元素设置一个向左向上各偏移50%的位置，才能恰好覆盖住<code>.pie</code>元素。</p>
+<p>这时，这个元素的效果如下图所示：</p>
+<p><img src="img\9995f842-ae6f-11ed-a700-342eb7027b95.jpg" alt=""></p>
+<p>然后，我们把伪元素旋转一个角度，比如转过10%，只要在伪元素的tranform属性上增加一个rotate，并让它的值等于<code>0.1turn</code>，如下代码所示：</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/*省略其他的CSS规则...*/</span>
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#37c</span> <span class="hljs-number">#37c</span> transparent transparent;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">0.1turn</span>);
+}
+</code></pre>
+<p>在这里，为了看清楚，我把before伪元素的一半<code>border-color</code>暂时换成了红色，显示结果如下：</p>
+<p><img src="img\99a5c4ab-ae6f-11ed-a926-342eb7027b95.jpg" alt=""></p>
+<p>好，我们把颜色换回来，这样就得到我们期望的结果：</p>
+<p><img src="img\99b4c640-ae6f-11ed-a89c-342eb7027b95.jpg" alt=""></p>
+<p>所以，只要给这个伪元素设置不同的旋转角度，就能得到相应的统计饼图，如下图所示（为了看起来更清晰，我们把蓝色部分的伪元素颜色替换为了半透明的）：</p>
+<p><img src="img\99c15fb0-ae6f-11ed-adbf-342eb7027b95.jpg" alt=""></p>
+
+<p>问题解决到这里，我们只解决了前半圈，也就是只能展示从<code>0%</code>到<code>50%</code>的进度表示，而超过<code>50%</code>的进度就行不通了。如下代码所示：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#37c</span> <span class="hljs-number">#37c</span> transparent transparent;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">0.6turn</span>);
+}
+</code></pre>
+<p>上面的代码中， 我们将伪元素旋转到<code>0.6trun</code>（也就是旋转了60%)，这时饼图变成下面这个样子：</p>
+<p><img src="img\99d72b66-ae6f-11ed-bd65-342eb7027b95.jpg" alt=""></p>
+<p>这是因为我们的<code>.pie</code>元素只有右边一半是绿色，所以旋转超过了<code>50%</code>后，左边的蓝色区域就裸露了出来，这显然不是我们期望的结果。</p>
+<p>要解决这个问题，我们需要调整伪元素的左右两半圆的颜色配置。初始情况下，我们将这个伪元素的下、左边框设置为透明，上、右边框设置为蓝色，即：左半圆是透明色，右半圆是蓝色。当旋转到<code>50%</code>时，伪元素的蓝色右半圆被旋转到<code>.pie</code>元素的左边，而透明的左半圆被旋转到<code>.pie</code>元素的右边。这时，我们只需要将原来是透明色的下、左边框设置为绿色，将原来是蓝色的上、右边框设置为透明色，就能解决超过上面的问题。</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie convex"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span><span class="hljs-selector-class">.convex</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">border-color</span>: transparent transparent <span class="hljs-number">#3c7</span> <span class="hljs-number">#3c7</span>;
+}
+</code></pre>
+<p>如上代码所示，我们给超过50%进度的饼图元素加一个类选择器<code>convex</code>。在这个选择器里，我们将伪元素的上、右边框颜色设置为透明色，将下、左边框的颜色设置为绿色。</p>
+<p>这样，超过50%进度的饼图就正常显示了：</p>
+<p><img src="img\99e5a096-ae6f-11ed-83ba-342eb7027b95.jpg" alt=""></p>
+<p>到这里，基本上，我们可以使用CSS实现<strong>静态</strong>的饼图效果。比如，要实现最初的四张饼图，它们的代码如下所示：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day02/index2-v1.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie one"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie two"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie three"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie convex four"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span>,
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+}
+
+<span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#3c7</span> <span class="hljs-number">#3c7</span> <span class="hljs-number">#37c</span> <span class="hljs-number">#37c</span>;
+  <span class="hljs-attribute">box-sizing</span>: border-box;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">45deg</span>);
+}
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#37c</span> <span class="hljs-number">#37c</span> transparent transparent;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>);
+}
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-class">.convex</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">border-color</span>: transparent transparent <span class="hljs-number">#3c7</span> <span class="hljs-number">#3c7</span>;
+}
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-class">.one</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">1turn</span>);
+}
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-class">.two</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">25turn</span>);
+}
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-class">.three</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5turn</span>);
+}
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-class">.four</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">8turn</span>);
+}
+</code></pre>
+<p><img src="img\99f472b7-ae6f-11ed-8ac9-342eb7027b95.jpg" alt=""></p>
+<p>但是，通常情况下，我们的统计数据都是来自服务器，是动态而不是静态的，所以饼图的进度比例是需要动态绑定而不是写死在CSS中的。</p>
+<p>这种情况下，按照常规做法，我们需要通过内联CSS的方式动态绑定进度数据，以显示对应比例的饼图。但是<strong>伪元素</strong>是无法通过内联的方式绑定，而且也不容易被JS操作。</p>
+<p>💡伪元素不像普通的HTML元素，普通元素我们可以通过DOM拿到元素对象，然后操作它们的样式，伪元素如果非要用JS操作，我们只能操作CSS规则，那样非常繁琐。</p>
+<p>那么如何实现动态绑定进度数据的饼图呢？</p>
+<h2>第四个故事： 绘制动态绑定进度的饼图</h2>
+<p>上一个故事中，我们使用CSS实现了静态的饼图效果。这一个故事，我们将实现动态绑定进度数据的饼图。</p>
+<p>要动态绑定数据，我们需要将原本写死在CSS中的进度设置通过HTML的style属性来表示，也就是CSS的内联。因为伪元素是无法通过内联的方式绑定的。所以，我们需要将与进度相关的数据从伪元素的属性设置中移到元素的设置中。</p>
+
+
+<p>所以，我们可以把伪元素上的CSS属性通过CSS动画结合它所属元素上的<code>animation-delay</code>属性来控制。</p>
+<p>首先我们给饼图增加CSS动画：</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/*...省略其他的CSS规则...*/</span>
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#37c</span> <span class="hljs-number">#37c</span> transparent transparent;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">0turn</span>);
+  <span class="hljs-attribute">animation</span>: spine <span class="hljs-number">10s</span> linear infinite,
+    convex <span class="hljs-number">10s</span> step-end infinite;
+}
+
+<span class="hljs-keyword">@keyframes</span> spine {
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1turn</span>);}
+}
+
+<span class="hljs-keyword">@keyframes</span> convex {
+  50% {<span class="hljs-attribute">border-color</span>: transparent transparent <span class="hljs-number">#3c7</span> <span class="hljs-number">#3c7</span>;}
+}
+</code></pre>
+<p>上面的代码中，我们给<code>.pie::before</code>伪元素添加了一个动画声明：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-tag">animation</span>: <span class="hljs-selector-tag">spine</span> 10<span class="hljs-selector-tag">s</span> <span class="hljs-selector-tag">linear</span> <span class="hljs-selector-tag">infinite</span>,<span class="hljs-selector-tag">convex</span> 10<span class="hljs-selector-tag">s</span> <span class="hljs-selector-tag">step-end</span> <span class="hljs-selector-tag">infinite</span>;
+</code></pre>
+<p>这条声明表示spine动画执行周期10秒，匀速执行，无限循环；convex动画执行10s，以step-end方式跳跃执行，无限循环。</p>
+<p><em><code>step-end</code>是每一关键帧在动画进度的末尾改变属性状态；<code>linear</code>是每一关键帧在动画执行期间以播放时间均匀插值的方式改变属性状态</em></p>
+<pre><code class="hljs language-css"><span class="hljs-keyword">@keyframes</span> spine {
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1turn</span>);}
+}
+</code></pre>
+<p>上面这条规则中，<code>@keyframes spine</code>表示声明spine帧动画。<code>to</code>是100%的缩写，表示动画完整周期结束时，元素的属性到达的状态。<code>transform: translate(-50%, -50%) rotate(1turn);</code>就是动画结束时<code>.pie::before</code>元素的状态为转过一圈，位置向左向上偏移50%。</p>
+<pre><code class="hljs language-css"><span class="hljs-keyword">@keyframes</span> convex {
+  50% {<span class="hljs-attribute">border-color</span>: transparent transparent <span class="hljs-number">#3c7</span> <span class="hljs-number">#3c7</span>;}
+}
+</code></pre>
+<p>这条规则表示，当动画执行到50%时，将<code>.pie::before</code>的状态修改为：<code>border-color: transparent transparent #3c7 #3c7;</code>。也就是当动画播放到50%时，将这个伪元素的边框的颜色修改为上、右边框为透明色，下、左边框为绿色。</p>
+<p>这样，我们的饼图动画就如下图所示：</p>
+
+<p><img src="img\9a0cf353-ae6f-11ed-8cef-342eb7027b95.jpg" alt=""></p>
+<p>有了变化的饼图，我们就可以通过<code>animation-play-state</code>和<code>animation-delay</code>将饼图设置为固定的比例：</p>
+
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#37c</span> <span class="hljs-number">#37c</span> transparent transparent;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">0turn</span>);
+  <span class="hljs-attribute">animation</span>: spine <span class="hljs-number">10s</span> linear infinite,
+    convex <span class="hljs-number">10s</span> step-end infinite;
+  <span class="hljs-attribute">animation-play-state</span>: paused;
+  <span class="hljs-attribute">animation-delay</span>: -<span class="hljs-number">3s</span>;
+}
+</code></pre>
+<p>如上代码所示:</p>
+<ul>
+<li><code>animation-play-state: paused</code>表示暂停动画</li>
+<li><code>animation-delay: -3s</code>表示将动画提前3秒执行，也就是说，动画初始的状态就在3s那一帧，即动画处于30%处，刚好对应进度为30%的饼图。</li>
+</ul>
+<p>从上面的代码可以看出，我们可以通过控制<code>animation-delay</code>属性，设置饼图的比例。但是这个属性依然是设置在伪元素上的，而我们的程序又不能通过伪元素直接修改这个属性。那么我们可不可通过修改<code>.pie</code>元素的<code>animation-delay</code>属性来间接影响伪元素的状态呢？</p>
+<p>答案是可以的。</p>
+<p>因为，<code>animation-delay</code>属性可以设置为<code>inherit</code>值，这样，<code>animation-delay</code>属性值就会从父元素继承。而<code>.pie::before</code>是伪元素，伪元素总是被浏览器渲染为对应元素的子元素。</p>
+<p>也就是说，我们只要将<code>.pie::before</code>伪元素的<code>animation-delay</code>设为<code>inherit</code>，然后将<code>animation-delay</code>值作为内联样式直接设置在<code>.pie</code>元素上，这样伪元素就能继承<code>.pie</code>元素上的<code>animation-delay</code>值了。</p>
+<p>如下代码所示：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#37c</span> <span class="hljs-number">#37c</span> transparent transparent;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">0turn</span>);
+  <span class="hljs-attribute">animation</span>: spine <span class="hljs-number">10s</span> linear infinite,
+    convex <span class="hljs-number">10s</span> step-end infinite;
+  <span class="hljs-attribute">animation-play-state</span>: paused;
+  <span class="hljs-attribute">animation-delay</span>: inherit;
+}
+</code></pre>
+<p>这样，我们要显示刚才那四张饼图，就可以这么写：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -1s;"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -2.5s;"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -5s;"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -8s;"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<p>到这里，基本的动态绑定进度的饼图就实现了。</p>
+<p>最后，我们需要处理饼图中的文字。因为我们用了0宽高的元素和border来实现饼图，所以我们无法直接将文字直接写在<code>.pie</code>元素中。这时，唯一的办法是，我们给文字套一层HTML标签（比如<code>&#x3C;span></code>），然后将它脱离出文档流：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -1s;"</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">span</span>></span>10%<span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -2.5s;"</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">span</span>></span>25%<span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -5s;"</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">span</span>></span>50%<span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -8s;"</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">span</span>></span>80%<span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span>,
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">0</span>; <span class="hljs-comment">/* 纯粹防止空白符，这个例子中可以不添加这个设置*/</span>
+}
+
+<span class="hljs-selector-class">.pie</span> <span class="hljs-selector-tag">span</span> {
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(-<span class="hljs-number">45deg</span>);
+}
+</code></pre>
+<p>由于<code>.pie</code>元素有个45度的旋转，因此，我们要把文字反向旋转回来。</p>
+<p>这是最终的效果：</p>
+<p><img src="img\9a2e054e-ae6f-11ed-946d-342eb7027b95.jpg" alt=""></p>
+<p>完整CSS代码如下所示：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day02/index2-v2.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span>,
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-selector-class">.pie</span> <span class="hljs-selector-tag">span</span> {
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(-<span class="hljs-number">45deg</span>);
+}
+
+<span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#3c7</span> <span class="hljs-number">#3c7</span> <span class="hljs-number">#37c</span> <span class="hljs-number">#37c</span>;
+  <span class="hljs-attribute">box-sizing</span>: border-box;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">45deg</span>);
+}
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">75px</span>;
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#37c</span> <span class="hljs-number">#37c</span> transparent transparent;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">0turn</span>);
+  <span class="hljs-attribute">animation</span>: spine <span class="hljs-number">10s</span> linear infinite,
+    convex <span class="hljs-number">10s</span> step-end infinite;
+  <span class="hljs-attribute">animation-play-state</span>: paused;
+  <span class="hljs-attribute">animation-delay</span>: inherit;
+}
+
+<span class="hljs-keyword">@keyframes</span> spine {
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1turn</span>);}
+}
+
+<span class="hljs-keyword">@keyframes</span> convex {
+  50% {<span class="hljs-attribute">border-color</span>: transparent transparent <span class="hljs-number">#3c7</span> <span class="hljs-number">#3c7</span>;}
+}
+</code></pre>
+<p>到此，动态绘制饼图效果就做出来。唯一有一些遗憾的是，最终我们需要增加一个内嵌span标签，没有遵守我们最初最简的HTML结构的期望。这是一个小遗憾，但这是因为采用border来实现效果带来的限制。</p>
+<p>那么这个小遗憾可以解决吗？</p>
+<h2>第五个故事：饼图 2.0</h2>
+<p>第二个故事中，我们采用了元素的border属性的特性实现了饼图的效果。但是，这种方法让元素的border占满了元素的整个可视区，导致没有文字内容存放的空间，所以最后我们不得不增加一个额外的<code>&#x3C;span></code>标签来显示文字。这也是这种方法带来的缺点。这一讲，我们将学习另一种方法，实现饼图效果，并且不会增加额外的Html标签。</p>
+<p>这种方法是利用CSS的<strong>线性渐变</strong>——<code>linear-gradient()</code>函数实现饼图的效果。</p>
+<p>下面，让我们看一下使用<code>linear-gradient()</code>该怎么做，首先还是从纯色的圆形开始，我们给<code>background</code>增加一个线性渐变的效果：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(#<span class="hljs-number">37</span>c,#<span class="hljs-number">3</span>c7); 
+}
+</code></pre>
+<p>如上代码所示，<code>background: linear-gradient(#37c,#3c7)</code>表示让<code>.pie</code>元素表现为一个从上到下颜色从绿色（#37c）均匀过渡到蓝色（#3c7）的背景。</p>
+<p><img src="img\9a401ac3-ae6f-11ed-8a0d-342eb7027b95.jpg" alt=""></p>
+<p>上图中，绿色到蓝色的变化是均匀的在整个元素内渐变。而<code>linear-gradient</code>这个函数还允许设置渐变开始的位置。比如，我们可以把绿色开始渐变的位置设置在元素高度的50%的位置，而把蓝色开始渐变的位置也设置在50%的位置，那么这两个颜色刚好在50%的地方直接切换：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(#<span class="hljs-number">37</span>c <span class="hljs-number">50%</span>,#<span class="hljs-number">3</span>c7 <span class="hljs-number">50%</span>);
+}
+</code></pre>
+<p>如上代码所示：<code>background: linear-gradient(#37c 50%,#3c7 50%)</code>表示从起始位置开始到高度50%位置是绿色，然后从50%开始到结束是蓝色，而从50%到50%的地方则是绿色到蓝色的渐变范围。因为50%到50%并没有范围，所以渐变的部分就是一条分割线。它的效果如下所示：</p>
+<p><img src="img\9a504eaf-ae6f-11ed-a8c7-342eb7027b95.jpg" alt=""></p>
+<p>这样我们就得到一个双色的圆。这时，你可能很直接就想到使用transform属性对元素进行旋转90度。但是这里我们无需这样做，因为<code>linear-gradient</code>函数提供了渐变轴的参数。默认情况下，渐变轴是0度，渐变的方向是从下到上，也就是上图中的样子。我们可以通过将渐变轴修改为90度，实现左右渐变的效果：</p>
+
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, #<span class="hljs-number">37</span>c <span class="hljs-number">50%</span>,#<span class="hljs-number">3</span>c7 <span class="hljs-number">50%</span>);
+}
+</code></pre>
+<p>这时，我们将渐变轴顺时针旋转90度，于是我们就得到了与上一个版本相同的双色半圆形。</p>
+<p><img src="img\9a5ffbfd-ae6f-11ed-9f38-342eb7027b95.jpg" alt=""></p>
+<p>由于这一次我们没有使用border，元素有宽高，所以我们可以在元素上设置文字了：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span>></span>10%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, #<span class="hljs-number">37</span>c <span class="hljs-number">50%</span>,#<span class="hljs-number">3</span>c7 <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+}
+</code></pre>
+<p>上面代码的效果如下所示：</p>
+<p><img src="img\9a73a29e-ae6f-11ed-b48c-342eb7027b95.jpg" alt=""></p>
+<p>接下来，我们一样采用与第二个故事相同的思路，用伪元素拼接来实现与进度数据对应的饼图。</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span>,
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">position</span>: relative;
+}
+
+<span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, #<span class="hljs-number">37</span>c <span class="hljs-number">50%</span>,#<span class="hljs-number">3</span>c7 <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+}
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, transparent <span class="hljs-number">50%</span>,#<span class="hljs-number">37</span>c <span class="hljs-number">50%</span>);
+}
+</code></pre>
+<p>上面的代码中，我们也用<code>linear-gradient</code>给伪元素添加背景色渐变，让它的左边是透明色，右边是蓝色。这时，它的效果如下所示：</p>
+<p><img src="img\9a847768-ae6f-11ed-8687-342eb7027b95.jpg" alt=""></p>
+
+<p>这时，你可能发现了一个问题，文字被盖住了一部分。这是因为伪元素是<code>.pie</code>的子元素，它的层级比文字层级高。</p>
+<p>如果我们给它设置较小的<code>z-index</code>：</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/*...省略其他的CSS规则...*/</span>
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, transparent <span class="hljs-number">50%</span>,#<span class="hljs-number">37</span>c <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">z-index</span>: -<span class="hljs-number">1</span>; <span class="hljs-comment">/*将伪元素的叠级变小*/</span>
+}
+</code></pre>
+<p>这时，它又跑到<code>.pie</code>元素背景后边去了：</p>
+<p><img src="img\9a972812-ae6f-11ed-b33e-342eb7027b95.jpg" alt=""></p>
+<p>那么这时该怎么办呢？</p>
+<p>很简单，我们可以将<code>.pie</code>和<code>.pie::before</code>的背景对调一下。让伪元素做底层饼图，而让<code>.pie</code>元素作为叠加层：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span>,
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">position</span>: relative;
+}
+
+<span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, transparent <span class="hljs-number">50%</span>,#<span class="hljs-number">37</span>c <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+}
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, #<span class="hljs-number">37</span>c <span class="hljs-number">50%</span>,#<span class="hljs-number">3</span>c7 <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">z-index</span>: -<span class="hljs-number">1</span>;
+}
+</code></pre>
+
+<p>这样，写在<code>.pie</code>元素里的文字就不会被覆盖，而且也达到了我们的效果：</p>
+<p><img src="img\9aa5a6d5-ae6f-11ed-97f6-342eb7027b95.jpg" alt=""></p>
+<p>现在，我们可以通过旋转上层饼图来实现与进度数据相对应的饼图。但是，这里我们不再需要旋转<code>.pie</code>元素，只需要调整<code>linear-gradient</code>的渐变轴来实现：</p>
+
+<pre><code class="hljs language-css"><span class="hljs-comment">/*...省略其他CSS规则...*/</span>
+
+<span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(.<span class="hljs-number">35turn</span>, transparent <span class="hljs-number">50%</span>,#<span class="hljs-number">37</span>c <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+}
+
+<span class="hljs-comment">/*...省略其他CSS规则...*/</span>
+</code></pre>
+<p>如上代码所示，我们将元素背景色的渐变轴调整成<code>.35turn</code>。注意与<code>rotate</code>一样，渐变轴旋转可以用<code>turn</code>做单位，<code>90deg</code>相当于<code>0.25turn</code>，再旋转<code>0.1turn</code>也就是<code>0.35turn</code>，这时候刚好是<code>10%</code>的进度了。</p>
+<p><img src="img\9ab5c0ef-ae6f-11ed-9dfa-342eb7027b95.jpg" alt=""></p>
+<p>与上一版一样，我们需要在进度超过50%的时候，改变一下<code>.pie</code>元素的颜色分配，替换为：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span><span class="hljs-selector-class">.convex</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(.<span class="hljs-number">85turn</span>, #<span class="hljs-number">3</span>c7 <span class="hljs-number">50%</span>, transparent <span class="hljs-number">50%</span>);
+}
+</code></pre>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie convex"</span>></span>60%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<p><img src="img\9ac574eb-ae6f-11ed-8268-342eb7027b95.jpg" alt=""></p>
+<p>这样就可以实现超过50%的情况了。</p>
+<p>这个版本通过改变<code>linear-gradient</code>的角度来改变饼图的比例，而且改变属性是在<code>.pie</code>元素不是在伪元素上，所以我们可以用JS来控制元素。</p>
+<p><a href="https://junyux.github.io/FE-Advance/day02/index2-v3.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span>></span>10%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span>></span>25%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span>></span>50%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span>></span>80%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span>,
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">position</span>: relative;
+}
+
+<span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+}
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, #<span class="hljs-number">37</span>c <span class="hljs-number">50%</span>,#<span class="hljs-number">3</span>c7 <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">z-index</span>: -<span class="hljs-number">1</span>;
+}
+</code></pre>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">initPieGraph</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> graphs = <span class="hljs-built_in">document</span>.querySelectorAll(<span class="hljs-string">'.pie'</span>);
+  graphs.forEach(<span class="hljs-function">(<span class="hljs-params">graph</span>) =></span> {
+    <span class="hljs-keyword">const</span> percentage = <span class="hljs-built_in">parseFloat</span>(graph.innerHTML) / <span class="hljs-number">100</span>;
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">percentage &#x3C;= <span class="hljs-number">0.5</span></span>)</span> {
+      graph.style.background = <span class="hljs-string">`linear-gradient(<span class="hljs-subst">${percentage + <span class="hljs-number">.25</span>}</span>turn, transparent 50%,#37c 50%)`</span>;
+    } <span class="hljs-keyword">else</span> {
+      graph.style.background = <span class="hljs-string">`linear-gradient(<span class="hljs-subst">${percentage + <span class="hljs-number">.25</span>}</span>turn, #3c7 50%, transparent 50%)`</span>;
+    }
+  });
+}
+initPieGraph();
+</code></pre>
+<p>如上代码所示，percentage表示进度。当进度小于50%时，我们将<code>.pie</code>元素的背景色设置为左边透明，右边蓝色，且渐变轴是<code>(percentage+.25)trun</code>。当进度超过50%时，我们将<code>.pie</code>元素的背景色设为左边绿色，右边透明，且渐变轴是<code>(percentage+.25)trun</code>。</p>
+<p>这样我们得到和上一版一样的结果：</p>
+<p><img src="img\9ad68a33-ae6f-11ed-933f-342eb7027b95.jpg" alt=""></p>
+<p>这一版本的有点在于保持了简单的HTML结构，没有多余的嵌套标签。CSS也更加简单。而它的缺点是需要一段JS来控制不同进度的饼图。所以这个方案和上一个方案相比，只能说是各有利弊，谈不上更完美。</p>
+
+<p>那么，能不能既保持HTML简洁、又不依赖JS呢？</p>
+<p>你可能想到，我们可以沿用上一个方案里面CSS动画的那个思路呀。是的，这个想法很好，但是，很不幸，CSS动画没办法直接控制<code>linear-gradient</code>中的渐变轴的角度，让它线性变化，所以，使用动画来控制渐变轴是行不通的。</p>
+<p>那么，作为读者的你，有没有办法让饼图既保持HTML简洁，又不需要JS控制呢？</p>
+<h2>第六个故事：饼图 3.0</h2>
+<p>为了保持HTML简洁，又使用JS控制，我们可以结合前两个版本的方案，也就是固定渐变轴，然后采用<code>transform</code>属性旋转我们的元素，以实现我们的饼图3.0。</p>
+<p>但是这个方案有一个问题， 就是我们只能旋转伪元素而不能是<code>.pie</code>元素。因为伪元素是子类，如果用<code>transform</code>旋转父类，子类会跟着一起旋转。可是，第二个版本中，因为要保证文字显示，我们将伪元素的<code>z-index</code>设置为负值，所以它在<code>.pie</code>元素的下层。那么到底要怎样旋转伪元素呢？</p>
+
+
+<p>其实很简单，我们可以把在上层的<code>.pie</code>元素的左半圆从原来的透明色设置为绿色，右半圆则初始为透明色：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span>></span>0%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span>,
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">position</span>: relative;
+}
+
+<span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(.<span class="hljs-number">25turn</span>, #<span class="hljs-number">3</span>c7 <span class="hljs-number">50%</span>,transparent <span class="hljs-number">50%</span>);
+}
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, #<span class="hljs-number">37</span>c <span class="hljs-number">50%</span>,#<span class="hljs-number">3</span>c7 <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">z-index</span>: -<span class="hljs-number">1</span>;
+}
+</code></pre>
+<p>那么，初始情况下，我们的饼图是这样的：</p>
+<p><img src="img\9ae6d192-ae6f-11ed-b603-342eb7027b95.jpg" alt=""></p>
+<p>然后，我们旋转<code>.pie::before</code>这个伪元素：</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* ...省略其他CSS规则... */</span>
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, #<span class="hljs-number">37</span>c <span class="hljs-number">50%</span>,#<span class="hljs-number">3</span>c7 <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">z-index</span>: -<span class="hljs-number">1</span>;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">0turn</span>);
+  <span class="hljs-attribute">animation</span>: spin <span class="hljs-number">10s</span> linear infinite;
+  <span class="hljs-comment">/* animation-play-state: paused;
+  animation-delay: inherit; */</span>
+}
+
+<span class="hljs-keyword">@keyframes</span> spin{
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1turn</span>)}
+}
+</code></pre>
+<p>这时饼图的动画如下所示：</p>
+<p><img src="img\9afb4042-ae6f-11ed-9253-342eb7027b95.jpg" alt=""></p>
+<p>同样，这时我们发现当进度超过50%的时候，进度展示的效果就不正确了。为了清晰，我将<code>.pie</code>元素的左半圆设置为半透明：</p>
+<p><img src="img\9b226d4a-ae6f-11ed-9ef9-342eb7027b95.jpg" alt=""></p>
+<p>所以这时，我们需要将<code>.pie</code>元素的颜色渐变对调一下：</p>
+
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(.<span class="hljs-number">25turn</span>, #<span class="hljs-number">3</span>c7 <span class="hljs-number">50%</span>,transparent <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">animation</span>: convex <span class="hljs-number">10s</span> step-end infinite;
+  <span class="hljs-attribute">animation-play-state</span>: paused;
+  <span class="hljs-attribute">animation-delay</span>: -<span class="hljs-number">0s</span>;
+}
+<span class="hljs-keyword">@keyframes</span> convex{
+  50% {<span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, transparent <span class="hljs-number">50%</span>, #<span class="hljs-number">37</span>c <span class="hljs-number">50%</span> <span class="hljs-number">0</span>);}
+}
+
+<span class="hljs-comment">/* 省略其他CSS规则*/</span>
+</code></pre>
+<p>如上代码所示，我们将<code>convex</code>动画设置在<code>.pie</code>元素上，而不是原先的伪元素上。当动画执行到50%的时候，我们将<code>.pie</code>元素的背景色设置为左边透明色，右边为蓝色。</p>
+<p>然后，我们依然通过<code>animation-delay</code>属性的内联样式来控制它们：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -1s;"</span>></span>10%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -2.5s;"</span>></span>25%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -5s;"</span>></span>50%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -8s;"</span>></span>80%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<p>这个方案到这里就结束了，我们既节省了<code>&#x3C;span></code>标签，又不用使用JS来控制。它的完整代码如下：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day02/index2-v4.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -1s;"</span>></span>10%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -2.5s;"</span>></span>25%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -5s;"</span>></span>50%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pie"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"animation-delay: -8s;"</span>></span>80%<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(.<span class="hljs-number">25turn</span>, #<span class="hljs-number">3</span>c7 <span class="hljs-number">50%</span>,transparent <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">animation</span>: convex <span class="hljs-number">10s</span> step-end infinite;
+  <span class="hljs-attribute">animation-play-state</span>: paused;
+  <span class="hljs-attribute">animation-delay</span>: -<span class="hljs-number">0s</span>;
+}
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, #<span class="hljs-number">37</span>c <span class="hljs-number">50%</span>,#<span class="hljs-number">3</span>c7 <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">z-index</span>: -<span class="hljs-number">1</span>;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">0turn</span>);
+  <span class="hljs-attribute">animation</span>: spin <span class="hljs-number">10s</span> linear infinite;
+ <span class="hljs-attribute">animation-play-state</span>: paused;
+  <span class="hljs-attribute">animation-delay</span>: inherit;
+}
+
+<span class="hljs-keyword">@keyframes</span> spin{
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1turn</span>)}
+}
+<span class="hljs-keyword">@keyframes</span> convex{
+  50% {<span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, transparent <span class="hljs-number">50%</span>, #<span class="hljs-number">37</span>c <span class="hljs-number">50%</span> <span class="hljs-number">0</span>);}
+}
+</code></pre>
+<h3>Scss</h3>
+<p>不过，故事到这里并没有结束，现在这个方案还有一个不足之处。从上面的代码中，我们发现有几处可变值是重复的。比如：<code>#37c</code>、<code>#3c7</code>两个颜色分别出现了多次，再比如：<code>width</code>、<code>height</code>、<code>line-height</code>也是可变值，可以控制饼图的半径，但是它们的值本身要相同。</p>
+
+<p>我们当然可以就这么放任这些重复值不管，但是这意味着将来需求变更，或者配置需要，我们要改变饼图颜色和大小时，就需要修改多处，只要漏改一处，就会产生bug。</p>
+<p>所以，这时候，我们就可以考虑使用像Scss这样的CSS预处理器。比如，我们使用Scss的话，就可以这样定义变量：</p>
+<pre><code class="hljs language-scss"><span class="hljs-variable">$fg</span>: <span class="hljs-number">#3c7</span>;
+<span class="hljs-variable">$bg</span>: <span class="hljs-number">#37c</span>;
+<span class="hljs-variable">$radius</span>: <span class="hljs-number">150px</span>;
+
+<span class="hljs-selector-class">.pie</span>,
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-variable">$radius</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-variable">$radius</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">position</span>: relative;
+}
+
+<span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-variable">$radius</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+  <span class="hljs-attribute">background</span>: linear-gradient(.<span class="hljs-number">25turn</span>, <span class="hljs-variable">$fg</span> <span class="hljs-number">50%</span>,transparent <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">animation</span>: convex <span class="hljs-number">10s</span> step-end infinite;
+  <span class="hljs-attribute">animation-play-state</span>: paused;
+  <span class="hljs-attribute">animation-delay</span>: -<span class="hljs-number">0s</span>;
+}
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">background</span>: linear-gradient(<span class="hljs-number">90deg</span>, <span class="hljs-variable">$bg</span> <span class="hljs-number">50%</span>,#<span class="hljs-variable">$fg</span> <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">z-index</span>: -<span class="hljs-number">1</span>;
+  <span class="hljs-attribute">transform</span>: rotate(<span class="hljs-number">0turn</span>);
+  <span class="hljs-attribute">animation</span>: spin <span class="hljs-number">10s</span> linear infinite;
+  <span class="hljs-attribute">animation-play-state</span>: paused;
+  <span class="hljs-attribute">animation-delay</span>: inherit;
+}
+
+<span class="hljs-keyword">@keyframes</span> spin{
+  to {<span class="hljs-attribute">transform</span>: rotate(<span class="hljs-number">1turn</span>)}
+}
+@keyframes convex{
+  <span class="hljs-number">50%</span> {background: linear-gradient(<span class="hljs-number">90deg</span>, transparent <span class="hljs-number">50%</span>, <span class="hljs-variable">$bg</span> <span class="hljs-number">50%</span> <span class="hljs-number">0</span>);}
+}
+</code></pre>
+<p>然后通过预处理器将最终生成对应的CSS，这样当我们要修改参数的时候，只需要修改最顶部这三个变量就可以了。</p>
+<h3>CSS自定义属性</h3>
+<p>如果我们的项目只需要运行在较新的浏览器上，那么我们还可以使用<strong>CSS自定义属性</strong>这个强大的特性，动态地定义层叠式变量：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day02/index2-v5.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.pie</span>,
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">--radius</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">--fg-color</span>: <span class="hljs-number">#3c7</span>;
+  <span class="hljs-attribute">--bg-color</span>: <span class="hljs-number">#37c</span>;
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-built_in">var</span>(--radius);
+  <span class="hljs-attribute">height</span>: <span class="hljs-built_in">var</span>(--radius);
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">position</span>: relative;
+}
+
+<span class="hljs-selector-class">.pie</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-built_in">var</span>(--radius);
+  <span class="hljs-attribute">text-align</span>: center;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(.<span class="hljs-number">25turn</span>, var(--fg-color) <span class="hljs-number">50%</span>,transparent <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">animation</span>: convex <span class="hljs-number">10s</span> step-end infinite;
+  <span class="hljs-attribute">animation-play-state</span>: paused;
+  <span class="hljs-attribute">animation-delay</span>: -<span class="hljs-number">0s</span>;
+}
+
+<span class="hljs-selector-class">.pie</span><span class="hljs-selector-pseudo">::before</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">''</span>;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, var(--bg-color) <span class="hljs-number">50%</span>,<span class="hljs-built_in">var</span>(--fg-color) <span class="hljs-number">50%</span>);
+  <span class="hljs-attribute">z-index</span>: -<span class="hljs-number">1</span>;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">0turn</span>);
+  <span class="hljs-attribute">animation</span>: spin <span class="hljs-number">10s</span> linear infinite;
+  <span class="hljs-attribute">animation-play-state</span>: paused;
+  <span class="hljs-attribute">animation-delay</span>: inherit;
+}
+
+<span class="hljs-keyword">@keyframes</span> spin{
+  <span class="hljs-selector-tag">to</span> {<span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1turn</span>)}
+}
+<span class="hljs-keyword">@keyframes</span> convex{
+  50% {<span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">90deg</span>, transparent <span class="hljs-number">50%</span>, var(--bg-color) <span class="hljs-number">50%</span> <span class="hljs-number">0</span>);}
+}
+</code></pre>
+<p>上面的代码，我们定义了三个自定义属性：</p>
+<pre><code class="hljs language-css">{
+  <span class="hljs-attribute">--radius</span>: <span class="hljs-number">150px</span>;
+  <span class="hljs-attribute">--fg-color</span>: <span class="hljs-number">#3c7</span>;
+  <span class="hljs-attribute">--bg-color</span>: <span class="hljs-number">#37c</span>;
+}
+</code></pre>
+<p>然后在需要用到的地方使用 <code>var()</code> 方式动态地引入这些值，这个方式现在在除了IE之外的浏览器上基本上运行良好。</p>
+<p>CSS自定义属性有很多使用场景，它还可以和CSS其他原生新特性比如<code>cacl()</code>和<code>color()</code>结合使用，能够产生令人惊艳的效果，这部分内容等后续有机会，我们再深入讨论。</p>
+<p>饼图的CSS实现到这里基本上就结束了。不过，实现饼图的方案并不只有这些，除了CSS，我们也可以考虑使用SVG或者Canvas，它们也各有利弊，但不在本课程的讨论范畴，有机会，大家可以继续深入学习这些内容。今天的故事主要是告诉你，以全新的视角去看待CSS，它比你想像的要强大的多。掌握这些技巧，可以让你的前端开发更加成熟。</p>
+</div>
+</body>
+</html>

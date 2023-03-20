@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <h1>第七天 常用设计模式</h1>
+<h2>第一个故事：图片预览</h2>
+<p>如果说组件封装是为了让其他程序员能够复用和扩展我们的UI组件，那么设计模式的意义则在于让其他程序员能够复用我们的<strong>解决方案</strong>。设计模式简单来说就是解决在一个特定上下文中一个问题的一种解决方案。所以，今天的故事，我们就来聊聊前端开发中常用的设计模式。</p>
+<h3>抽象行为（behavior）</h3>
+<p>我们的任务是这样的，给一个固定列表中的图片元素增加“预览”功能。</p>
+<p>对应的HTML页面如下所示：</p>
+<pre><code class="hljs language-html"><span class="hljs-meta">&#x3C;!DOCTYPE <span class="hljs-meta-keyword">html</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">head</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">"X-UA-Compatible"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"ie=edge"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">title</span>></span>图片预览<span class="hljs-tag">&#x3C;/<span class="hljs-name">title</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">style</span>></span><span class="css">
+    <span class="hljs-selector-id">#list</span> {
+      <span class="hljs-attribute">list-style-type</span>: none;
+      <span class="hljs-attribute">justify-content</span>: flex-start;
+      <span class="hljs-attribute">display</span>: flex;
+      <span class="hljs-attribute">flex-wrap</span>: wrap;
+    }
+
+    <span class="hljs-selector-id">#list</span> <span class="hljs-selector-tag">li</span> {
+      <span class="hljs-attribute">padding</span>: <span class="hljs-number">10px</span>;
+      <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-selector-id">#list</span> <span class="hljs-selector-tag">img</span> {
+      <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;
+      <span class="hljs-attribute">cursor</span>: pointer;
+    }
+  </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">style</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">head</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"list"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p4.ssl.qhimg.com/t01713d89cfdb45cdf5.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p4.ssl.qhimg.com/t01e456146c8f8a639a.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p1.ssl.qhimg.com/t015f613e2205b573d8.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p0.ssl.qhimg.com/t01290338a28018d404.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p3.ssl.qhimg.com/t01d9aa5ae469c8862e.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p3.ssl.qhimg.com/t01cb20d35fc4aa3c0d.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p5.ssl.qhimg.com/t0110b30256941b9611.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">html</span>></span>
+</code></pre>
+<p>显示的UI效果如图所示：</p>
+<p><img src="img\9f4bb666-ae6f-11ed-b581-342eb7027b95.jpg" alt=""></p>
+<p>要实现的功能是，鼠标点击到列表中的图片上，显示对应图片（缩略图）的高清大图并带有“上一张”、“下一张”的切换按钮。</p>
+<p>这个任务的解决方案很多：你可以按照常规做法，给每张图片注册一个事件监听器，响应用户的点击，显示该图的预览；你也可以按照组件封装的思路，设计一个预览功能的UI组件。但是，今天我们的主题是设计模式，所以，我们想使用“抽象行为”的设计模式来实现这个任务。这种模式应用了第四日的过程抽象的思想，是比组件化更加轻量的一种解决思路。</p>
+
+<p>下面，我们来看一看抽象行为是如何实现这个预览行为的：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'list'</span>);
+list.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+  <span class="hljs-keyword">const</span> target = evt.target;
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">target.tagName === <span class="hljs-string">'IMG'</span></span>)</span> {
+    preview(list, target);
+  }
+});
+</code></pre>
+<p>上面的代码是<code>click</code>事件处理函数。当点击的<code>target</code>是图片时，则执行<code>preview(list,target)</code>函数。这个<code>preview</code>函数就是我们的预览行为。</p>
+<p>下面我们重点看看<code>preview</code>行为是如何被抽象出来的：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">useBehavior</span>(<span class="hljs-params">context</span>) </span>{
+  <span class="hljs-keyword">const</span> {type, getDetail} = context;
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">subject, target</span>) </span>{
+    <span class="hljs-keyword">const</span> event = <span class="hljs-keyword">new</span> CustomEvent(type, {<span class="hljs-attr">bubbles</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">detail</span>: getDetail.call(context, subject, target)});
+    target.dispatchEvent(event);
+  };
+}
+</code></pre>
+<p>如上代码所示，我们定义了一个很简短的函数<code>useBehavior(context)</code>，这个函数是一个高阶函数，它返回的是代表特定行为的方法。当调用这个方法时，传入<code>subject</code>和<code>target</code>，然后创建一个自定义事件，并通过执行<code>getDetail</code>获取到赋给该事件参数的detail内容，然后以<code>target</code>为目标派发这个自定义事件。</p>
+<p>接下来，我们通过它定义一个叫做“preview”的行为：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> preview = useBehavior({
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'preview'</span>,
+
+  <span class="hljs-comment">/*
+    @subject: &#x3C;ul>元素
+    @target: 选中的图片元素
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">getDetail</span>(<span class="hljs-params">subject, target</span>)</span> {
+    <span class="hljs-keyword">const</span> imgs = <span class="hljs-built_in">Array</span>.from(subject.querySelectorAll(<span class="hljs-string">'img'</span>));
+    <span class="hljs-keyword">const</span> selected = imgs.indexOf(target); <span class="hljs-comment">// 获取选中图片在图片集合中的索引号</span>
+    <span class="hljs-keyword">let</span> mask = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'mask'</span>);
+
+    <span class="hljs-comment">// 如果mask不存在，创建一个mask元素</span>
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">!mask</span>)</span> {
+      mask = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
+      mask.id = <span class="hljs-string">'mask'</span>;
+      mask.innerHTML = <span class="hljs-string">`
+        &#x3C;a class="previous" href="###">&#x26;lt;&#x3C;/a>
+        &#x3C;img src="<span class="hljs-subst">${imgs[selected].src}</span>">
+        &#x3C;a class="next" href="###">&#x26;gt;&#x3C;/a>    
+      `</span>;
+      <span class="hljs-comment">// 给 #mask 元素设置样式：</span>
+      <span class="hljs-built_in">Object</span>.assign(mask.style, {
+        <span class="hljs-attr">position</span>: <span class="hljs-string">'absolute'</span>,
+        <span class="hljs-attr">left</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-attr">top</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-attr">width</span>: <span class="hljs-string">'100%'</span>,
+        <span class="hljs-attr">height</span>: <span class="hljs-string">'100%'</span>,
+        <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">'rgba(0,0,0,0.8)'</span>,
+        <span class="hljs-attr">display</span>: <span class="hljs-string">'none'</span>,
+        <span class="hljs-attr">alignItems</span>: <span class="hljs-string">'center'</span>,
+        <span class="hljs-attr">justifyContent</span>: <span class="hljs-string">'space-between'</span>,
+      });
+
+      <span class="hljs-comment">// 给 #mask 元素左右两边的&#x3C;a>元素设置样式：</span>
+      mask.querySelectorAll(<span class="hljs-string">'a'</span>).forEach(<span class="hljs-function">(<span class="hljs-params">a</span>) =></span> {
+        <span class="hljs-built_in">Object</span>.assign(a.style, {
+          <span class="hljs-attr">width</span>: <span class="hljs-string">'30px'</span>,
+          <span class="hljs-attr">textAlign</span>: <span class="hljs-string">'center'</span>,
+          <span class="hljs-attr">fontSize</span>: <span class="hljs-string">'2rem'</span>,
+          <span class="hljs-attr">color</span>: <span class="hljs-string">'#fff'</span>,
+          <span class="hljs-attr">textDecoration</span>: <span class="hljs-string">'none'</span>,
+        });
+      });
+      <span class="hljs-built_in">document</span>.body.appendChild(mask);
+
+      <span class="hljs-comment">// 给#mask元素添加点击事件处理函数：</span>
+      <span class="hljs-keyword">let</span> idx = selected;
+      mask.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+        <span class="hljs-keyword">const</span> target = evt.target;
+        <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">target === mask</span>)</span> { <span class="hljs-comment">// 如果点击的对象是mask元素，则隐藏mask元素</span>
+          mask.style.display = <span class="hljs-string">'none'</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">target.className === <span class="hljs-string">'previous'</span></span>)</span> { <span class="hljs-comment">// 显示上一张图片</span>
+          update(--idx);
+        } <span class="hljs-keyword">else</span> <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">target.className === <span class="hljs-string">'next'</span></span>)</span> { <span class="hljs-comment">// 显示下一张图片</span>
+          update(++idx);
+        }
+      });
+    }
+
+    <span class="hljs-comment">// 设置img元素的src属性指向指定图片</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span>(<span class="hljs-params">idx</span>) </span>{
+      <span class="hljs-keyword">const</span> [previous, next] = [...mask.querySelectorAll(<span class="hljs-string">'a'</span>)];
+      previous.style.visibility = idx ? <span class="hljs-string">'visible'</span> : <span class="hljs-string">'hidden'</span>;
+      next.style.visibility = idx &#x3C; imgs.length - <span class="hljs-number">1</span> ? <span class="hljs-string">'visible'</span> : <span class="hljs-string">'hidden'</span>;
+      <span class="hljs-keyword">const</span> img = mask.querySelector(<span class="hljs-string">'img'</span>);
+      img.src = imgs[idx].src;
+    }
+
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-function"><span class="hljs-title">showMask</span>(<span class="hljs-params"></span>)</span> { <span class="hljs-comment">// 显示选中图片的预览</span>
+        mask.style.display = <span class="hljs-string">'flex'</span>;
+        update(selected);
+      },
+    };
+  },
+});
+</code></pre>
+<p>在<code>getDetail</code>方法里，我们先创建一个<code>id=mask</code>的<code>&#x3C;div></code>元素，它的结构如下：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"mask"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"previous"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"###"</span>></span><span class="hljs-symbol">&#x26;lt;</span><span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"${imgs[selected].src}"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"next"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"###"</span>></span><span class="hljs-symbol">&#x26;gt;</span><span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<p>然后给<code>#mask</code>元素设置样式：</p>
+<pre><code class="hljs language-js"><span class="hljs-built_in">Object</span>.assign(mask.style, {
+  <span class="hljs-attr">position</span>: <span class="hljs-string">'absolute'</span>,
+  <span class="hljs-attr">left</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">top</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">width</span>: <span class="hljs-string">'100%'</span>,
+  <span class="hljs-attr">height</span>: <span class="hljs-string">'100%'</span>,
+  <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">'rgba(0,0,0,0.8)'</span>,
+  <span class="hljs-attr">display</span>: <span class="hljs-string">'flex'</span>,
+  <span class="hljs-attr">alignItems</span>: <span class="hljs-string">'center'</span>,
+  <span class="hljs-attr">justifyContent</span>: <span class="hljs-string">'space-between'</span>,
+});
+mask.querySelectorAll(<span class="hljs-string">'a'</span>).forEach(<span class="hljs-function">(<span class="hljs-params">a</span>) =></span> {
+  <span class="hljs-built_in">Object</span>.assign(a.style, {
+    <span class="hljs-attr">width</span>: <span class="hljs-string">'30px'</span>,
+    <span class="hljs-attr">textAlign</span>: <span class="hljs-string">'center'</span>,
+    <span class="hljs-attr">fontSize</span>: <span class="hljs-string">'2rem'</span>,
+    <span class="hljs-attr">color</span>: <span class="hljs-string">'#fff'</span>,
+    <span class="hljs-attr">textDecoration</span>: <span class="hljs-string">'none'</span>,
+  });
+});
+<span class="hljs-built_in">document</span>.body.appendChild(mask);
+</code></pre>
+<p>接着添加鼠标点击<code>mask</code>元素，以及左右两侧箭头（即<code>a.previous</code>和<code>a.next</code>两个元素）时触发的动作：</p>
+<pre><code class="hljs language-js">mask.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+  <span class="hljs-keyword">const</span> target = evt.target;
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">target === mask</span>)</span> {
+    mask.style.display = <span class="hljs-string">'none'</span>;
+  } <span class="hljs-keyword">else</span> <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">target.className === <span class="hljs-string">'previous'</span></span>)</span> {
+    update(--idx);
+  } <span class="hljs-keyword">else</span> <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">target.className === <span class="hljs-string">'next'</span></span>)</span> {
+    update(++idx);
+  }
+});
+</code></pre>
+<p><code>update</code>方法显示<code>idx</code>对应的图片，以及根据图片的位置决定是否显示左右箭头:</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span>(<span class="hljs-params">idx</span>) </span>{
+  <span class="hljs-keyword">const</span> [previous, next] = [...mask.querySelectorAll(<span class="hljs-string">'a'</span>)];
+  previous.style.visibility = idx ? <span class="hljs-string">'visible'</span> : <span class="hljs-string">'hidden'</span>;
+  next.style.visibility = idx &#x3C; imgs.length - <span class="hljs-number">1</span> ? <span class="hljs-string">'visible'</span> : <span class="hljs-string">'hidden'</span>;
+  <span class="hljs-keyword">const</span> img = mask.querySelector(<span class="hljs-string">'img'</span>);
+  img.src = imgs[idx].src;
+}
+</code></pre>
+<p>最后，我们返回一个<code>showMask()</code>方法，这个方法的作用是将<code>id=mask</code>的<code>&#x3C;div></code>元素真正显示出来。</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">return</span> {
+  <span class="hljs-function"><span class="hljs-title">showMask</span>(<span class="hljs-params"></span>)</span>{
+    mask.style.display = <span class="hljs-string">'flex'</span>;
+    update(selected);
+  },
+};
+</code></pre>
+
+<p>接着我们要通过鼠标click事件触发preview行为：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'list'</span>);
+list.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+  <span class="hljs-keyword">const</span> target = evt.target;
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">target.tagName === <span class="hljs-string">'IMG'</span></span>)</span> {
+    preview(list, target);
+  }
+});
+</code></pre>
+<p>然后，我们让<code>#list</code>元素监听<code>preview</code>事件：</p>
+<pre><code class="hljs language-js">list.addEventListener(<span class="hljs-string">'preview'</span>, <span class="hljs-function">(<span class="hljs-params">{detail}</span>) =></span> {
+  detail.showMask();
+});
+</code></pre>
+<p>在<code>preview</code>事件监听器中我们执行<code>detail.showMask()</code>，就能触发图片预览的功能了。<a href="https://junyux.github.io/FE-Advance/day07/index1.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<p>从上述的解决方案，我们可以看到，通过抽象行为的模式，我们将“预览”这个行为从组件中剥离出来，降低了组件和行为的耦合度。这样做究竟有什么好处呢？</p>
+
+<h2>第二个故事：图片选择器</h2>
+<p>这个故事，我们依然使用和第一个故事相似的HTML结构，实现一个与图片预览类似的功能，叫做图片选择器：</p>
+<pre><code class="hljs language-html"><span class="hljs-meta">&#x3C;!DOCTYPE <span class="hljs-meta-keyword">html</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">head</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">"X-UA-Compatible"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"ie=edge"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">title</span>></span>抽象行为<span class="hljs-tag">&#x3C;/<span class="hljs-name">title</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">style</span>></span><span class="css">
+    <span class="hljs-selector-id">#list</span> {
+      <span class="hljs-attribute">list-style-type</span>: none;
+      <span class="hljs-attribute">justify-content</span>: flex-start;
+      <span class="hljs-attribute">display</span>: flex;
+      <span class="hljs-attribute">flex-wrap</span>: wrap;
+    }
+
+    <span class="hljs-selector-id">#list</span> <span class="hljs-selector-tag">li</span> {
+      <span class="hljs-attribute">padding</span>: <span class="hljs-number">10px</span>;
+      <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-selector-id">#list</span> <span class="hljs-selector-tag">img</span> {
+      <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;
+      <span class="hljs-attribute">cursor</span>: pointer;
+      <span class="hljs-attribute">box-sizing</span>: border-box;
+      <span class="hljs-attribute">padding</span>: <span class="hljs-number">5px</span>;
+    }
+
+    <span class="hljs-selector-id">#list</span> <span class="hljs-selector-tag">img</span><span class="hljs-selector-class">.selected</span> {
+      <span class="hljs-attribute">border</span>: solid <span class="hljs-number">5px</span> <span class="hljs-number">#37c</span>;
+      <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+    }
+  </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">style</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">head</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"list"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p4.ssl.qhimg.com/t01713d89cfdb45cdf5.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p4.ssl.qhimg.com/t01e456146c8f8a639a.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p1.ssl.qhimg.com/t015f613e2205b573d8.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p0.ssl.qhimg.com/t01290338a28018d404.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p3.ssl.qhimg.com/t01d9aa5ae469c8862e.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p3.ssl.qhimg.com/t01cb20d35fc4aa3c0d.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p5.ssl.qhimg.com/t0110b30256941b9611.jpg"</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">html</span>></span>
+</code></pre>
+<p>上面的HTML和前面的图片预览基本上一样，只是有些细节的CSS样式修改：</p>
+<p><img src="img\9f79d15c-ae6f-11ed-8614-342eb7027b95.jpg" alt=""></p>
+<p>沿用图片预览的思路，我们也可以将图片选择器的“选择”行为抽象出来，它比图片预览更加简单：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">useBehavior</span>(<span class="hljs-params">context</span>) </span>{
+  <span class="hljs-keyword">const</span> {type, getDetail} = context;
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">subject, target</span>) </span>{
+    <span class="hljs-keyword">const</span> event = <span class="hljs-keyword">new</span> CustomEvent(type, {<span class="hljs-attr">bubbles</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">detail</span>: getDetail.call(context, subject, target)});
+    target.dispatchEvent(event);
+  }
+}
+
+<span class="hljs-keyword">const</span> select = useBehavior({
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'select'</span>,
+  <span class="hljs-attr">data</span>: {
+    <span class="hljs-attr">picked</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>(), <span class="hljs-comment">// 选中的图片集合</span>
+  },
+  <span class="hljs-function"><span class="hljs-title">getDetail</span>(<span class="hljs-params">subject, target</span>)</span> {
+    <span class="hljs-keyword">const</span> picked = <span class="hljs-built_in">this</span>.data.picked;
+
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">picked.has(target)</span>)</span> {
+      target.className = <span class="hljs-string">''</span>;
+      picked.delete(target);
+    } <span class="hljs-keyword">else</span> {
+      target.className = <span class="hljs-string">'selected'</span>;
+      picked.add(target);
+    }
+
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">changed</span>: target,
+      picked,
+    };
+  },
+});
+</code></pre>
+<p>在<code>select</code>行为里，我们定义一个<code>picked</code>集合，用来存放所有选中的图片元素。<code>getDetail</code>函数仅仅做一件事情，如果<code>target</code>在<code>picked</code>集合中，将它移出集合并撤销<code>img</code>元素的样式，否则，将它放入集合并添加<code>img</code>元素的样式。</p>
+<p><em>💡注意，在<code>useBehavior</code>定义中，我们将<code>context</code>作为<code>getDetail</code>的<code>this</code>上下文传入。这样我们就可以在实际实现<code>getDetail</code>方法的时候，通过<code>this</code>上下文拿到调用<code>useBehavior</code>的对象上的数据，这样我们就可以灵活地给<code>getDetail</code>操作提供需要的初始数据了。</em></p>
+<p>然后，我们给<code>#list</code>元素添加<code>click</code>和<code>select</code>事件处理函数：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'list'</span>);
+list.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+  <span class="hljs-keyword">const</span> target = evt.target;
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">target.tagName === <span class="hljs-string">'IMG'</span></span>)</span> {
+    select(list, target);
+  }
+});
+
+list.addEventListener(<span class="hljs-string">'select'</span>, <span class="hljs-function">(<span class="hljs-params">{detail}</span>) =></span> {
+  <span class="hljs-comment">// do nothing</span>
+  <span class="hljs-built_in">console</span>.log(detail.changed, detail.picked);
+});
+</code></pre>
+<p>上面的代码中，虽然现在<code>select</code>事件处理函数不处理任何事情，但是我们依然可以监听它，以便将来对选择的对象进行下一步动作。它的效果如下所示：</p>
+
+<p><a href="https://junyux.github.io/FE-Advance/day07/index2.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<p><img src="img\9f95fd73-ae6f-11ed-83f7-342eb7027b95.jpg" alt=""></p>
+<p>通过第一个故事和第二个故事，我们可以把“预览”和“选择”这两个行为组合起来。比如，当鼠标点击的同时，我们按下alt建，就表示选择图片；否则就是预览图片：</p>
+
+<p><a href="https://junyux.github.io/FE-Advance/day07/index3.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-comment">/* ...省略其他代码... */</span>
+
+<span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'list'</span>);
+list.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+  <span class="hljs-keyword">const</span> target = evt.target;
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">target.tagName === <span class="hljs-string">'IMG'</span></span>)</span> {
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">evt.altKey</span>)</span> {
+      select(list, target);
+    } <span class="hljs-keyword">else</span> {
+      preview(list, target);
+    }
+  }
+});
+
+list.addEventListener(<span class="hljs-string">'preview'</span>, <span class="hljs-function">(<span class="hljs-params">{detail}</span>) =></span> {
+  <span class="hljs-keyword">const</span> {showMask} = detail;
+  showMask();
+});
+</code></pre>
+<p>如上代码所示，抽象行为的模式允许一个组件可以灵活的<strong>组合或卸载</strong>多个行为，且互不冲突。</p>
+
+
+<p>但是，上面的例子只是非常粗略的抽象方式，而且还有一些争议点，比如我们可以将预览行为中的<code>showMask</code>操作直接放在<code>getDetail</code>里面完成，为什么要将它暴露给事件处理函数，在处理函数中手工调用？另外，<code>select</code>行为中，我们为什么又将<code>className</code>的变化放在<code>getDetail</code>里面而不是将它交给事件处理函数？</p>
+<p>这里是有可权衡的地方，实际上把操作放在哪边，都各有利弊。不过我们一般遵循一个大的原则——如果操作只是处理数据或改变状态，那么将它放在<code>getDetail</code>中；但是如果同时改变了DOM结构，比如创建或删除了元素，那么这些操作我们可以交给事件处理函数处理。也就是说，<code>getDetail</code>函数只处理数据或者改变元素的<code>className</code>（即状态），不对DOM树的结构做修改。因为这样才能保证在组合多个行为下，DOM结构的稳定，否则一个行为操作的DOM元素被另一个行为删除就会导致冲突。</p>
+
+<p>抽象行为（behavior）模式还有很多用途，可以创造非常复杂的行为，我们将会在设计模式的课程中详细介绍。下一个故事，我们来看另一个前端常用的设计模式 —— 中间人模式。</p>
+<h2>第三个故事：滚动的文字</h2>
+<p>我们接下来的新任务是实现一个同步滚动的编辑与预览区，这是一些在线编辑类Web应用常见的一种交互形式。</p>
+<p><img src="img\a023a33f-ae6f-11ed-8f60-342eb7027b95.jpg" alt=""></p>
+<p><em>同步滚动的编辑与预览区</em></p>
+<p>这是页面的HTML结构：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">textarea</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"editor"</span> <span class="hljs-attr">oninput</span>=<span class="hljs-string">"this.editor.update()"</span>
+            <span class="hljs-attr">rows</span>=<span class="hljs-string">"6"</span> <span class="hljs-attr">cols</span>=<span class="hljs-string">"60"</span>></span>
+在 2001 到 2003 年间，Judith Miller 在纽约时报上发表了一批文章，宣称伊拉克有能力和野心生产大规模杀伤性武器。这是假新闻。
+
+回顾当年，我们无法确定 Miller 写的这些故事在美国 2013 年做出发动伊拉克战争的决定中扮演了怎样的角色；与 Miller 相同来源的消息与小布什政府的对外政策团队有很大关联。但是，纽约时报仍然起到了为这一政策背书的作用，尤其是对民主党人，本来他们应该会更坚定地反对小布什的政策。毕竟，纽约时报可不是一些无人问津的地方小报，它是整个美国影响力最大的报刊，它一般被认为具有左倾倾向。Miller 的故事某种程度上吻合报纸的政治倾向。
+
+我们可以把 Miller 的错误和最近关于 Facebook 的假新闻问题联系起来看；Facebook 用自己的故事告诫我们“假新闻是坏的”。然而，我持有不同的观点：**新闻假不假没那么重要，由谁来决定什么是新闻才是第一重要的**。
+
+<span class="hljs-comment">&#x3C;!--more--></span>
+
+#### Facebook 的媒体商业化
+
+在[聚集理论](https://stratechery.com/2015/aggregation-theory/)中，我描述了基于分配的经济权利的消亡导致强势中介的崛起，它们掌控客户体验并将它们的供应商商品化。[在 Facebook 的例子里](https://stratechery.com/2016/the-fang-playbook/)，社交网络之所以兴起，是因为之前存在的线下社会网络在往线上网络转变。考虑到人类本质是社会化的，用户开始将时间花在 Facebook 上阅读、发表观点和获取新闻。
+
+...（此处省略）
+                     
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">textarea</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"preview"</span>></span> <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"hintbar"</span>></span> 0% <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+</code></pre>
+<p>CSS样式：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-tag">body</span>{
+  <span class="hljs-attribute">display</span>: flex;
+}
+
+<span class="hljs-selector-id">#editor</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">45%</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">350px</span>;
+  <span class="hljs-attribute">margin-right</span>: <span class="hljs-number">10px</span>;
+}
+
+<span class="hljs-selector-id">#preview</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">45%</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">350px</span>;
+  <span class="hljs-attribute">overflow</span>: scroll;
+}
+
+<span class="hljs-selector-id">#hintbar</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">right</span>: <span class="hljs-number">10px</span>;
+}
+</code></pre>
+<p>要实现这个效果，要控制3个区域的状态，左侧的编辑区，这是一个<code>textare</code>元素和其中的文本，中间的预览区，这是一个<code>id</code>为<code>preview</code>的<code>div</code>元素，右侧显示进度百分比信息，是一个<code>id</code>为<code>hintbar</code>的<code>div</code>元素。</p>
+<p>最简单的思路是我们同步这三个区域的状态，下面我们来看一下它的实现。</p>
+<p>首先，我们使用markdown的JS库提供接口，创建一个<code>Editor</code>的对象：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Editor</span>(<span class="hljs-params">input, preview</span>) </span>{
+  <span class="hljs-built_in">this</span>.update = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    preview.innerHTML = markdown.toHTML(input.value);
+  };
+  input.editor = <span class="hljs-built_in">this</span>;
+  <span class="hljs-built_in">this</span>.update();
+}
+<span class="hljs-keyword">new</span> Editor(editor, preview);
+</code></pre>
+<p>上面的代码把<code>editor</code>中的内容经过markdown解析后赋给<code>preview</code>元素。</p>
+<p>而markdown库可以通过以下方式加载到我们的页面中：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://s3.ssl.qhres.com/!67fc024a/markdown.min.js"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre>
+<p>然后，我们来实现三部分同步的功能：</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">//三部分 UI 耦合在一起的 update 方法</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span>(<span class="hljs-params">src, dest, hint</span>) </span>{
+  <span class="hljs-keyword">var</span> scrollRange = src.scrollHeight - src.clientHeight,
+      p = src.scrollTop / scrollRange;  
+  
+  dest.scrollTop = p * (dest.scrollHeight - dest.clientHeight);
+  hint.innerHTML = <span class="hljs-built_in">Math</span>.round(<span class="hljs-number">100</span> * p) + <span class="hljs-string">'%'</span>;
+}
+
+update(editor, preview, hintbar);
+</code></pre>
+<p>如上代码所示，<code>update</code>方法读取滚动元素（<code>src</code>）的滚动位置，换算成百分比，然后将被同步的目标元素（<code>dest</code>）的<code>scrollTop</code>属性设置为和这个百分比值对应的滚动位置。最后，将这个百分比值赋给<code>hint</code>元素。</p>
+<p>最后，我们分别给<code>editor</code>和<code>preview</code>元素添加<code>scroll</code>事件：</p>
+<pre><code class="hljs language-js">editor.addEventListener(<span class="hljs-string">'scroll'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) </span>{
+  update(editor, preview, hintbar);
+});
+
+preview.addEventListener(<span class="hljs-string">'scroll'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) </span>{  
+  update(preview, editor, hintbar);
+});
+</code></pre>
+<p>这样就可以实现滚动同步了。但是，上面的代码其实存在错误。让我们来看一下现在的效果：</p>
+<p><img src="img\a0949a72-ae6f-11ed-8f8e-342eb7027b95.jpg" alt=""></p>
+<p>你会看到，一开始的时候，我们滚动左侧，右侧跟着滚动没有问题，但是当我们停止滚动的时候，页面竟然自己会慢慢地往上滚动回去。</p>
+<p>为什么会出现这样的错误呢？其实问题出现在<code>update</code>方法上：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span>(<span class="hljs-params">src, dest, hint</span>) </span>{
+  <span class="hljs-keyword">var</span> scrollRange = src.scrollHeight - src.clientHeight,
+      p = src.scrollTop / scrollRange;  
+  
+  dest.scrollTop = p * (dest.scrollHeight - dest.clientHeight);
+  hint.innerHTML = <span class="hljs-built_in">Math</span>.round(<span class="hljs-number">100</span> * p) + <span class="hljs-string">'%'</span>;
+}
+</code></pre>
+<p>这个方法更新了<code>dest</code>的<code>scrollTop</code>。调用<code>update(editor, preview, hintbar)</code>，就是用<code>editor</code>的滚动信息去更新<code>preview</code>的<code>scrollTop</code>。但是，在浏览器中，如果元素的<code>scrollTop</code>改变，就会自动触发<code>scroll</code>事件。因此，当我们监听<code>editor</code>的<code>scroll</code>事件：</p>
+<pre><code class="hljs language-js">editor.addEventListener(<span class="hljs-string">'scroll'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) </span>{
+  update(editor, preview, hintbar);
+});
+</code></pre>
+<p>在这个<code>scroll</code>事件里我们调用<code>update(editor, preview, hintbar)</code>，改变了<code>perview</code>的<code>scrollTop</code>，这时就会触发<code>preview</code>的<code>scroll</code>事件，但我们又同时监听了<code>preview</code>的<code>scroll</code>事件：</p>
+<pre><code class="hljs language-js">preview.addEventListener(<span class="hljs-string">'scroll'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>) </span>{
+  update(preview, editor, hintbar);
+});
+</code></pre>
+<p>所以我们又执行了一次<code>update(preview, editor, hintbar)</code>，而在这里面，我们又反过来更新了<code>editor</code>的<code>scrollTop</code>，于是又触发了<code>editor</code>的<code>scroll</code>事件，这样来回反复触发，根本停不下来……</p>
+<p>所以，要解决这个问题，我们需要保证，当<code>preview</code>的<code>scroll</code>事件被触发时，不应该马上触发<code>editor</code>的<code>scroll</code>事件。这个问题我们可以中用前面学过的<code>debounce</code>函数来解决：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span>(<span class="hljs-params">fn, ms = <span class="hljs-number">100</span></span>) </span>{
+  <span class="hljs-keyword">let</span> debounceTimer = <span class="hljs-literal">null</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">...args</span>) </span>{
+    <span class="hljs-keyword">if</span>(debounceTimer) <span class="hljs-built_in">clearTimeout</span>(debounceTimer);
+
+    debounceTimer = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+      fn.apply(<span class="hljs-built_in">this</span>, args);
+    }, ms);
+  }
+}
+
+<span class="hljs-keyword">let</span> scrollingTarget = <span class="hljs-literal">null</span>;
+editor.addEventListener(<span class="hljs-string">'scroll'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>)</span>{
+  <span class="hljs-keyword">if</span>(!scrollingTarget) scrollingTarget = editor;
+  <span class="hljs-keyword">if</span>(scrollingTarget === editor) update(editor, preview, hintbar);
+});
+
+editor.addEventListener(<span class="hljs-string">'scroll'</span>, debounce(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>)</span>{
+  scrollingTarget = <span class="hljs-literal">null</span>;
+}));
+
+preview.addEventListener(<span class="hljs-string">'scroll'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>)</span>{  
+  <span class="hljs-keyword">if</span>(!scrollingTarget) scrollingTarget = preview;
+  <span class="hljs-keyword">if</span>(scrollingTarget === preview) update(preview, editor, hintbar);
+});
+</code></pre>
+<p>我们定义一个<code>scrollingTarge</code>t对象，当它为<code>null</code>时，<code>editor</code>或<code>preview</code>哪一边的scroll先触发，我们就把<code>scrollingTarget</code>设为对应的对象。我们设定当scroll事件触发时，<code>scrollingTarget</code>与对应的对象相同时才会执行<code>update</code>。这样，如果我们先滚动<code>editor</code>，那么<code>scrollingTarget</code>的值被设为<code>editor</code>,这样就只有<code>editor</code>的滚动事件中，<code>update</code>才会被触发。</p>
+<p>直到<code>editor</code>滚动结束，我们再将<code>scrollingTarget</code>重新设为null：</p>
+<pre><code class="hljs language-js">editor.addEventListener(<span class="hljs-string">'scroll'</span>, debounce(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>)</span>{
+  scrollingTarget = <span class="hljs-literal">null</span>;
+}));
+
+<span class="hljs-comment">/* 或者
+preview.addEventListener('scroll', debounce(function(evt){
+  scrollingTarget = null;
+}));
+*/</span>
+</code></pre>
+<p>注意，因为不论哪一边调用<code>update</code>，都会触发另一边的scroll事件，所以这里我们只要<code>editor</code>或<code>preivew</code>任意一边注册了这个<code>debounce</code>变换后的函数即可，不需要两边都注册。这样我们就正常实现了滚动文字的功能了。<a href="https://junyux.github.io/FE-Advance/day07/index4-v1.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<p>但是，上述的实现方式有明显的缺点：将三个UI元素的状态同步耦合在一个<code>update</code>函数里处理，导致这个方法不通用。假设我们要增加一个同步状态的对象或者减少一个同步状态的对象，我们都需要修改<code>update</code>的代码，而且将来要组合不同的操作改变状态也会非常麻烦。</p>
+<p>所以，我们需要引入一种设计模式，降低这种同步状态的耦合度，使得状态同步的功能易于维护。</p>
+
+<p><strong>中间人（Mediator）</strong></p>
+<p>一个最简单的<code>Mediator</code>模式的类定义如下：</p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PubSub</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>.subscribers = {};
+  }
+
+  <span class="hljs-comment">/*
+    @type 消息类型，如scroll
+    @receiver 订阅者
+    @fn 响应消息的处理函数
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">sub</span>(<span class="hljs-params">type, receiver, fn</span>)</span> {
+    <span class="hljs-built_in">this</span>.subscribers[type] = <span class="hljs-built_in">this</span>.subscribers[type] || [];
+    <span class="hljs-built_in">this</span>.subscribers[type].push(fn.bind(receiver));
+  }
+
+  <span class="hljs-comment">/*
+    @type 消息类型
+    @sender 派发消息者
+    @data 数据，比如状态数据
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">pub</span>(<span class="hljs-params">type, sender, data</span>)</span> {
+    <span class="hljs-keyword">const</span> subscribers = <span class="hljs-built_in">this</span>.subscribers[type];
+    subscribers.forEach(<span class="hljs-function">(<span class="hljs-params">subscriber</span>) =></span> {
+      subscriber({type, sender, data});
+    });
+  }
+}
+</code></pre>
+<p><code>PubSub</code>类定义了一个中间人的行为。<code>sub</code>方法收集订阅者的关于<code>type</code>类型的响应行为。<code>pub</code>方法将<code>type</code>类型的消息派发给所有注册了该类型消息的订阅者。</p>
+<p>然后，我们让<code>preview</code>、<code>editor</code>、<code>hintbar</code>元素分别监听<code>scroll</code>类型的消息。</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">scrollTo</span>(<span class="hljs-params">{data:p}</span>)</span>{
+  <span class="hljs-built_in">this</span>.scrollTop = p * (<span class="hljs-built_in">this</span>.scrollHeight - <span class="hljs-built_in">this</span>.clientHeight);
+}
+
+<span class="hljs-keyword">var</span> mediator = <span class="hljs-keyword">new</span> PubSub();
+mediator.sub(<span class="hljs-string">'scroll'</span>, preview, scrollTo);
+mediator.sub(<span class="hljs-string">'scroll'</span>, editor, scrollTo);
+mediator.sub(<span class="hljs-string">'scroll'</span>, hintbar, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">{data:p}</span>)</span>{
+  <span class="hljs-built_in">this</span>.innerHTML = <span class="hljs-built_in">Math</span>.round(p * <span class="hljs-number">100</span>) + <span class="hljs-string">'%'</span>;
+});
+</code></pre>
+<p>接着，我们在<code>editor</code>和<code>preview</code>元素滚动的时候，让中间人派发消息：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span>(<span class="hljs-params">fn, ms = <span class="hljs-number">100</span></span>) </span>{
+  <span class="hljs-keyword">let</span> debounceTimer = <span class="hljs-literal">null</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">...args</span>) </span>{
+    <span class="hljs-keyword">if</span>(debounceTimer) <span class="hljs-built_in">clearTimeout</span>(debounceTimer);
+
+    debounceTimer = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+      fn.apply(<span class="hljs-built_in">this</span>, args);
+    }, ms);
+  }
+}
+
+<span class="hljs-keyword">let</span> scrollingTarget = <span class="hljs-literal">null</span>;
+editor.addEventListener(<span class="hljs-string">'scroll'</span>, debounce(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>)</span>{
+  scrollingTarget = <span class="hljs-literal">null</span>;
+}));
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateScroll</span>(<span class="hljs-params">evt</span>) </span>{
+  <span class="hljs-keyword">var</span> target = evt.target;
+  <span class="hljs-keyword">if</span>(!scrollingTarget) scrollingTarget = target;
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">scrollingTarget === target</span>)</span> {
+    <span class="hljs-keyword">var</span> scrollRange = target.scrollHeight - target.clientHeight,
+      p = target.scrollTop / scrollRange;
+
+    <span class="hljs-comment">// 中间人派发scroll消息</span>
+    mediator.pub(<span class="hljs-string">'scroll'</span>, target, p);
+  }
+}
+editor.addEventListener(<span class="hljs-string">'scroll'</span>, updateScroll);
+preview.addEventListener(<span class="hljs-string">'scroll'</span>, updateScroll);
+</code></pre>
+<p>注意这里一样要使用debounce。</p>
+<p>这样我们就实现了同样的同步滚动，完整的JavaScript代码如下：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day07/index4-v2.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Editor</span>(<span class="hljs-params">input, preview</span>) </span>{
+  <span class="hljs-built_in">this</span>.update = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    preview.innerHTML = markdown.toHTML(input.value);
+  };
+  input.editor = <span class="hljs-built_in">this</span>;
+  <span class="hljs-built_in">this</span>.update();
+}
+<span class="hljs-keyword">new</span> Editor(editor, preview);
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PubSub</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>.subscribers = {};
+  }
+  <span class="hljs-function"><span class="hljs-title">pub</span>(<span class="hljs-params">type, sender, data</span>)</span>{
+    <span class="hljs-keyword">var</span> subscribers = <span class="hljs-built_in">this</span>.subscribers[type];
+    subscribers.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">subscriber</span>)</span>{
+      subscriber({type, sender, data});
+    });
+  }
+  <span class="hljs-function"><span class="hljs-title">sub</span>(<span class="hljs-params">type, receiver, fn</span>)</span>{
+    <span class="hljs-built_in">this</span>.subscribers[type] = <span class="hljs-built_in">this</span>.subscribers[type] || [];
+    <span class="hljs-built_in">this</span>.subscribers[type].push(fn.bind(receiver));
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">scrollTo</span>(<span class="hljs-params">{data:p}</span>)</span>{
+  <span class="hljs-built_in">this</span>.scrollTop = p * (<span class="hljs-built_in">this</span>.scrollHeight - <span class="hljs-built_in">this</span>.clientHeight);
+}
+
+<span class="hljs-keyword">var</span> mediator = <span class="hljs-keyword">new</span> PubSub();
+mediator.sub(<span class="hljs-string">'scroll'</span>, preview, scrollTo);
+mediator.sub(<span class="hljs-string">'scroll'</span>, editor, scrollTo);
+mediator.sub(<span class="hljs-string">'scroll'</span>, hintbar, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">{data:p}</span>)</span>{
+  <span class="hljs-built_in">this</span>.innerHTML = <span class="hljs-built_in">Math</span>.round(p * <span class="hljs-number">100</span>) + <span class="hljs-string">'%'</span>;
+});
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span>(<span class="hljs-params">fn, ms = <span class="hljs-number">100</span></span>) </span>{
+  <span class="hljs-keyword">let</span> debounceTimer = <span class="hljs-literal">null</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">...args</span>) </span>{
+    <span class="hljs-keyword">if</span>(debounceTimer) <span class="hljs-built_in">clearTimeout</span>(debounceTimer);
+
+    debounceTimer = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+      fn.apply(<span class="hljs-built_in">this</span>, args);
+    }, ms);
+  }
+}
+
+<span class="hljs-keyword">let</span> scrollingTarget = <span class="hljs-literal">null</span>;
+editor.addEventListener(<span class="hljs-string">'scroll'</span>, debounce(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">evt</span>)</span>{
+  scrollingTarget = <span class="hljs-literal">null</span>;
+}));
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateScroll</span>(<span class="hljs-params">evt</span>) </span>{
+  <span class="hljs-keyword">var</span> target = evt.target;
+  <span class="hljs-keyword">if</span>(!scrollingTarget) scrollingTarget = target;
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">scrollingTarget === target</span>)</span> {
+    <span class="hljs-keyword">var</span> scrollRange = target.scrollHeight - target.clientHeight,
+      p = target.scrollTop / scrollRange;
+    mediator.pub(<span class="hljs-string">'scroll'</span>, target, p);
+  }
+}
+editor.addEventListener(<span class="hljs-string">'scroll'</span>, updateScroll);
+preview.addEventListener(<span class="hljs-string">'scroll'</span>, updateScroll);
+</code></pre>
+<p>这一版代码与前面的代码相比看上去更长了，但是它不再将所有的状态同步耦合在一个<code>update</code>函数里，而是分成了发布和订阅两个部分，而且<code>preview</code>、<code>editor</code>、<code>hintbar</code>是分别订阅scroll消息的，这样就保证了UI状态的独立性。假设将来我们要取消<code>hintbar</code>的状态同步，我们可以直接注释掉订阅消息的代码：</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// mediator.sub('scroll', hintbar, function({data:p}){</span>
+<span class="hljs-comment">//   this.innerHTML = Math.round(p * 100) + '%';</span>
+<span class="hljs-comment">// });</span>
+</code></pre>
+<p>这样就不需要修改任何函数的内部实现，从而提高了系统的可维护性。</p>
+<p>当我们需要同步多个UI状态时，可以考虑采用中间人模式，用中间人统一管理UI组件的消息，在这个场景下，中间人是一个非常有效的设计模式。</p>
+<p>今天的故事主要讲解了前端开发中两个非常常用的设计模式——行为模式和中间人模式。虽然前端开发还有很多其他的设计模式，但是这个超出了这门课的范畴。我们会在将来的设计模式的专门课程中详细讲解，敬请期待。</p>
+</div>
+</body>
+</html>

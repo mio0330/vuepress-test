@@ -8,6 +8,10 @@ export default {
         text: '深入浅出Vite',
         link: '/vite/',
       },
+      {
+        text: '前端工程师进阶十日谈',
+        link: '/tenDays/',
+      },
     ],
     sidebar: {
       '/vite/': [
@@ -42,6 +46,23 @@ export default {
             '/vite/26.md',
             '/vite/27.md',
             '/vite/28.md',
+          ],
+        }
+      ],
+      '/tenDays/': [
+        {
+          text: '深入浅出Vite',
+          children: [
+            '/tenDays/README.md',
+            '/tenDays/2.md',
+            '/tenDays/3.md',
+            '/tenDays/4.md',
+            '/tenDays/5.md',
+            '/tenDays/6.md',
+            '/tenDays/7.md',
+            '/tenDays/8.md',
+            '/tenDays/9.md',
+            '/tenDays/10.md',
           ],
         }
       ]

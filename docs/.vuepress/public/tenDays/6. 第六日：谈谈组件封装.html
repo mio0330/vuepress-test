@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <h1>第六天 UI组件封装</h1>
+<h2>第一个故事：首页轮播图</h2>
+<p>组件封装是一个前端工程师进阶的必经之路。组件封装是指Web页面上抽出来一个个包含模版（HTML）、功能（Javascript）和样式（CSS）的单元。所以，今天的内容，我们将带你了解组件封装的开发思路，让你的组件具备<strong>封装性</strong>、<strong>正确性</strong>、<strong>扩展性</strong>和<strong>复用性</strong>。</p>
+<p>我们以实现一个首页轮播图的UI组件为例，这个组件的效果如下图所示：</p>
+<p><img src="img\9e33af74-ae6f-11ed-8322-342eb7027b95.jpg" alt=""></p>
+<p>上图中的组件实现了3个功能：</p>
+<ol>
+<li>四张图片循环播放，每张图片停留若干时间；</li>
+<li>当用户点击左右两边的小箭头时，图片分别切换到上一张/下一张；</li>
+<li>当用户点击底部的小圆点的时候，则立即跳到小圆点顺序所对应的那张图片。</li>
+</ol>
+<p>下面，我们就带你一步步实现这个组件：</p>
+<h3>第一步：确定UI组件的HTML结构。</h3>
+<p>根据效果图，这个组件包含了4张图片，4张图片就需要有4个HTML元素来封装。你可以采用4个块级元素来安排，比如<code>div</code>元素等。我们也可以将这4张图看作是一个图片列表，使用列表元素作为图片的容器：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__item--selected"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p5.ssl.qhimg.com/t0119c74624763dd070.png"</span>/></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__item"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p4.ssl.qhimg.com/t01adbe3351db853eb3.jpg"</span>/></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__item"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p2.ssl.qhimg.com/t01645cd5ba0c3b60cb.jpg"</span>/></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__item"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p4.ssl.qhimg.com/t01331ac159b58f5478.jpg"</span>/></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__next"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__previous"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__control"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__control-buttons--selected"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__control-buttons"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__control-buttons"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__control-buttons"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<p>上面的HTML结构中，首先是一个大的容器，<code>div.slider</code>，其中包含一个<code>ul</code>列表，列表中是包含四张图片的四个<code>li</code>元素。</p>
+<p>这里，我们使用两个<code>&#x3C;a></code>元素分别表示“下一张“和”上一张“的控制</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__next"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span> 
+<span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__previous"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span>
+</code></pre>
+<p>用四个<code>&#x3C;span></code>元素表示底部的四个小圆点的控制：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__control"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__control-buttons--selected"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__control-buttons"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__control-buttons"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__control-buttons"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+<p><em>当然这些控制你也可以使用其他的HTML元素来表示。</em></p>
+<p>💡注意：这里我们使用的CSS规则名有点特别，如果你是第一次见到可能会觉得有些奇怪。实际上这里的命名是一种CSS书写规范，叫做<code>BEM</code>，是英文<code>Block-Element-Modifier</code>的简写。</p>
+<p>这一规范采用三个部分来描述规则，首先是Block表示组件名，这个任务是写轮播图，我们给这个组件起名字叫<code>slider</code>。然后是Element，比如对应的列表项<code>li</code>元素，表示item，所以它的class就是<code>slider__item</code>，这里Block和Element之间使用双下划线<code>__</code>连接。最后是Modifier表示状态，其中一个列表的状态是<code>selected</code>，所以最终的class是<code>slider__item--selected</code>，这里Element和Modifier之间使用双横杠<code>--</code>连接。</p>
+<p>在比较复杂的UI组件中，使用<code>BEM</code>有几个好处：</p>
+<ol>
+<li>
+<p>让CSS规则保持相对简单，只用一个class就能定位对应的元素，这样优先级也相对扁平，管理起来不容易冲突。</p>
+</li>
+<li>
+<p>阅读代码的人一眼可以知道一个元素是哪个组件的哪个部分。由于组件复杂的时候，HTML代码比较长，可能元素离组件容器比较远，如果使用普通层级关系，你看到一个<code>.item</code>元素，除非找到外层的<code>.slider</code>，你才能知道它属于<code>.slider</code>组件而不是其他组件的<code>.item</code>，那样在HTML代码很复杂的时候找起来就比较费劲。</p>
+</li>
+</ol>
+<h3>第二步：设置元素的样式</h3>
+<p>然后根据效果图，我们给这段HTML代码添加CSS样式。</p>
+<p>首先，我们给<code>class=slider</code>的<code>div</code>元素设置了宽度和高度，以及取消<code>ul</code>元素默认的列表样式：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.slider</span> {
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">790px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">340px</span>;
+}
+
+<span class="hljs-selector-class">.slider</span> <span class="hljs-selector-tag">ul</span> {
+  <span class="hljs-attribute">list-style-type</span>:none;
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>然后，将<code>class=slider__item</code>和<code>class=slider__item--selected</code>的<code>li</code>元素的position属性设置为绝对定位（absolute），这样就能够将这4张图片重叠显示在同一个位置。如下代码所示：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.slider__item</span>,
+<span class="hljs-selector-class">.slider__item--selected</span> {
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">transition</span>: opacity <span class="hljs-number">1s</span>;
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+}
+
+<span class="hljs-selector-class">.slider__item--selected</span> {
+  <span class="hljs-attribute">transition</span>: opacity <span class="hljs-number">1s</span>;
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;
+}
+</code></pre>
+<p>其中，<code>transition: opacity 1s</code>表示设置图片透明度变化的动画，时间为1秒。状态为<code>slider__item</code>时，显示为透明。状态为<code>slider__item--selected</code>时显示为不透明。</p>
+<p>接着是控制元素的样式：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.slider__next</span>,
+<span class="hljs-selector-class">.slider__previous</span>{
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">top</span>: <span class="hljs-number">50%</span>; <span class="hljs-comment">/*定位在录播图组件的纵向中间的位置*/</span>
+  <span class="hljs-attribute">margin-top</span>: -<span class="hljs-number">25px</span>;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">30px</span>;
+  <span class="hljs-attribute">height</span>:<span class="hljs-number">50px</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">24px</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">50px</span>;
+  <span class="hljs-attribute">overflow</span>: hidden;
+  <span class="hljs-attribute">border</span>: none;
+  <span class="hljs-attribute">color</span>: white;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0.2</span>); <span class="hljs-comment">/*设置为半透明*/</span>
+  <span class="hljs-attribute">cursor</span>: pointer; <span class="hljs-comment">/*设置鼠标移动到这个元素时显示为手指状*/</span>
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>; <span class="hljs-comment">/*初始状态为透明*/</span>
+  <span class="hljs-attribute">transition</span>: opacity .<span class="hljs-number">5s</span>; <span class="hljs-comment">/*设置透明度变化的动画，时间为.5秒*/</span>
+}
+
+<span class="hljs-selector-class">.slider__previous</span> {
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>; <span class="hljs-comment">/*定位在slider元素的最左边*/</span>
+}
+
+<span class="hljs-selector-class">.slider__next</span> {
+  <span class="hljs-attribute">right</span>: <span class="hljs-number">0</span>; <span class="hljs-comment">/*定位在slider元素的最右边*/</span>
+}
+
+<span class="hljs-selector-class">.slider</span><span class="hljs-selector-pseudo">:hover</span> <span class="hljs-selector-class">.slider__previous</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;
+}
+
+<span class="hljs-selector-class">.slider</span><span class="hljs-selector-pseudo">:hover</span> <span class="hljs-selector-class">.slider__next</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;
+}
+
+<span class="hljs-selector-class">.slider__previous</span><span class="hljs-selector-pseudo">:after</span> {
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">'&#x3C;'</span>;
+}
+
+<span class="hljs-selector-class">.slider__next</span><span class="hljs-selector-pseudo">:after</span> {
+  <span class="hljs-attribute">content</span>: <span class="hljs-string">'>'</span>;
+}
+</code></pre>
+<p>上面的规则中，<code>.slider__next, .slider__previous</code>分别表示“向下一张”和“向上一张”的控制。初始状态下，这两个控制元素的背景色为半透明，字体颜色是白色。</p>
+<p><code>.slider:hover .slider__previous</code> 和 <code>.slider:hover .slider__next</code>这两条规则表示当鼠标悬停在<code>class=slider</code>的元素上时，显示左右两侧的控制元素。</p>
+<p>最后，定义底部四个小点的样式：</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.slider__control</span>{
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">display</span>: table; <span class="hljs-comment">/* table 布局*/</span>
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgba</span>(<span class="hljs-number">255</span>, <span class="hljs-number">255</span>, <span class="hljs-number">255</span>, <span class="hljs-number">0.5</span>);
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">12px</span>;
+  <span class="hljs-attribute">bottom</span>: <span class="hljs-number">30px</span>;
+  <span class="hljs-attribute">margin</span>: auto;
+}
+
+<span class="hljs-selector-class">.slider__control-buttons</span>,
+<span class="hljs-selector-class">.slider__control-buttons--selected</span>{
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">15px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">15px</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;<span class="hljs-comment">/*设置为圆形*/</span>
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">background-color</span>: white;
+  <span class="hljs-attribute">cursor</span>: pointer;
+}
+
+<span class="hljs-selector-class">.slider__control-buttons--selected</span> {
+  <span class="hljs-attribute">background-color</span>: red;
+}
+</code></pre>
+<p>上面的规则中，</p>
+<ul>
+<li>
+<p>第一条规则表示给四个小圆点设置一个灰色的背景。其中的<code>position: relative; display: table;</code>声明表示将它的子元素（也就是4个小圆点）采用相对定位和table布局，让它们固定显示在图片中部下方。</p>
+</li>
+<li>
+<p>第二条规则设置了小圆点的大小，形状，默认情况下，小圆点的颜色（白色），以及鼠标滑入后的状态（pointer)</p>
+</li>
+<li>
+<p>第三条规则表示，当选择后，小圆点的颜色变成红色。</p>
+</li>
+</ul>
+<h3>第三步：设计API</h3>
+<p>页面的主体结构和样式完成之后，我们需要根据组件的功能，为该组件设计API。</p>
+<p>我们回顾一下这个组件的需求：</p>
+<ul>
+<li>四张图片循环播放，每张图片停留若干时间；</li>
+<li>当用户点击左右两边的小箭头时，图片分别切换到上一张/下一张；</li>
+<li>当用户点击中下部的小圆点的时候，则立即跳到小圆点顺序所对应的那张图片。</li>
+</ul>
+<p>根据上述的需求呢，我们设计了4个组件API:</p>
+<ul>
+<li>slideTo(idx) - 切换显示idx指示位置的图片</li>
+<li>slideNext() - 切换到下一张图</li>
+<li>slidePrevious() - 切换到上一张图</li>
+<li>getSelectedItem() - 获取选中的图片</li>
+<li>getSelectedItemIndex() - 获取选中的图片的位置</li>
+</ul>
+<p><img src="img\9e776e83-ae6f-11ed-ac19-342eb7027b95.jpg" alt=""></p>
+<p>然后，将这个组件封装为一个类——slider：</p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Slider</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container}</span>)</span> {
+    <span class="hljs-built_in">this</span>.container = container;
+    <span class="hljs-built_in">this</span>.items = <span class="hljs-built_in">Array</span>.from(container.querySelectorAll(<span class="hljs-string">'.slider__item, .slider__item--selected'</span>));
+  }
+
+  <span class="hljs-comment">/*
+    通过选择器`.slider__item--selected`获得被选中的元素
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">getSelectedItem</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> selected = <span class="hljs-built_in">this</span>.container.querySelector(<span class="hljs-string">'.slider__item--selected'</span>);
+    <span class="hljs-keyword">return</span> selected;
+  }
+
+  <span class="hljs-comment">/*
+    返回选中的元素在items数组中的位置。
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">getSelectedItemIndex</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.items.indexOf(<span class="hljs-built_in">this</span>.getSelectedItem());
+  }
+
+  <span class="hljs-function"><span class="hljs-title">slideTo</span>(<span class="hljs-params">idx</span>)</span> {
+    <span class="hljs-keyword">const</span> selected = <span class="hljs-built_in">this</span>.getSelectedItem();
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">selected</span>)</span> { <span class="hljs-comment">// 将之前选择的图片标记为普通状态</span>
+      selected.className = <span class="hljs-string">'slider__item'</span>;
+    }
+    <span class="hljs-keyword">const</span> item = <span class="hljs-built_in">this</span>.items[idx];
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">item</span>)</span> { <span class="hljs-comment">// 将当前选中的图片标记为选中状态</span>
+      item.className = <span class="hljs-string">'slider__item--selected'</span>;
+    }
+  }
+
+  <span class="hljs-comment">/*
+    将下一张图片标记为选中状态
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">slideNext</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> currentIdx = <span class="hljs-built_in">this</span>.getSelectedItemIndex();
+    <span class="hljs-keyword">const</span> nextIdx = (currentIdx + <span class="hljs-number">1</span>) % <span class="hljs-built_in">this</span>.items.length;
+    <span class="hljs-built_in">this</span>.slideTo(nextIdx);
+  }
+
+  <span class="hljs-comment">/*
+    将上一张图片标记为选中状态
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">slidePrevious</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> currentIdx = <span class="hljs-built_in">this</span>.getSelectedItemIndex();
+    <span class="hljs-keyword">const</span> previousIdx = (<span class="hljs-built_in">this</span>.items.length + currentIdx - <span class="hljs-number">1</span>) % <span class="hljs-built_in">this</span>.items.length;
+    <span class="hljs-built_in">this</span>.slideTo(previousIdx);
+  }
+}
+</code></pre>
+<p>上面的代码中：Slider的构造器中的参数<code>{container}</code>表示放置这4张图片的父容器。在构造器中，我们获取了这个父容器下所有的<code>&#x3C;li></code>元素。</p>
+<p>然后，通过<code>setInterval</code>方法实现循环播放，间隔为3秒：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> container = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'.slider'</span>);
+<span class="hljs-keyword">const</span> slider = <span class="hljs-keyword">new</span> Slider({container});
+<span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =></span> {
+  slider.slideNext();
+}, <span class="hljs-number">3000</span>);
+</code></pre>
+<p>这样，我们的轮播图就以每3秒的切换一次频率动起来了。</p>
+<p><img src="img\9e883cfc-ae6f-11ed-9259-342eb7027b95.jpg" alt=""></p>
+<h3>第四步：实现用户控制</h3>
+<p>实现了组件的API后，我们还需要实现用户控制功能：</p>
+<ul>
+<li>当用户点击左右两边的小箭头时，图片分别切换到上一张/下一张，并点亮与该图片相对应的小圆点；</li>
+<li>当用户鼠标移进到底部小圆点时，则立即跳到小圆点顺序所对应的那张图片，停止轮播；</li>
+<li>当用户鼠标移出底部小圆点后，图片再次恢复轮播。</li>
+</ul>
+<p>我们将构造器修改为下面这样：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, cycle = <span class="hljs-number">3000</span>} = {}</span>)</span> {
+  <span class="hljs-built_in">this</span>.container = container;
+  <span class="hljs-built_in">this</span>.items = <span class="hljs-built_in">Array</span>.from(container.querySelectorAll(<span class="hljs-string">'.slider__item, .slider__item--selected'</span>));
+  <span class="hljs-built_in">this</span>.cycle = cycle;
+
+  <span class="hljs-keyword">const</span> controller = <span class="hljs-built_in">this</span>.container.querySelector(<span class="hljs-string">'.slider__control'</span>);
+  <span class="hljs-keyword">const</span> buttons = controller.querySelectorAll(<span class="hljs-string">'.slider__control-buttons, .slider__control-buttons--selected'</span>);
+
+  controller.addEventListener(<span class="hljs-string">'mouseover'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+    <span class="hljs-keyword">const</span> idx = <span class="hljs-built_in">Array</span>.from(buttons).indexOf(evt.target);
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">idx >= <span class="hljs-number">0</span></span>)</span> {
+      <span class="hljs-built_in">this</span>.slideTo(idx);
+      <span class="hljs-built_in">this</span>.stop();
+    }
+  });
+
+  controller.addEventListener(<span class="hljs-string">'mouseout'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+    <span class="hljs-built_in">this</span>.start();
+  });
+
+  <span class="hljs-comment">/*
+    注册slide事件，将选中的图片和小圆点设置为selected状态
+  */</span>
+  <span class="hljs-built_in">this</span>.container.addEventListener(<span class="hljs-string">'slide'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+    <span class="hljs-keyword">const</span> idx = evt.detail.index;
+    <span class="hljs-keyword">const</span> selected = controller.querySelector(<span class="hljs-string">'.slider__control-buttons--selected'</span>);
+    <span class="hljs-keyword">if</span>(selected) selected.className = <span class="hljs-string">'slider__control-buttons'</span>;
+    buttons[idx].className = <span class="hljs-string">'slider__control-buttons--selected'</span>;
+  });
+
+  <span class="hljs-keyword">const</span> previous = <span class="hljs-built_in">this</span>.container.querySelector(<span class="hljs-string">'.slider__previous'</span>);
+  previous.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+    <span class="hljs-built_in">this</span>.stop();
+    <span class="hljs-built_in">this</span>.slidePrevious();
+    <span class="hljs-built_in">this</span>.start();
+    evt.preventDefault();
+  });
+
+  <span class="hljs-keyword">const</span> next = <span class="hljs-built_in">this</span>.container.querySelector(<span class="hljs-string">'.slider__next'</span>);
+  next.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+    <span class="hljs-built_in">this</span>.stop();
+    <span class="hljs-built_in">this</span>.slideNext();
+    <span class="hljs-built_in">this</span>.start();
+    evt.preventDefault();
+  });
+}
+</code></pre>
+<p>如上代码所示，参数<code>cycle</code>表示循环播放的时间间隔，默认为3秒。然后是每个控制元素相应的事件处理。下面，我们来依次分析一下它们。</p>
+<p>第一个用户事件：当鼠标移入或移出小圆点事件</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> controller = <span class="hljs-built_in">this</span>.container.querySelector(<span class="hljs-string">'.slider__control'</span>);
+
+<span class="hljs-keyword">const</span> buttons = controller.querySelectorAll(<span class="hljs-string">'.slider__control-buttons, .slider__control-buttons--selected'</span>);
+
+controller.addEventListener(<span class="hljs-string">'mouseover'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span>{
+  <span class="hljs-keyword">const</span> idx = <span class="hljs-built_in">Array</span>.from(buttons).indexOf(evt.target);
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">idx >= <span class="hljs-number">0</span></span>)</span>{
+    <span class="hljs-built_in">this</span>.slideTo(idx);
+    <span class="hljs-built_in">this</span>.stop(); <span class="hljs-comment">// 停止自动循环播放</span>
+  }
+});
+
+controller.addEventListener(<span class="hljs-string">'mouseout'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+  <span class="hljs-built_in">this</span>.start(); <span class="hljs-comment">// 开始自动循环播放</span>
+});
+</code></pre>
+<p>上面代码表示：当鼠标移动到小圆点上方的时候（mouseover），判断当前选中的是第几个小圆点，停止自动循环播放功能，然后切换到对应的图片。当鼠标移出controller元素后（mouseout），重启自动循环播放功能。</p>
+<p>这里呢，我们先来看看<code>stop()</code>和<code>start()</code>的实现：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-title">start</span>(<span class="hljs-params"></span>)</span> {
+  <span class="hljs-built_in">this</span>.stop();
+  <span class="hljs-built_in">this</span>._timer = <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =></span> <span class="hljs-built_in">this</span>.slideNext(), <span class="hljs-built_in">this</span>.cycle);
+}
+
+<span class="hljs-function"><span class="hljs-title">stop</span>(<span class="hljs-params"></span>)</span> {
+  <span class="hljs-built_in">clearInterval</span>(<span class="hljs-built_in">this</span>._timer);
+}
+</code></pre>
+<p>如上代码所示：<code>start()</code>方法启动了一个定时器，每隔<code>cycle</code>秒执行一次<code>slideNext()</code>。<code>stop()</code>则是停止这个定时器。</p>
+<p>第二个用户事件：点击上一张或下一张事件</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> previous = <span class="hljs-built_in">this</span>.container.querySelector(<span class="hljs-string">'.slider__previous'</span>);
+previous.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">evt</span> =></span> {
+  <span class="hljs-built_in">this</span>.stop();
+  <span class="hljs-built_in">this</span>.slidePrevious();
+  <span class="hljs-built_in">this</span>.start();
+  evt.preventDefault();
+});
+
+<span class="hljs-keyword">const</span> next = <span class="hljs-built_in">this</span>.container.querySelector(<span class="hljs-string">'.slider__next'</span>);
+next.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">evt</span> =></span> {
+  <span class="hljs-built_in">this</span>.stop();
+  <span class="hljs-built_in">this</span>.slideNext();
+  <span class="hljs-built_in">this</span>.start();
+  evt.preventDefault();
+});
+</code></pre>
+<p>如上代码所示：当用户点击上一张时，程序停止定时器，然后执行<code>slidePrevious()</code>方法，让图片向前翻一张，然后重启定时器。类似的，当用户点击下一张时，先停止定时器，然后向后翻一张，再重启定时器。</p>
+<p>第三个是处理一个自定义事件 —— slide事件：</p>
+<pre><code class="hljs language-js"><span class="hljs-built_in">this</span>.container.addEventListener(<span class="hljs-string">'slide'</span>, <span class="hljs-function"><span class="hljs-params">evt</span> =></span> {
+  <span class="hljs-keyword">const</span> idx = evt.detail.index
+  <span class="hljs-keyword">const</span> selected = controller.querySelector(<span class="hljs-string">'.slider__control-buttons--selected'</span>);
+  <span class="hljs-keyword">if</span>(selected) selected.className = <span class="hljs-string">'slider__control-buttons'</span>;
+  buttons[idx].className = <span class="hljs-string">'slider__control-buttons--selected'</span>;
+});
+</code></pre>
+<p>对应地，修改<code>slideTo</code>方法，加入自定义事件触发。</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-title">slideTo</span>(<span class="hljs-params">idx</span>)</span> {
+  <span class="hljs-keyword">const</span> selected = <span class="hljs-built_in">this</span>.getSelectedItem();
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">selected</span>)</span> {
+    selected.className = <span class="hljs-string">'slider__item'</span>;
+  }
+  <span class="hljs-keyword">const</span> item = <span class="hljs-built_in">this</span>.items[idx];
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">item</span>)</span> {
+    item.className = <span class="hljs-string">'slider__item--selected'</span>;
+  }
+
+  <span class="hljs-keyword">const</span> detail = {<span class="hljs-attr">index</span>: idx};
+  <span class="hljs-keyword">const</span> event = <span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">'slide'</span>, {<span class="hljs-attr">bubbles</span>: <span class="hljs-literal">true</span>, detail});
+  <span class="hljs-built_in">this</span>.container.dispatchEvent(event);
+}
+</code></pre>
+<p>这个自定义事件（CustomEvent），它的作用是让底部小圆点控件监听<code>slideTo</code>方法。当<code>slideTo</code>方法执行后，这个方法就会分发一次<code>slide</code>事件，然后在这个事件中，更新底部小圆点的状态，让小圆点的状态和各自的图片状态对应起来。</p>
+<p>最后将调用过程改成：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> slider = <span class="hljs-keyword">new</span> Slider({container});
+slider.start();
+</code></pre>
+<p>到此，这个组件的全部功能就完成了。<a href="https://junyux.github.io/FE-Advance/day06/index1.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<p>通过轮播组件编写过程，我们可以总结一下组件设计的一般性步骤：</p>
+<ol>
+<li>设计HTML结构</li>
+<li>设计组件的API</li>
+<li>设计用户控制流程</li>
+</ol>
+<p>从上面的代码中，我们可以看到这个轮播组件实现了<strong>封装性</strong>和<strong>正确性</strong>，但是缺少了<strong>可扩展性</strong>。这个组件只能满足自身的使用，它的实现代码很难扩展到其他的组件，当有功能变化时，也需要修改其自身内部的代码。</p>
+<p>比如产品经理因为某种原因，希望将图片下方的小圆点暂时去掉，只保留左右箭头。那么在这个版本中，就需要这么做：</p>
+<ol>
+<li>注释掉HTML中<code>.slider__control</code>相关的代码</li>
+<li>修改Slider组件，注释掉与小圆点控制相关的代码</li>
+</ol>
+<p>又或者，将来需要为这个组件添加新的用户控制，都需要对这个组件进行再修改。</p>
+<p>那么，如何可以避免这样的修改，让组件具备<strong>可扩展性</strong>呢？</p>
+<h2>第二个故事：组件的插件化</h2>
+<p>上一个故事中的轮播组件封装，我们实现了<strong>封装性</strong>和<strong>正确性</strong>。但这仅能满足项目当前的基本要求，是对初级工程师的基本要求，而<strong>可扩展性</strong>和<strong>可复用性</strong>，则对于整个项目的未来有很大的帮助，是对高级工程师的要求。在前端UI组件中，提升可扩展性的基本思路，是<strong>插件化</strong>。</p>
+<p>那么，对于这个图片轮播组件来说，它的插件化可以是将用户控制组件从Slider组件中剥离出来，做成插件，这样才能提高Slider组件的可扩展性。</p>
+<p>在图片轮播组件中，用户的控制组件分为三个部分：图片下部的小圆点以及左右翻页按钮。我们分别用<code>controller</code>、<code>previous</code>、<code>next</code>三个变量来分别处理它们。</p>
+<p>现在我们来重构一下上一版的代码：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, cycle = <span class="hljs-number">3000</span>} = {}</span>)</span> {
+  <span class="hljs-built_in">this</span>.container = container;
+  <span class="hljs-built_in">this</span>.items = <span class="hljs-built_in">Array</span>.from(container.querySelectorAll(<span class="hljs-string">'.slider__item, .slider__item--selected'</span>));
+  <span class="hljs-built_in">this</span>.cycle = cycle;
+}
+
+<span class="hljs-function"><span class="hljs-title">registerPlugins</span>(<span class="hljs-params">...plugins</span>)</span> {
+  plugins.forEach(<span class="hljs-function"><span class="hljs-params">plugin</span> =></span> plugin(<span class="hljs-built_in">this</span>));
+}
+</code></pre>
+<p>如上代码所示：在Sliders类的构造器中，我们将注册控制流程的代码移除，增加了一个新的方法叫<code>registerPlugins</code>。这个方法接受一组参数<code>plugins</code>，每个<code>plugin</code>本身是一个初始化函数，可以做任何事情。</p>
+<p>然后，我们将之前写在构造器的控制流程代码移到对应的插件中：</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">/* 小圆点控件 */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pluginController</span>(<span class="hljs-params">slider</span>) </span>{
+  <span class="hljs-keyword">const</span> controller = slider.container.querySelector(<span class="hljs-string">'.slider__control'</span>);
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">controller</span>)</span> {
+    <span class="hljs-keyword">const</span> buttons = controller.querySelectorAll(<span class="hljs-string">'.slider__control-buttons, .slider__control-buttons--selected'</span>);
+    controller.addEventListener(<span class="hljs-string">'mouseover'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      <span class="hljs-keyword">const</span> idx = <span class="hljs-built_in">Array</span>.from(buttons).indexOf(evt.target);
+      <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">idx >= <span class="hljs-number">0</span></span>)</span> {
+        slider.slideTo(idx);
+        slider.stop();
+      }
+    });
+
+    controller.addEventListener(<span class="hljs-string">'mouseout'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      slider.start();
+    });
+
+    slider.container.addEventListener(<span class="hljs-string">'slide'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      <span class="hljs-keyword">const</span> idx = evt.detail.index;
+      <span class="hljs-keyword">const</span> selected = controller.querySelector(<span class="hljs-string">'.slider__control-buttons--selected'</span>);
+      <span class="hljs-keyword">if</span>(selected) selected.className = <span class="hljs-string">'slider__control-buttons'</span>;
+      buttons[idx].className = <span class="hljs-string">'slider__control-buttons--selected'</span>;
+    });
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pluginPrevious</span>(<span class="hljs-params">slider</span>) </span>{
+  <span class="hljs-keyword">const</span> previous = slider.container.querySelector(<span class="hljs-string">'.slider__previous'</span>);
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">previous</span>)</span> {
+    previous.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      slider.stop();
+      slider.slidePrevious();
+      slider.start();
+      evt.preventDefault();
+    });
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pluginNext</span>(<span class="hljs-params">slider</span>) </span>{
+  <span class="hljs-keyword">const</span> next = slider.container.querySelector(<span class="hljs-string">'.slider__next'</span>);
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">next</span>)</span> {
+    next.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      slider.stop();
+      slider.slideNext();
+      slider.start();
+      evt.preventDefault();
+    });
+  }
+}
+</code></pre>
+<p>如上代码所示，<code>pluginController</code>、<code>pluginPrevious</code>和<code>pluginNext</code>分别表示小圆点控制和左右翻页控制插件。每个插件接受一个Slider的实例。然后，将各自的用户事件注册在对应的插件上。</p>
+<p>💡注意：我们在 <code>Slider.registerPlugins</code> 对象方法里，给每个 <code>plugin</code>（即：插件）传入当前的 slider 对象实例。在插件的初始化函数中，我们就可以拿到这个 slider 对象。这种将依赖对象传入插件初始化函数的方式，叫做<strong>依赖注入</strong>。</p>
+<p><strong>依赖注入</strong>是一种组件/插件解耦合的基本思路，在UI设计中经常被使用，在我们后续的课程中还会见到。</p>
+<p>最后再将插件注册到slider对象上：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> container = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'.slider'</span>);
+<span class="hljs-keyword">const</span> slider = <span class="hljs-keyword">new</span> Slider({container});
+slider.registerPlugins(pluginController, pluginPrevious, pluginNext);
+slider.start();
+</code></pre>
+<p>所以，最终，这一版的JS代码是这样的：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day06/index2.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Slider</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, cycle = <span class="hljs-number">3000</span>} = {}</span>)</span> {
+    <span class="hljs-built_in">this</span>.container = container;
+    <span class="hljs-built_in">this</span>.items = <span class="hljs-built_in">Array</span>.from(container.querySelectorAll(<span class="hljs-string">'.slider__item, .slider__item--selected'</span>));
+    <span class="hljs-built_in">this</span>.cycle = cycle;
+  }
+
+  <span class="hljs-function"><span class="hljs-title">registerPlugins</span>(<span class="hljs-params">...plugins</span>)</span> {
+    plugins.forEach(<span class="hljs-function"><span class="hljs-params">plugin</span> =></span> plugin(<span class="hljs-built_in">this</span>));
+  }
+
+  <span class="hljs-comment">/*
+    通过选择器`.slider__item--selected`获得被选中的元素
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">getSelectedItem</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> selected = <span class="hljs-built_in">this</span>.container.querySelector(<span class="hljs-string">'.slider__item--selected'</span>);
+    <span class="hljs-keyword">return</span> selected;
+  }
+
+  <span class="hljs-comment">/*
+    返回选中的元素在items数组中的位置。
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">getSelectedItemIndex</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.items.indexOf(<span class="hljs-built_in">this</span>.getSelectedItem());
+  }
+
+  <span class="hljs-function"><span class="hljs-title">slideTo</span>(<span class="hljs-params">idx</span>)</span> {
+    <span class="hljs-keyword">const</span> selected = <span class="hljs-built_in">this</span>.getSelectedItem();
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">selected</span>)</span> {
+      selected.className = <span class="hljs-string">'slider__item'</span>;
+    }
+    <span class="hljs-keyword">const</span> item = <span class="hljs-built_in">this</span>.items[idx];
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">item</span>)</span> {
+      item.className = <span class="hljs-string">'slider__item--selected'</span>;
+    }
+
+    <span class="hljs-keyword">const</span> detail = {<span class="hljs-attr">index</span>: idx};
+    <span class="hljs-keyword">const</span> event = <span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">'slide'</span>, {<span class="hljs-attr">bubbles</span>: <span class="hljs-literal">true</span>, detail});
+    <span class="hljs-built_in">this</span>.container.dispatchEvent(event);
+  }
+
+  <span class="hljs-comment">/*
+    将下一张图片标记为选中状态
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">slideNext</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> currentIdx = <span class="hljs-built_in">this</span>.getSelectedItemIndex();
+    <span class="hljs-keyword">const</span> nextIdx = (currentIdx + <span class="hljs-number">1</span>) % <span class="hljs-built_in">this</span>.items.length;
+    <span class="hljs-built_in">this</span>.slideTo(nextIdx);
+  }
+
+  <span class="hljs-comment">/*
+    将上一张图片标记为选中状态
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">slidePrevious</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> currentIdx = <span class="hljs-built_in">this</span>.getSelectedItemIndex();
+    <span class="hljs-keyword">const</span> previousIdx = (<span class="hljs-built_in">this</span>.items.length + currentIdx - <span class="hljs-number">1</span>) % <span class="hljs-built_in">this</span>.items.length;
+    <span class="hljs-built_in">this</span>.slideTo(previousIdx);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">start</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>.stop();
+    <span class="hljs-built_in">this</span>._timer = <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =></span> <span class="hljs-built_in">this</span>.slideNext(), <span class="hljs-built_in">this</span>.cycle);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">stop</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">clearInterval</span>(<span class="hljs-built_in">this</span>._timer);
+  }
+}
+
+<span class="hljs-comment">/* 小圆点控件 */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pluginController</span>(<span class="hljs-params">slider</span>) </span>{
+  <span class="hljs-keyword">const</span> controller = slider.container.querySelector(<span class="hljs-string">'.slider__control'</span>);
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">controller</span>)</span> {
+    <span class="hljs-keyword">const</span> buttons = controller.querySelectorAll(<span class="hljs-string">'.slider__control-buttons, .slider__control-buttons--selected'</span>);
+    controller.addEventListener(<span class="hljs-string">'mouseover'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      <span class="hljs-keyword">const</span> idx = <span class="hljs-built_in">Array</span>.from(buttons).indexOf(evt.target);
+      <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">idx >= <span class="hljs-number">0</span></span>)</span> {
+        slider.slideTo(idx);
+        slider.stop();
+      }
+    });
+
+    controller.addEventListener(<span class="hljs-string">'mouseout'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      slider.start();
+    });
+
+    slider.container.addEventListener(<span class="hljs-string">'slide'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      <span class="hljs-keyword">const</span> idx = evt.detail.index;
+      <span class="hljs-keyword">const</span> selected = controller.querySelector(<span class="hljs-string">'.slider__control-buttons--selected'</span>);
+      <span class="hljs-keyword">if</span>(selected) selected.className = <span class="hljs-string">'slider__control-buttons'</span>;
+      buttons[idx].className = <span class="hljs-string">'slider__control-buttons--selected'</span>;
+    });
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pluginPrevious</span>(<span class="hljs-params">slider</span>) </span>{
+  <span class="hljs-keyword">const</span> previous = slider.container.querySelector(<span class="hljs-string">'.slider__previous'</span>);
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">previous</span>)</span> {
+    previous.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      slider.stop();
+      slider.slidePrevious();
+      slider.start();
+      evt.preventDefault();
+    });
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pluginNext</span>(<span class="hljs-params">slider</span>) </span>{
+  <span class="hljs-keyword">const</span> next = slider.container.querySelector(<span class="hljs-string">'.slider__next'</span>);
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">next</span>)</span> {
+    next.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      slider.stop();
+      slider.slideNext();
+      slider.start();
+      evt.preventDefault();
+    });
+  }
+}
+
+<span class="hljs-keyword">const</span> container = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'.slider'</span>);
+<span class="hljs-keyword">const</span> slider = <span class="hljs-keyword">new</span> Slider({container});
+slider.registerPlugins(pluginController, pluginPrevious, pluginNext);
+slider.start();
+</code></pre>
+<p>这个版本中，我们将组件核心和插件部分进行了分离，这样就允许我们的组件随时减少或者增加用户控制。比如，上一故事中，当我们的产品经理要求去掉图片下方的小圆点控制时，我们自需要简单将小圆点从插件注册中去掉，完全不需要修改组件代码。</p>
+<pre><code class="hljs language-js">slider.registerPlugins(pluginPrevious, pluginNext);
+</code></pre>
+<p>如果，有一天，产品经理又需要对这个组件添加新的用户控制，比如，添加一个按钮叫“试试手气”，点击该按钮，让轮播图随机切换到一张图片上，那么们我们只需要这样做：</p>
+<p>在HTML代码中增加“试试手气“这个按钮：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"lucky"</span>></span>试试手气<span class="hljs-tag">&#x3C;/<span class="hljs-name">button</span>></span>
+</code></pre>
+<p>然后创建这个插件：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span>  <span class="hljs-title">pluginLucky</span>(<span class="hljs-params">slider</span>) </span>{
+  <span class="hljs-keyword">const</span> luckyBtn = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'.lucky'</span>);
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">luckyBtn</span>)</span> {
+    luckyBtn.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">evt</span> =></span> {
+      slider.stop();
+      slider.slideTo(<span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * slider.items.length));
+      slider.start();
+      evt.preventDefault();
+    });
+  }
+}
+</code></pre>
+<p>最后将它注册到slider中去即可：</p>
+<pre><code class="hljs language-js">slider.registerPlugins(pluginController, pluginPrevious, pluginNext, pluginLucky);
+</code></pre>
+<p>由此可见，插件化之后，组件的可扩展性得到了增强，现在我们可以任意扩展插件，而不用修改Slider本身的核心代码了。</p>
+<p>这时，你可能发现了另一个问题 —— 组件的HTML和JS是分开写的，这意味着我们修改组件本身和增加插件的时候，不可避免地需要同时修改HTML和JS代码。</p>
+<p>比如，产品经理希望我们将图片数量从四张增加为六张，那么我们需要修改组件和插件的HTML（即：增加<code>&#x3C;li></code>元素和小圆点控制）。甚至现在连修改一张图片的URL，我们也需要手工修改HTML内容。这也不符合前面课程中学过的数据抽象原则。所以，我们需要去掉组件的HTML代码，让JS来渲染组件需要的HTML。</p>
+<p>那么，我们如何让JS渲染组件的HTML呢？</p>
+<h2>第三个故事 组件的模板化</h2>
+<p>为了让JS渲染组件的HTML，我们需要将组件<strong>模板化</strong>。</p>
+<p>为了方便实现模板化，我们需要重构组件的部分API:</p>
+<p><img src="img\9ed4822e-ae6f-11ed-894d-342eb7027b95.jpg" alt=""></p>
+<p>如上图所示，我们给Slider组件添加了一个<code>render()</code>方法。这个方法是用于渲染Slider组件的HTML部分。然后，我们将插件由原先单一的初始化函数重构为一个包含<code>render()</code>方法和<code>initialize()</code>方法的对象。其中<code>render()</code>方法是用来渲染插件的HTML部分，而<code>initialize()</code>方法则是用于注册和插件对应的用户事件。</p>
+<p>首先，我们来渲染Slider组件的HTML：</p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Slider</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, images = [], cycle = <span class="hljs-number">3000</span>} = {}</span>)</span> {
+    <span class="hljs-built_in">this</span>.container = container;
+    <span class="hljs-built_in">this</span>.data = images;
+    <span class="hljs-built_in">this</span>.container.innerHTML = <span class="hljs-built_in">this</span>.render(<span class="hljs-built_in">this</span>.data);
+    <span class="hljs-built_in">this</span>.items = <span class="hljs-built_in">Array</span>.from(<span class="hljs-built_in">this</span>.container.querySelectorAll(<span class="hljs-string">'.slider__item, .slider__item--selected'</span>));
+    <span class="hljs-built_in">this</span>.cycle = cycle;
+    <span class="hljs-built_in">this</span>.slideTo(<span class="hljs-number">0</span>);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params">images</span>)</span> {
+    <span class="hljs-keyword">const</span> content = images.map(<span class="hljs-function"><span class="hljs-params">image</span> =></span> <span class="hljs-string">`
+      &#x3C;li class="slider__item">
+        &#x3C;img src="<span class="hljs-subst">${image}</span>"/>
+      &#x3C;/li>    
+    `</span>.trim());
+
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`&#x3C;ul><span class="hljs-subst">${content.join(<span class="hljs-string">''</span>)}</span>&#x3C;/ul>`</span>;
+  }
+  
+  <span class="hljs-comment">/*此处省略组件其他的API*/</span>
+}
+</code></pre>
+<p>如上代码所示：我们将数据源（这里就是图片数组）传递给Slider组件。然后Slider的构造器利用这个数据源渲染自己的HTML —— <code>this.container.innerHTML = this.render(this.data);</code>，再将这部分HTML添加到container元素中去。</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> images = [<span class="hljs-string">'https://p5.ssl.qhimg.com/t0119c74624763dd070.png'</span>,
+  <span class="hljs-string">'https://p4.ssl.qhimg.com/t01adbe3351db853eb3.jpg'</span>,
+  <span class="hljs-string">'https://p2.ssl.qhimg.com/t01645cd5ba0c3b60cb.jpg'</span>,
+  <span class="hljs-string">'https://p4.ssl.qhimg.com/t01331ac159b58f5478.jpg'</span>];
+
+<span class="hljs-keyword">const</span> container = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'.slider'</span>);
+<span class="hljs-keyword">const</span> slider = <span class="hljs-keyword">new</span> Slider({container, images});
+</code></pre>
+<p>上面这段调用代码渲染的结果如下：</p>
+<pre><code class="hljs language-HTML"><span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__item"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p5.ssl.qhimg.com/t0119c74624763dd070.png"</span>/></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__item"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p4.ssl.qhimg.com/t01adbe3351db853eb3.jpg"</span>/></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__item"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p2.ssl.qhimg.com/t01645cd5ba0c3b60cb.jpg"</span>/></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider__item"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://p4.ssl.qhimg.com/t01331ac159b58f5478.jpg"</span>/></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+</code></pre>
+<p>这样，组件的HTML代码部分就简化为下面的形式：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"slider"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+</code></pre>
+
+<p>然后，我们为每个插件添加渲染代码：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> pluginController = { <span class="hljs-comment">// 小圆点插件</span>
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params">images</span>)</span>{ <span class="hljs-comment">//随着图片数量的增加，小圆点元素也需要增加</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`
+      &#x3C;div class="slider__control">
+        <span class="hljs-subst">${images.map((image, i) => <span class="hljs-string">`
+            &#x3C;span class="slider__control-buttons<span class="hljs-subst">${i===<span class="hljs-number">0</span>?<span class="hljs-string">'--selected'</span>:<span class="hljs-string">''</span>}</span>">&#x3C;/span>
+        `</span>).join(<span class="hljs-string">''</span>)}</span>
+      &#x3C;/div>    
+    `</span>.trim();
+  },
+
+  <span class="hljs-function"><span class="hljs-title">initialize</span>(<span class="hljs-params">slider</span>)</span>{
+    <span class="hljs-keyword">const</span> controller = slider.container.querySelector(<span class="hljs-string">'.slider__control'</span>);
+    
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">controller</span>)</span>{
+      <span class="hljs-keyword">const</span> buttons = controller.querySelectorAll(<span class="hljs-string">'.slider__control-buttons, .slider__control-buttons--selected'</span>);
+      controller.addEventListener(<span class="hljs-string">'mouseover'</span>, <span class="hljs-function"><span class="hljs-params">evt</span> =></span> {
+        <span class="hljs-keyword">const</span> idx = <span class="hljs-built_in">Array</span>.from(buttons).indexOf(evt.target);
+        <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">idx >= <span class="hljs-number">0</span></span>)</span>{
+          slider.slideTo(idx);
+          slider.stop();
+        }
+      });
+
+      controller.addEventListener(<span class="hljs-string">'mouseout'</span>, <span class="hljs-function"><span class="hljs-params">evt</span> =></span> {
+        slider.start();
+      });
+
+      slider.container.addEventListener(<span class="hljs-string">'slide'</span>, <span class="hljs-function"><span class="hljs-params">evt</span> =></span> {
+        <span class="hljs-keyword">const</span> idx = evt.detail.index
+        <span class="hljs-keyword">const</span> selected = controller.querySelector(<span class="hljs-string">'.slider__control-buttons--selected'</span>);
+        <span class="hljs-keyword">if</span>(selected) selected.className = <span class="hljs-string">'slider__control-buttons'</span>;
+        buttons[idx].className = <span class="hljs-string">'slider__control-buttons--selected'</span>;
+      });
+    }    
+  }
+};
+
+<span class="hljs-keyword">const</span> pluginPrevious = {
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`&#x3C;a class="slider__previous">&#x3C;/a>`</span>;
+  },
+
+  <span class="hljs-function"><span class="hljs-title">initialize</span>(<span class="hljs-params">slider</span>)</span>{
+    <span class="hljs-keyword">const</span> previous = slider.container.querySelector(<span class="hljs-string">'.slider__previous'</span>);
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">previous</span>)</span>{
+      previous.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">evt</span> =></span> {
+        slider.stop();
+        slider.slidePrevious();
+        slider.start();
+        evt.preventDefault();
+      });
+    }  
+  }
+};
+
+<span class="hljs-keyword">const</span> pluginNext = {
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`&#x3C;a class="slider__next">&#x3C;/a>`</span>;
+  },
+
+  <span class="hljs-function"><span class="hljs-title">initialize</span>(<span class="hljs-params">slider</span>)</span>{
+    <span class="hljs-keyword">const</span> previous = slider.container.querySelector(<span class="hljs-string">'.slider__next'</span>);
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">previous</span>)</span>{
+      previous.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">evt</span> =></span> {
+        slider.stop();
+        slider.slideNext();
+        slider.start();
+        evt.preventDefault();
+      });
+    }  
+  }
+};
+</code></pre>
+<p>如上代码所示：每个插件都被构造成一个对象。每个对象中都有一个<code>render</code>方法，负责渲染各自的HTML。<code>initialize</code>方法则是负责注册各自的用户事件。</p>
+<p>为了将每个插件添加到Slider组件中，我们需要修改Slider的<code>Slider.registerPlugins()</code>方法：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-title">registerPlugins</span>(<span class="hljs-params">...plugins</span>)</span> {
+  plugins.forEach(<span class="hljs-function">(<span class="hljs-params">plugin</span>) =></span> {
+    <span class="hljs-keyword">const</span> pluginContainer = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
+    pluginContainer.className = <span class="hljs-string">'slider__plugin'</span>;
+    pluginContainer.innerHTML = plugin.render(<span class="hljs-built_in">this</span>.data);
+    <span class="hljs-built_in">this</span>.container.appendChild(pluginContainer);
+    plugin.initialize(<span class="hljs-built_in">this</span>);
+  });
+}
+</code></pre>
+<p>如上代码所示：Slider组件为每个plugin创建了一个<code>class=slider__plugin</code>的容器，然后将插件的HTML元素添加到这个容器中，再把这个容器添加到Slider组件中去，最后再调用插件的<code>initialize</code>方法，以便为每个插件添加各自的用户控制。</p>
+<p>这次重构的完整代码如下：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day06/index3.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Slider</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, images = [], cycle = <span class="hljs-number">3000</span>} = {}</span>)</span> {
+    <span class="hljs-built_in">this</span>.container = container;
+    <span class="hljs-built_in">this</span>.data = images;
+    <span class="hljs-built_in">this</span>.container.innerHTML = <span class="hljs-built_in">this</span>.render(<span class="hljs-built_in">this</span>.data);
+    <span class="hljs-built_in">this</span>.items = <span class="hljs-built_in">Array</span>.from(<span class="hljs-built_in">this</span>.container.querySelectorAll(<span class="hljs-string">'.slider__item, .slider__item--selected'</span>));
+    <span class="hljs-built_in">this</span>.cycle = cycle;
+    <span class="hljs-built_in">this</span>.slideTo(<span class="hljs-number">0</span>);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params">images</span>)</span> {
+    <span class="hljs-keyword">const</span> content = images.map(<span class="hljs-function"><span class="hljs-params">image</span> =></span> <span class="hljs-string">`
+      &#x3C;li class="slider__item">
+        &#x3C;img src="<span class="hljs-subst">${image}</span>"/>
+      &#x3C;/li>    
+    `</span>.trim());
+
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`&#x3C;ul><span class="hljs-subst">${content.join(<span class="hljs-string">''</span>)}</span>&#x3C;/ul>`</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-title">registerPlugins</span>(<span class="hljs-params">...plugins</span>)</span> {
+    plugins.forEach(<span class="hljs-function">(<span class="hljs-params">plugin</span>) =></span> {
+      <span class="hljs-keyword">const</span> pluginContainer = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
+      pluginContainer.className = <span class="hljs-string">'slider__plugin'</span>;
+      pluginContainer.innerHTML = plugin.render(<span class="hljs-built_in">this</span>.data);
+      <span class="hljs-built_in">this</span>.container.appendChild(pluginContainer);
+      plugin.initialize(<span class="hljs-built_in">this</span>);
+    });
+  }
+
+  <span class="hljs-comment">/*
+    通过选择器`.slider__item--selected`获得被选中的元素
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">getSelectedItem</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> selected = <span class="hljs-built_in">this</span>.container.querySelector(<span class="hljs-string">'.slider__item--selected'</span>);
+    <span class="hljs-keyword">return</span> selected;
+  }
+
+  <span class="hljs-comment">/*
+    返回选中的元素在items数组中的位置。
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">getSelectedItemIndex</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.items.indexOf(<span class="hljs-built_in">this</span>.getSelectedItem());
+  }
+
+  <span class="hljs-function"><span class="hljs-title">slideTo</span>(<span class="hljs-params">idx</span>)</span> {
+    <span class="hljs-keyword">const</span> selected = <span class="hljs-built_in">this</span>.getSelectedItem();
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">selected</span>)</span> {
+      selected.className = <span class="hljs-string">'slider__item'</span>;
+    }
+    <span class="hljs-keyword">const</span> item = <span class="hljs-built_in">this</span>.items[idx];
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">item</span>)</span> {
+      item.className = <span class="hljs-string">'slider__item--selected'</span>;
+    }
+
+    <span class="hljs-keyword">const</span> detail = {<span class="hljs-attr">index</span>: idx};
+    <span class="hljs-keyword">const</span> event = <span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">'slide'</span>, {<span class="hljs-attr">bubbles</span>: <span class="hljs-literal">true</span>, detail});
+    <span class="hljs-built_in">this</span>.container.dispatchEvent(event);
+  }
+
+  <span class="hljs-comment">/*
+    将下一张图片标记为选中状态
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">slideNext</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> currentIdx = <span class="hljs-built_in">this</span>.getSelectedItemIndex();
+    <span class="hljs-keyword">const</span> nextIdx = (currentIdx + <span class="hljs-number">1</span>) % <span class="hljs-built_in">this</span>.items.length;
+    <span class="hljs-built_in">this</span>.slideTo(nextIdx);
+  }
+
+  <span class="hljs-comment">/*
+    将上一张图片标记为选中状态
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">slidePrevious</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> currentIdx = <span class="hljs-built_in">this</span>.getSelectedItemIndex();
+    <span class="hljs-keyword">const</span> previousIdx = (<span class="hljs-built_in">this</span>.items.length + currentIdx - <span class="hljs-number">1</span>) % <span class="hljs-built_in">this</span>.items.length;
+    <span class="hljs-built_in">this</span>.slideTo(previousIdx);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">start</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>.stop();
+    <span class="hljs-built_in">this</span>._timer = <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =></span> <span class="hljs-built_in">this</span>.slideNext(), <span class="hljs-built_in">this</span>.cycle);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">stop</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">clearInterval</span>(<span class="hljs-built_in">this</span>._timer);
+  }
+}
+
+<span class="hljs-keyword">const</span> pluginController = { <span class="hljs-comment">// 小圆点插件</span>
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params">images</span>)</span> { <span class="hljs-comment">// 随着图片数量的增加，小圆点元素也需要增加</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`
+      &#x3C;div class="slider__control">
+        <span class="hljs-subst">${images.map((image, i) => <span class="hljs-string">`
+            &#x3C;span class="slider__control-buttons<span class="hljs-subst">${i === <span class="hljs-number">0</span> ? <span class="hljs-string">'--selected'</span> : <span class="hljs-string">''</span>}</span>">&#x3C;/span>
+        `</span>).join(<span class="hljs-string">''</span>)}</span>
+      &#x3C;/div>    
+    `</span>.trim();
+  },
+
+  <span class="hljs-function"><span class="hljs-title">initialize</span>(<span class="hljs-params">slider</span>)</span> {
+    <span class="hljs-keyword">const</span> controller = slider.container.querySelector(<span class="hljs-string">'.slider__control'</span>);
+
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">controller</span>)</span> {
+      <span class="hljs-keyword">const</span> buttons = controller.querySelectorAll(<span class="hljs-string">'.slider__control-buttons, .slider__control-buttons--selected'</span>);
+      controller.addEventListener(<span class="hljs-string">'mouseover'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+        <span class="hljs-keyword">const</span> idx = <span class="hljs-built_in">Array</span>.from(buttons).indexOf(evt.target);
+        <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">idx >= <span class="hljs-number">0</span></span>)</span> {
+          slider.slideTo(idx);
+          slider.stop();
+        }
+      });
+
+      controller.addEventListener(<span class="hljs-string">'mouseout'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+        slider.start();
+      });
+
+      slider.container.addEventListener(<span class="hljs-string">'slide'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+        <span class="hljs-keyword">const</span> idx = evt.detail.index;
+        <span class="hljs-keyword">const</span> selected = controller.querySelector(<span class="hljs-string">'.slider__control-buttons--selected'</span>);
+        <span class="hljs-keyword">if</span>(selected) selected.className = <span class="hljs-string">'slider__control-buttons'</span>;
+        buttons[idx].className = <span class="hljs-string">'slider__control-buttons--selected'</span>;
+      });
+    }
+  },
+};
+
+<span class="hljs-keyword">const</span> pluginPrevious = {
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'&#x3C;a class="slider__previous">&#x3C;/a>'</span>;
+  },
+
+  <span class="hljs-function"><span class="hljs-title">initialize</span>(<span class="hljs-params">slider</span>)</span> {
+    <span class="hljs-keyword">const</span> previous = slider.container.querySelector(<span class="hljs-string">'.slider__previous'</span>);
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">previous</span>)</span> {
+      previous.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+        slider.stop();
+        slider.slidePrevious();
+        slider.start();
+        evt.preventDefault();
+      });
+    }
+  },
+};
+
+<span class="hljs-keyword">const</span> pluginNext = {
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'&#x3C;a class="slider__next">&#x3C;/a>'</span>;
+  },
+
+  <span class="hljs-function"><span class="hljs-title">initialize</span>(<span class="hljs-params">slider</span>)</span> {
+    <span class="hljs-keyword">const</span> previous = slider.container.querySelector(<span class="hljs-string">'.slider__next'</span>);
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">previous</span>)</span> {
+      previous.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+        slider.stop();
+        slider.slideNext();
+        slider.start();
+        evt.preventDefault();
+      });
+    }
+  },
+};
+
+<span class="hljs-keyword">const</span> images = [<span class="hljs-string">'https://p5.ssl.qhimg.com/t0119c74624763dd070.png'</span>,
+  <span class="hljs-string">'https://p4.ssl.qhimg.com/t01adbe3351db853eb3.jpg'</span>,
+  <span class="hljs-string">'https://p2.ssl.qhimg.com/t01645cd5ba0c3b60cb.jpg'</span>,
+  <span class="hljs-string">'https://p4.ssl.qhimg.com/t01331ac159b58f5478.jpg'</span>];
+
+<span class="hljs-keyword">const</span> container = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'.slider'</span>);
+<span class="hljs-keyword">const</span> slider = <span class="hljs-keyword">new</span> Slider({container, images});
+slider.registerPlugins(pluginController, pluginPrevious, pluginNext);
+slider.start();
+</code></pre>
+<p>模板化之后，代码的可扩展性得到了进一步的提升。现在，如果我们增加或者减少轮播图片数量，只需要修改数据中images数组的元素个数。如果我们需要或者不需要某个插件，我们只需要修改传给<code>registerPlugins()</code>方法的参数即可。可以说，这一版代码的可扩展性是达到了发布要求的较高标准的。</p>
+<p>这个版本的组件虽然具有较高的可扩展性，但是它缺少<strong>可复用性</strong>。这里的可复用性是指，这套组件（包括Slider的插件）没有统一的规范。如果我们的同事同样需要设置一套组件，其中也有小圆点组件，但是他使用的渲染方法是<code>draw()</code>而不是<code>render()</code>，组件事件的注册使用的也不是<code>initialized()</code>方法， 那么这个同事就需要再重复开发一个小圆点组件。这样代码的可复用性就比较差了。所以，为了提高代码可复用性，我们需要为组件设计一套规范。大家同时遵循这套规范，就能让不同开发者设计的组件被他人复用。</p>
+<p>那么，如何实现组件的统一规范呢？</p>
+<h2>第四个故事：设计组件框架</h2>
+<p>为了提高组件的复用性，我们需要为组件设计一个<strong>统一的规范</strong>。实现这个统一的规范，我们可以通过设计一套通用的<strong>组件机制</strong>，并以这套机制为原则构建一个库。这个<strong>通用机制</strong>实际上提供了代码设计和抽象的一套通用规范，而遵循这套规范的基础库，实际上就是完整的<strong>UI组件框架</strong>。</p>
+<p>设计UI组件框架是一件比较复杂的事情，因为要考虑许多细节。但在这里，我们可以简要地设计一个基础简化版。</p>
+<p>我们继续修改上一版的设计，提炼出通用的Component类：</p>
+<p><img src="img\9ef07ae1-ae6f-11ed-9eca-342eb7027b95.jpg" alt=""></p>
+<p>如上图所示，一个组件 Component 包含以下 API:</p>
+<ul>
+<li>static name - 静态属性，表示这个组件的名称</li>
+<li>contructor({container, data, parent}) - 组件构造函数</li>
+<li>registerSubComponents(...Comps) - 给当前组件注册子组件</li>
+<li>render(data) - 渲染HTML模板</li>
+</ul>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Component</span> </span>{
+  <span class="hljs-keyword">static</span> name = <span class="hljs-string">'component'</span>;
+
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, data, parent = <span class="hljs-literal">null</span>} = {}</span>)</span> {
+    <span class="hljs-built_in">this</span>.data = data;
+    <span class="hljs-built_in">this</span>.container = container;
+    <span class="hljs-built_in">this</span>.container.innerHTML = <span class="hljs-built_in">this</span>.render(<span class="hljs-built_in">this</span>.data);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">registerSubComponents</span>(<span class="hljs-params">...Comps</span>)</span> {
+    <span class="hljs-keyword">const</span> data = <span class="hljs-built_in">this</span>.data;
+    <span class="hljs-keyword">const</span> container = <span class="hljs-built_in">this</span>.container;
+    <span class="hljs-built_in">this</span>.children = <span class="hljs-built_in">this</span>.children || [];
+    Comps.forEach(<span class="hljs-function">(<span class="hljs-params">Comp</span>) =></span> {
+      <span class="hljs-keyword">const</span> subContainer = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
+      <span class="hljs-keyword">const</span> sub = <span class="hljs-keyword">new</span> Comp({<span class="hljs-attr">container</span>: subContainer, data, <span class="hljs-attr">parent</span>: <span class="hljs-built_in">this</span>});
+      container.appendChild(subContainer);
+      <span class="hljs-built_in">this</span>.children.push(sub);
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params">data</span>)</span> {
+    <span class="hljs-comment">/* abstract */</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">''</span>;
+  }
+}
+</code></pre>
+<p>然后 Slider 和其他几个插件都作为组件类继承自 Component。</p>
+<p>Slider 组件：</p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Slider</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  <span class="hljs-keyword">static</span> name = <span class="hljs-string">'slider'</span>;
+
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, images = [], cycle = <span class="hljs-number">3000</span>} = {}</span>)</span> {
+    <span class="hljs-built_in">super</span>({container, <span class="hljs-attr">data</span>: images});
+    <span class="hljs-built_in">this</span>.items = <span class="hljs-built_in">Array</span>.from(<span class="hljs-built_in">this</span>.container.querySelectorAll(<span class="hljs-string">'.slider__item, .slider__item--selected'</span>));
+    <span class="hljs-built_in">this</span>.cycle = cycle;
+    <span class="hljs-built_in">this</span>.slideTo(<span class="hljs-number">0</span>);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params">images</span>)</span> {
+    <span class="hljs-keyword">const</span> content = images.map(<span class="hljs-function"><span class="hljs-params">image</span> =></span> <span class="hljs-string">`
+      &#x3C;li class="slider__item">
+        &#x3C;img src="<span class="hljs-subst">${image}</span>"/>
+      &#x3C;/li>    
+    `</span>.trim());
+
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`&#x3C;ul><span class="hljs-subst">${content.join(<span class="hljs-string">''</span>)}</span>&#x3C;/ul>`</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-title">getSelectedItem</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> selected = <span class="hljs-built_in">this</span>.container.querySelector(<span class="hljs-string">'.slider__item--selected'</span>);
+    <span class="hljs-keyword">return</span> selected;
+  }
+
+  <span class="hljs-function"><span class="hljs-title">getSelectedItemIndex</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.items.indexOf(<span class="hljs-built_in">this</span>.getSelectedItem());
+  }
+
+  <span class="hljs-function"><span class="hljs-title">slideTo</span>(<span class="hljs-params">idx</span>)</span> {
+    <span class="hljs-keyword">const</span> selected = <span class="hljs-built_in">this</span>.getSelectedItem();
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">selected</span>)</span> {
+      selected.className = <span class="hljs-string">'slider__item'</span>;
+    }
+    <span class="hljs-keyword">const</span> item = <span class="hljs-built_in">this</span>.items[idx];
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">item</span>)</span> {
+      item.className = <span class="hljs-string">'slider__item--selected'</span>;
+    }
+
+    <span class="hljs-keyword">const</span> detail = {<span class="hljs-attr">index</span>: idx};
+    <span class="hljs-keyword">const</span> event = <span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">'slide'</span>, {<span class="hljs-attr">bubbles</span>: <span class="hljs-literal">true</span>, detail});
+    <span class="hljs-built_in">this</span>.container.dispatchEvent(event);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">slideNext</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> currentIdx = <span class="hljs-built_in">this</span>.getSelectedItemIndex();
+    <span class="hljs-keyword">const</span> nextIdx = (currentIdx + <span class="hljs-number">1</span>) % <span class="hljs-built_in">this</span>.items.length;
+    <span class="hljs-built_in">this</span>.slideTo(nextIdx);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">slidePrevious</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> currentIdx = <span class="hljs-built_in">this</span>.getSelectedItemIndex();
+    <span class="hljs-keyword">const</span> previousIdx = (<span class="hljs-built_in">this</span>.items.length + currentIdx - <span class="hljs-number">1</span>) % <span class="hljs-built_in">this</span>.items.length;
+    <span class="hljs-built_in">this</span>.slideTo(previousIdx);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">start</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>.stop();
+    <span class="hljs-built_in">this</span>._timer = <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =></span> <span class="hljs-built_in">this</span>.slideNext(), <span class="hljs-built_in">this</span>.cycle);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">stop</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">clearInterval</span>(<span class="hljs-built_in">this</span>._timer);
+  }
+}
+</code></pre>
+<p>SliderController 组件：</p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SliderController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  <span class="hljs-keyword">static</span> name = <span class="hljs-string">'slider__control'</span>;
+
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, data, parent: slider}</span>)</span> {
+    <span class="hljs-built_in">super</span>({container, data});
+
+    <span class="hljs-keyword">const</span> buttons = container.querySelectorAll(<span class="hljs-string">'.slider__control-buttons, .slider__control-buttons--selected'</span>);
+    container.addEventListener(<span class="hljs-string">'mouseover'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      <span class="hljs-keyword">const</span> idx = <span class="hljs-built_in">Array</span>.from(buttons).indexOf(evt.target);
+      <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">idx >= <span class="hljs-number">0</span></span>)</span> {
+        slider.slideTo(idx);
+        slider.stop();
+      }
+    });
+
+    container.addEventListener(<span class="hljs-string">'mouseout'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      slider.start();
+    });
+
+    slider.container.addEventListener(<span class="hljs-string">'slide'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      <span class="hljs-keyword">const</span> idx = evt.detail.index;
+      <span class="hljs-keyword">const</span> selected = container.querySelector(<span class="hljs-string">'.slider__control-buttons--selected'</span>);
+      <span class="hljs-keyword">if</span>(selected) selected.className = <span class="hljs-string">'slider__control-buttons'</span>;
+      buttons[idx].className = <span class="hljs-string">'slider__control-buttons--selected'</span>;
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params">images</span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`
+      &#x3C;div class="slider__control">
+        <span class="hljs-subst">${images.map((image, i) => <span class="hljs-string">`
+            &#x3C;span class="slider__control-buttons<span class="hljs-subst">${i === <span class="hljs-number">0</span> ? <span class="hljs-string">'--selected'</span> : <span class="hljs-string">''</span>}</span>">&#x3C;/span>
+        `</span>).join(<span class="hljs-string">''</span>)}</span>
+      &#x3C;/div>    
+    `</span>.trim();
+  }
+}
+</code></pre>
+<p>SliderPrevious 和 SliderNext 组件：</p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SliderPrevious</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, parent: slider}</span>)</span> {
+    <span class="hljs-built_in">super</span>({container});
+    <span class="hljs-keyword">const</span> previous = container.querySelector(<span class="hljs-string">'.slider__previous'</span>);
+    previous.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      slider.stop();
+      slider.slidePrevious();
+      slider.start();
+      evt.preventDefault();
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'&#x3C;a class="slider__previous">&#x3C;/a>'</span>;
+  }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SliderNext</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, parent: slider}</span>)</span> {
+    <span class="hljs-built_in">super</span>({container});
+    <span class="hljs-keyword">const</span> previous = container.querySelector(<span class="hljs-string">'.slider__next'</span>);
+    previous.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      slider.stop();
+      slider.slidePrevious();
+      slider.start();
+      evt.preventDefault();
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'&#x3C;a class="slider__next">&#x3C;/a>'</span>;
+  }
+}
+</code></pre>
+<p>这样，我们就以组件化的方式实现了这个版本的轮播图，完整的JS代码如下：</p>
+<p><a href="https://junyux.github.io/FE-Advance/day06/index4.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Component</span> </span>{
+  <span class="hljs-keyword">static</span> name = <span class="hljs-string">'component'</span>;
+
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, data, parent = <span class="hljs-literal">null</span>} = {}</span>)</span> {
+    <span class="hljs-built_in">this</span>.data = data;
+    <span class="hljs-built_in">this</span>.container = container;
+    <span class="hljs-built_in">this</span>.container.innerHTML = <span class="hljs-built_in">this</span>.render(<span class="hljs-built_in">this</span>.data);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">registerSubComponents</span>(<span class="hljs-params">...Comps</span>)</span> {
+    <span class="hljs-keyword">const</span> data = <span class="hljs-built_in">this</span>.data;
+    <span class="hljs-keyword">const</span> container = <span class="hljs-built_in">this</span>.container;
+    <span class="hljs-built_in">this</span>.children = <span class="hljs-built_in">this</span>.children || [];
+    Comps.forEach(<span class="hljs-function">(<span class="hljs-params">Comp</span>) =></span> {
+      <span class="hljs-keyword">const</span> subContainer = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
+      <span class="hljs-keyword">const</span> sub = <span class="hljs-keyword">new</span> Comp({<span class="hljs-attr">container</span>: subContainer, data, <span class="hljs-attr">parent</span>: <span class="hljs-built_in">this</span>});
+      container.appendChild(subContainer);
+      <span class="hljs-built_in">this</span>.children.push(sub);
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params">data</span>)</span> {
+    <span class="hljs-comment">/* abstract */</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">''</span>;
+  }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Slider</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  <span class="hljs-keyword">static</span> name = <span class="hljs-string">'slider'</span>;
+
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, images = [], cycle = <span class="hljs-number">3000</span>} = {}</span>)</span> {
+    <span class="hljs-built_in">super</span>({container, <span class="hljs-attr">data</span>: images});
+    <span class="hljs-built_in">this</span>.items = <span class="hljs-built_in">Array</span>.from(<span class="hljs-built_in">this</span>.container.querySelectorAll(<span class="hljs-string">'.slider__item, .slider__item--selected'</span>));
+    <span class="hljs-built_in">this</span>.cycle = cycle;
+    <span class="hljs-built_in">this</span>.slideTo(<span class="hljs-number">0</span>);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params">images</span>)</span> {
+    <span class="hljs-keyword">const</span> content = images.map(<span class="hljs-function"><span class="hljs-params">image</span> =></span> <span class="hljs-string">`
+      &#x3C;li class="slider__item">
+        &#x3C;img src="<span class="hljs-subst">${image}</span>"/>
+      &#x3C;/li>    
+    `</span>.trim());
+
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`&#x3C;ul><span class="hljs-subst">${content.join(<span class="hljs-string">''</span>)}</span>&#x3C;/ul>`</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-title">getSelectedItem</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> selected = <span class="hljs-built_in">this</span>.container.querySelector(<span class="hljs-string">'.slider__item--selected'</span>);
+    <span class="hljs-keyword">return</span> selected;
+  }
+
+  <span class="hljs-function"><span class="hljs-title">getSelectedItemIndex</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.items.indexOf(<span class="hljs-built_in">this</span>.getSelectedItem());
+  }
+
+  <span class="hljs-function"><span class="hljs-title">slideTo</span>(<span class="hljs-params">idx</span>)</span> {
+    <span class="hljs-keyword">const</span> selected = <span class="hljs-built_in">this</span>.getSelectedItem();
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">selected</span>)</span> {
+      selected.className = <span class="hljs-string">'slider__item'</span>;
+    }
+    <span class="hljs-keyword">const</span> item = <span class="hljs-built_in">this</span>.items[idx];
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">item</span>)</span> {
+      item.className = <span class="hljs-string">'slider__item--selected'</span>;
+    }
+
+    <span class="hljs-keyword">const</span> detail = {<span class="hljs-attr">index</span>: idx};
+    <span class="hljs-keyword">const</span> event = <span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">'slide'</span>, {<span class="hljs-attr">bubbles</span>: <span class="hljs-literal">true</span>, detail});
+    <span class="hljs-built_in">this</span>.container.dispatchEvent(event);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">slideNext</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> currentIdx = <span class="hljs-built_in">this</span>.getSelectedItemIndex();
+    <span class="hljs-keyword">const</span> nextIdx = (currentIdx + <span class="hljs-number">1</span>) % <span class="hljs-built_in">this</span>.items.length;
+    <span class="hljs-built_in">this</span>.slideTo(nextIdx);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">slidePrevious</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> currentIdx = <span class="hljs-built_in">this</span>.getSelectedItemIndex();
+    <span class="hljs-keyword">const</span> previousIdx = (<span class="hljs-built_in">this</span>.items.length + currentIdx - <span class="hljs-number">1</span>) % <span class="hljs-built_in">this</span>.items.length;
+    <span class="hljs-built_in">this</span>.slideTo(previousIdx);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">start</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>.stop();
+    <span class="hljs-built_in">this</span>._timer = <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =></span> <span class="hljs-built_in">this</span>.slideNext(), <span class="hljs-built_in">this</span>.cycle);
+  }
+
+  <span class="hljs-function"><span class="hljs-title">stop</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">clearInterval</span>(<span class="hljs-built_in">this</span>._timer);
+  }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SliderController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  <span class="hljs-keyword">static</span> name = <span class="hljs-string">'slider__control'</span>;
+
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, data, parent: slider}</span>)</span> {
+    <span class="hljs-built_in">super</span>({container, data});
+
+    <span class="hljs-keyword">const</span> buttons = container.querySelectorAll(<span class="hljs-string">'.slider__control-buttons, .slider__control-buttons--selected'</span>);
+    container.addEventListener(<span class="hljs-string">'mouseover'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      <span class="hljs-keyword">const</span> idx = <span class="hljs-built_in">Array</span>.from(buttons).indexOf(evt.target);
+      <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">idx >= <span class="hljs-number">0</span></span>)</span> {
+        slider.slideTo(idx);
+        slider.stop();
+      }
+    });
+
+    container.addEventListener(<span class="hljs-string">'mouseout'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      slider.start();
+    });
+
+    slider.container.addEventListener(<span class="hljs-string">'slide'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      <span class="hljs-keyword">const</span> idx = evt.detail.index;
+      <span class="hljs-keyword">const</span> selected = container.querySelector(<span class="hljs-string">'.slider__control-buttons--selected'</span>);
+      <span class="hljs-keyword">if</span>(selected) selected.className = <span class="hljs-string">'slider__control-buttons'</span>;
+      buttons[idx].className = <span class="hljs-string">'slider__control-buttons--selected'</span>;
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params">images</span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`
+      &#x3C;div class="slider__control">
+        <span class="hljs-subst">${images.map((image, i) => <span class="hljs-string">`
+            &#x3C;span class="slider__control-buttons<span class="hljs-subst">${i === <span class="hljs-number">0</span> ? <span class="hljs-string">'--selected'</span> : <span class="hljs-string">''</span>}</span>">&#x3C;/span>
+        `</span>).join(<span class="hljs-string">''</span>)}</span>
+      &#x3C;/div>    
+    `</span>.trim();
+  }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SliderPrevious</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, parent: slider}</span>)</span> {
+    <span class="hljs-built_in">super</span>({container});
+    <span class="hljs-keyword">const</span> previous = container.querySelector(<span class="hljs-string">'.slider__previous'</span>);
+    previous.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      slider.stop();
+      slider.slidePrevious();
+      slider.start();
+      evt.preventDefault();
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'&#x3C;a class="slider__previous">&#x3C;/a>'</span>;
+  }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SliderNext</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{container, parent: slider}</span>)</span> {
+    <span class="hljs-built_in">super</span>({container});
+    <span class="hljs-keyword">const</span> previous = container.querySelector(<span class="hljs-string">'.slider__next'</span>);
+    previous.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =></span> {
+      slider.stop();
+      slider.slideNext();
+      slider.start();
+      evt.preventDefault();
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'&#x3C;a class="slider__next">&#x3C;/a>'</span>;
+  }
+}
+
+<span class="hljs-keyword">const</span> images = [<span class="hljs-string">'https://p5.ssl.qhimg.com/t0119c74624763dd070.png'</span>,
+  <span class="hljs-string">'https://p4.ssl.qhimg.com/t01adbe3351db853eb3.jpg'</span>,
+  <span class="hljs-string">'https://p2.ssl.qhimg.com/t01645cd5ba0c3b60cb.jpg'</span>,
+  <span class="hljs-string">'https://p4.ssl.qhimg.com/t01331ac159b58f5478.jpg'</span>];
+
+<span class="hljs-keyword">const</span> container = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'.slider'</span>);
+<span class="hljs-keyword">const</span> slider = <span class="hljs-keyword">new</span> Slider({container, images});
+slider.registerSubComponents(SliderController, SliderPrevious, SliderNext);
+slider.start();
+</code></pre>
+<p>于是我们就得到了一个虽然简单，却自成体系的“组件框架”，这已经不仅仅是考虑Slider这一个组件的问题，依据这一套原则，我们的框架可以逐步添加和实现其他的UI组件，并且可以让这些组件被其他组件复用。</p>
+<p>这样复用性的问题就得到了解决。当然，这个小小的组件框架还有许多细节问题未考虑。</p>
+<p>比如：</p>
+<ol>
+<li>我们抽象了HTML和JS，却没有把CSS包含进来。</li>
+<li><code>registerSubComponents</code>方法传入的是子组件类，如果我们要创建子组件多个实例，还需要继续完善这套机制才能做到。</li>
+<li>我们可以在子组件中拿到parent对象，然后通过parent.container随意操作父组件的HTML结构，这导致不安全和可能的冲突，也需要引入适当的机制来处理这一问题。</li>
+</ol>
+<p>上述这些问题和其他一些问题有待继续完善，在一般较成熟的UI框架中，这些问题都有对应的解决方法，不过这超出了我们课程的范畴，我们把这些问题留待其他的课程。</p>
+</div>
+</body>
+</html>

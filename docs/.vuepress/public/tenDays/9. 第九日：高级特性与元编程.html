@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <title>Title</title>-->
+    <style>
+        body {
+    font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial !important;
+}
+
+.markdown-body {
+    word-break: break-word;
+    line-height: 1.75;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+    color: #333
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    line-height: 1.5;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    padding-bottom: 5px
+}
+
+.markdown-body h1 {
+    font-size: 24px;
+    margin-bottom: 5px
+}
+
+.markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    font-size: 20px
+}
+
+.markdown-body h2 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec
+}
+
+.markdown-body h3 {
+    font-size: 18px;
+    padding-bottom: 0
+}
+
+.markdown-body h6 {
+    margin-top: 5px
+}
+
+.markdown-body p {
+    line-height: inherit;
+    margin-top: 22px;
+    margin-bottom: 22px
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin-top: 32px;
+    margin-bottom: 32px
+}
+
+.markdown-body code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: #fff5f5;
+    color: #ff502c;
+    font-size: .87em;
+    padding: .065em .4em
+}
+
+.markdown-body code, .markdown-body pre {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace
+}
+
+.markdown-body pre {
+    overflow: auto;
+    position: relative;
+    line-height: 1.75
+}
+
+.markdown-body pre > code {
+    font-size: 12px;
+    padding: 15px 12px;
+    margin: 0;
+    word-break: normal;
+    display: block;
+    overflow-x: auto;
+    color: #333;
+    background: #f8f8f8
+}
+
+.markdown-body a {
+    text-decoration: none;
+    color: #0269c8;
+    border-bottom: 1px solid #d1e9ff
+}
+
+.markdown-body a:active, .markdown-body a:hover {
+    color: #275b8c
+}
+
+.markdown-body table {
+    display: inline-block !important;
+    font-size: 12px;
+    width: auto;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #f6f6f6
+}
+
+.markdown-body thead {
+    background: #f6f6f6;
+    color: #000;
+    text-align: left
+}
+
+.markdown-body tr:nth-child(2n) {
+    background-color: #fcfcfc
+}
+
+.markdown-body td, .markdown-body th {
+    padding: 12px 7px;
+    line-height: 24px
+}
+
+.markdown-body td {
+    min-width: 120px
+}
+
+.markdown-body blockquote {
+    color: #666;
+    padding: 1px 23px;
+    margin: 22px 0;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8
+}
+
+.markdown-body blockquote:after {
+    display: block;
+    content: ""
+}
+
+.markdown-body blockquote > p {
+    margin: 10px 0
+}
+
+.markdown-body ol, .markdown-body ul {
+    padding-left: 28px
+}
+
+.markdown-body ol li, .markdown-body ul li {
+    margin-bottom: 0;
+    list-style: inherit
+}
+
+.markdown-body ol li .task-list-item, .markdown-body ul li .task-list-item {
+    list-style: none
+}
+
+.markdown-body ol li .task-list-item ol, .markdown-body ol li .task-list-item ul, .markdown-body ul li .task-list-item ol, .markdown-body ul li .task-list-item ul {
+    margin-top: 0
+}
+
+.markdown-body ol ol, .markdown-body ol ul, .markdown-body ul ol, .markdown-body ul ul {
+    margin-top: 3px
+}
+
+.markdown-body ol li {
+    padding-left: 6px
+}
+
+.markdown-body .contains-task-list {
+    padding-left: 0
+}
+
+.markdown-body .task-list-item {
+    list-style: none
+}
+
+@media (max-width: 720px) {
+    .markdown-body h1 {
+        font-size: 24px
+    }
+
+    .markdown-body h2 {
+        font-size: 20px
+    }
+
+    .markdown-body h3 {
+        font-size: 18px
+    }
+}
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <h1>第九天</h1>
+<h2>第一个故事：类的私有属性</h2>
+<p>我们知道，封装性是程序设计很重要的一个概念，我们应当能够将私有数据封装在对象、函数或模块的内部。这些私有数据，模块开发者不希望它们被模块使用者所使用。</p>
+<p>在JavaScript中，类的私有属性是Stage3阶段的标准（处于实验性阶段），最新的一些浏览器如Chrome最新版本，支持原生的类私有属性。</p>
+<p>在最新的浏览器中，我们可以在变量前加<code>#</code>，让变量变成私有属性：</p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> </span>{
+  #foo = <span class="hljs-number">10</span>;
+ 
+  <span class="hljs-function"><span class="hljs-title">bar</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Private foo is <span class="hljs-subst">${<span class="hljs-built_in">this</span>.#foo}</span>`</span>);
+  }
+}
+
+<span class="hljs-keyword">const</span> foo = <span class="hljs-keyword">new</span> Foo();
+foo.bar(); <span class="hljs-comment">//Private foo is 10</span>
+</code></pre>
+<p>但是在较早的浏览器版本里，不支持使用原生的私有属性，这时，我们只能考虑用其他方式来实现类的私有属性。</p>
+<h3>传统的私有属性约定</h3>
+<p>在许多代码库或模块，尤其是早期版本的代码库或模块中，私有属性基于约定，以下划线开头：</p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>._foo = <span class="hljs-number">10</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-title">bar</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Private foo is <span class="hljs-subst">${<span class="hljs-built_in">this</span>._foo}</span>`</span>);
+  }
+}
+
+<span class="hljs-keyword">const</span> foo = <span class="hljs-keyword">new</span> Foo();
+foo.bar(); <span class="hljs-comment">//Private foo is 10</span>
+</code></pre>
+<p>这个并不是真正的“私有属性”，因为使用者其实如果想要访问<code>_foo</code>属性，任然能够随意访问。比如：</p>
+<pre><code class="hljs language-js">foo._foo = <span class="hljs-number">20</span>; <span class="hljs-comment">// 使用者当然可以访问这个 _foo 属性，所以说这只是一个约定</span>
+</code></pre>
+<h3>混淆变量名</h3>
+<p>如果要比较好地防止使用者使用私有属性，我们可以用混淆变量名的方式来防止使用者随意使用某个我们不想让使用者使用的属性。</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> _foo = <span class="hljs-string">`_<span class="hljs-subst">${<span class="hljs-built_in">Math</span>.random().toString(<span class="hljs-number">36</span>).slice(<span class="hljs-number">2</span>, <span class="hljs-number">10</span>)}</span>`</span>;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>[_foo] = <span class="hljs-number">10</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-title">bar</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Private foo is <span class="hljs-subst">${<span class="hljs-built_in">this</span>[_foo]}</span>`</span>);
+  }
+}
+
+<span class="hljs-keyword">const</span> foo = <span class="hljs-keyword">new</span> Foo();
+foo.bar(); <span class="hljs-comment">//Private foo is 10</span>
+</code></pre>
+<p>如下图所示，Foo方法上包含有一个随机变量名的属性，在内部可以通过<code>this[_foo]</code>访问。</p>
+<p><img src="img\a3dc7e3b-ae6f-11ed-a7eb-342eb7027b95.jpg" alt=""></p>
+<p>当然，这样使用者仍然可以通过<code>foo._hodjtxxf</code>来访问它，但是因为不知道这个名字的含义，而且，每次运行的时候这个名字是随机的，使用者基本上没法使用这个属性了。</p>
+<p>不过，使用者即使不知道随机的变量名，依然可以通过<code>Object.keys</code>或者<code>Object.entries</code>或者<code>for...in</code>等方法将这个属性枚举出来，所以仍然有使用这个属性的可能，但是我们可以通过将属性定义成不可枚举属性，来防止用户将它枚举出来：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> _foo = <span class="hljs-string">`_<span class="hljs-subst">${<span class="hljs-built_in">Math</span>.random().toString(<span class="hljs-number">36</span>).slice(<span class="hljs-number">2</span>, <span class="hljs-number">10</span>)}</span>`</span>;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">Object</span>.defineProperty(<span class="hljs-built_in">this</span>, _foo, {
+      <span class="hljs-attr">value</span>: <span class="hljs-number">10</span>,
+      <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">false</span>,
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-title">bar</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Private foo is <span class="hljs-subst">${<span class="hljs-built_in">this</span>[_foo]}</span>`</span>);
+  }
+}
+
+<span class="hljs-keyword">const</span> foo = <span class="hljs-keyword">new</span> Foo();
+foo.bar(); <span class="hljs-comment">//Private foo is 10</span>
+</code></pre>
+<p>如上代码所示，我们使用<code>Object.defineProperty</code>方法将变量<code>_foo</code>定义成不可枚举的属性。这样，用户除了能在控制台上看到这个属性之外，基本上没法使用它了。</p>
+<p><em>关于<code>Object.defineProperty</code>方法的详细用法，你可以参考《初级前端工程师JS篇》。</em></p>
+<h3>使用Map和WeakMap</h3>
+<p>使用混淆变量名的方式，我们依然能在浏览器控制台中看到这个属性，如果要让它在控制台上也看不到，我们可以使用ES5的Map方法：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> privates = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>();
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    privates.set(<span class="hljs-built_in">this</span>, {<span class="hljs-attr">foo</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">bar</span>: <span class="hljs-number">20</span>});
+  }
+
+  <span class="hljs-function"><span class="hljs-title">bar</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> _ = privates.get(<span class="hljs-built_in">this</span>);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Private foo is <span class="hljs-subst">${_.foo}</span> and bar is <span class="hljs-subst">${_.bar}</span>`</span>);
+  }
+}
+
+<span class="hljs-keyword">const</span> foo = <span class="hljs-keyword">new</span> Foo();
+foo.bar(); <span class="hljs-comment">//Private foo is 10 and bar is 20</span>
+</code></pre>
+<p>使用Map，我们可以将私有属性完全封装在摸快内，在模块外不可能访问到，浏览器控制台上也看不到。</p>
+<p>不过使用Map也有缺点，首先这个方法内部使用起来也不太方便，不像之前那样，直接通过<code>this[_foo]</code>就能读或写私有属性<code>_foo</code>；另外，如果是私有方法，也很麻烦，还要处理this。比如下面这段代码：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> privates = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>();
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>.p = <span class="hljs-number">2</span>;
+    privates.set(<span class="hljs-built_in">this</span>, {<span class="hljs-attr">foo</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{<span class="hljs-keyword">return</span> <span class="hljs-number">10</span> * <span class="hljs-built_in">this</span>.p}});
+  }
+
+  <span class="hljs-function"><span class="hljs-title">bar</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">const</span> _ = privates.get(<span class="hljs-built_in">this</span>);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Private foo is <span class="hljs-subst">${_.foo.call(<span class="hljs-built_in">this</span>)}</span>`</span>);
+  }
+}
+
+<span class="hljs-keyword">const</span> foo = <span class="hljs-keyword">new</span> Foo();
+foo.bar(); <span class="hljs-comment">//Private foo is 20</span>
+</code></pre>
+<p>注意，上面的代码中，我们不能直接这样调用<code>_.foo()</code>，而必须通过<code>call</code>或者<code>apply</code>方法来调用<code>_.foo</code>方法，以保证这个方法中的<code>this</code>指向的是<code>Foo</code>这个对象。</p>
+<p>对比使用混淆变量名的方法：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> _foo = <span class="hljs-string">`_<span class="hljs-subst">${<span class="hljs-built_in">Math</span>.random().toString(<span class="hljs-number">36</span>).slice(<span class="hljs-number">2</span>, <span class="hljs-number">10</span>)}</span>`</span>;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>.p = <span class="hljs-number">2</span>;
+  }
+  [_foo]() {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">10</span> * <span class="hljs-built_in">this</span>.p;
+  }
+  <span class="hljs-function"><span class="hljs-title">bar</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Private foo is <span class="hljs-subst">${<span class="hljs-built_in">this</span>[_foo]()}</span>`</span>);
+  }
+}
+
+<span class="hljs-keyword">const</span> foo = <span class="hljs-keyword">new</span> Foo();
+foo.bar(); <span class="hljs-comment">//Private foo is 20</span>
+</code></pre>
+<p>明显还是混淆变量名的方法更简单。</p>
+<p>另外还有一个问题，如果用Map的话，对象引用被取消的时候，因为Map中还有该引用，从而导致对象不能被引擎回收。要解决这个问题，可以将Map用WeakMap替代。</p>
+<h3>使用 Symbol</h3>
+<p>在ES6之后，JavaScript支持了一种新的原始类型Symbol。Symbol创建唯一的ID，可作为属性或者方法的key，同时，不会被<code>Object.keys</code>、<code>Object.entries</code>或者<code>for...in</code>枚举到。这样我们就能得到比混淆变量名更理想的方式，使用Symbol：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> _foo = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'foo'</span>);
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>.p = <span class="hljs-number">2</span>;
+  }
+  [_foo]() {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">10</span> * <span class="hljs-built_in">this</span>.p;
+  }
+  <span class="hljs-function"><span class="hljs-title">bar</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Private foo is <span class="hljs-subst">${<span class="hljs-built_in">this</span>[_foo]()}</span>`</span>);
+  }
+}
+
+<span class="hljs-keyword">const</span> foo = <span class="hljs-keyword">new</span> Foo();
+foo.bar(); <span class="hljs-comment">//Private foo is 20</span>
+</code></pre>
+<p>使用Symbol的写法和使用混淆变量名的写法基本一样，只是把</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> _foo = <span class="hljs-string">`_<span class="hljs-subst">${<span class="hljs-built_in">Math</span>.random().toString(<span class="hljs-number">36</span>).slice(<span class="hljs-number">2</span>, <span class="hljs-number">10</span>)}</span>`</span>;
+</code></pre>
+<p>替换成：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> _foo = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'foo'</span>);
+</code></pre>
+<p>这样，在模块外部是没法访问到私有属性的，但是控制台上可以在对象的原型上看到一个<code>Symbol(foo)</code>属性，如下图所示，但这个属性不会被枚举出来。</p>
+<p><img src="img\a3f10923-ae6f-11ed-9f21-342eb7027b95.jpg" alt=""></p>
+<p>使用Symbol之后，如果使用者确实想要使用这个私有属性，可以使用<code>Object.getOwnPropertySymbols</code>方法获取对象上的Symbol（如果是私有方法，则要获取类的原型上的Symbol）。</p>
+<p>比如上面的代码，要获取<code>_foo</code>私有方法，可以通过：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> _privateFoo = <span class="hljs-built_in">Object</span>.getOwnPropertySymbols(Foo.prototype)[<span class="hljs-number">0</span>];
+
+foo[_privateFoo](); <span class="hljs-comment">// 20</span>
+</code></pre>
+<p>来访问私有方法。这种私有访问方式已经非常复杂，基本上可以限制使用者使用这些私有属性和方法了，而留有这一种访问方式，也算是提供一种反射机制，给使用者留下一个后门，以便确实需要的时候进行访问。</p>
+<p>所以，在一般的情况下，我们使用<code>Symbol</code>来定义对象的私有属性和方法，是目前比较推荐的一种方式，直到原生的私有属性从Stage3成为正式的标准之前，我们还是使用Symbol来定义私有属性和方法吧。</p>
+<p>JavaScript中的私有属性可以通过混淆变量、Map/WeakMap，或者Symbol实现。那么我们怎样应用JS私有属性的特性呢？</p>
+<h2>第二个故事：使用访问器属性</h2>
+<p>一般来说，私有属性配合属性访问器使用，比如我们要想定义一个内部可读写而外部只读的属性，可以这么定义：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> _name = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'bar'</span>);
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">name</span>)</span> {
+    <span class="hljs-built_in">this</span>[_name] = <span class="hljs-string">`foo: <span class="hljs-subst">${name}</span>`</span>;
+  }
+
+  <span class="hljs-keyword">get</span> <span class="hljs-title">name</span>() {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>[_name];
+  }
+}
+</code></pre>
+<p>我们将<code>Foo</code>的<code>name</code>属性定义为一个<code>get</code>访问器属性，这样在外部它就是只读属性。它的值由内部的私有属性<code>this[_name]</code>决定。</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> foo1 = <span class="hljs-keyword">new</span> Foo(<span class="hljs-string">'a'</span>);
+<span class="hljs-keyword">const</span> foo2 = <span class="hljs-keyword">new</span> Foo(<span class="hljs-string">'b'</span>);
+<span class="hljs-built_in">console</span>.log(foo1.name, foo2.name); <span class="hljs-comment">// foo: a, foo: b</span>
+
+foo1.name = <span class="hljs-string">'bar'</span>;
+<span class="hljs-built_in">console</span>.log(foo1.name); <span class="hljs-comment">// foo: a</span>
+</code></pre>
+<p>如上代码所示，我们可以通过<code>foo1.name</code>或者<code>foo2.name</code>来访问对象的<code>name</code>属性。但是我们不能通过<code>foo1.name = 'bar'</code>来修改对象的<code>name</code>属性值。</p>
+<h3>关联属性</h3>
+<p>我们在设计对象模型的时候，尽量减少要维护的数据，数据越少，意味着模型越简单，代码的可维护性越强。这时，我们可以通过<strong>关联属性</strong>简化对象模型中的数据。</p>
+<p>那么，什么是关联属性呢？我们通过下面这个例子说明一下：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">form</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">label</span>></span>姓名：<span class="hljs-tag">&#x3C;/<span class="hljs-name">label</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"name"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">""</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">label</span>></span>出生年月：<span class="hljs-tag">&#x3C;/<span class="hljs-name">label</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"birth-year"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>1995年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>1996年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>1997年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>1998年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>1999年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2000年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2001年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2002年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2003年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2004年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2005年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2006年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2007年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">select</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"birth-month"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>1月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>3月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>4月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>5月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>6月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>7月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>8月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>9月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>10月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>11月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>12月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">select</span>></span>
+   <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">label</span>></span>年龄：<span class="hljs-tag">&#x3C;/<span class="hljs-name">label</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"age"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">""</span> <span class="hljs-attr">readonly</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">label</span>></span>用户画像：<span class="hljs-tag">&#x3C;/<span class="hljs-name">label</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"portrait"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">""</span> <span class="hljs-attr">readonly</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">form</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-tag">label</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">80px</span>;
+  <span class="hljs-attribute">text-align</span>: right;
+  <span class="hljs-attribute">padding-right</span>: <span class="hljs-number">10px</span>;
+}
+</code></pre>
+<p>上面的代码建立了一个表单，用来显示某个用户的个人信息。它的效果如下所示：</p>
+<p><img src="img\a40b0d23-ae6f-11ed-a81c-342eb7027b95.jpg" alt=""></p>
+<p>我们给这个表单的信息创建了一个Person对象，包含有姓名（name）、出生年月（birthday）、年龄（age）和用户画像(protrait)等属性。</p>
+<p>但是注意到，其实年龄和用户画像，是可以通过出生年月算出的，所以真正要维护的数据，只有姓名和出生年月。</p>
+<p>所以我们可以这样设计Person类：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> _name = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'name'</span>);
+<span class="hljs-keyword">const</span> _birthYear = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'birth-year'</span>);
+<span class="hljs-keyword">const</span> _birthMonth = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'birth-month'</span>);
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{name, birthday}</span>)</span> {
+    <span class="hljs-built_in">this</span>[_name] = name;
+    <span class="hljs-keyword">const</span> date = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(birthday);
+    <span class="hljs-built_in">this</span>[_birthYear] = date.getFullYear(); <span class="hljs-comment">// 出生年份</span>
+    <span class="hljs-built_in">this</span>[_birthMonth] = date.getMonth() + <span class="hljs-number">1</span>; <span class="hljs-comment">// 出生月份</span>
+  }
+  
+  <span class="hljs-keyword">get</span> <span class="hljs-title">name</span>() {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>[_name];
+  }
+  
+  <span class="hljs-keyword">get</span> <span class="hljs-title">birthday</span>() {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">year</span>: <span class="hljs-built_in">this</span>[_birthYear],
+      <span class="hljs-attr">month</span>: <span class="hljs-built_in">this</span>[_birthMonth],
+    };
+  }
+  
+  <span class="hljs-keyword">get</span> <span class="hljs-title">age</span>() { <span class="hljs-comment">// 根据出生年份计算age属性值</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getFullYear() - <span class="hljs-built_in">this</span>[_birthYear];
+  }
+  
+  <span class="hljs-keyword">get</span> <span class="hljs-title">portrait</span>() { <span class="hljs-comment">// 根据age属性计算portrait属性值</span>
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">this</span>.age &#x3C;= <span class="hljs-number">18</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">'少年'</span>;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-string">'成年'</span>;
+  }
+}
+</code></pre>
+<p>上面的代码中，我们设计三个私有属性<code>[_name]</code>、<code>[_birthYear]</code>和<code>[_birthMonth]</code>，分别存储初始化的姓名、出生年和月的信息。我们用四个访问器属性来提供给使用者<code>name</code>、<code>birthday</code>、<code>age</code>、<code>portrait</code>四个对象属性，它们都是只读的。其中，<code>age</code>和<code>portrait</code>属性就是<strong>关联属性</strong>，它们的值都是根据<code>birthday</code>属性值的变化而变化。</p>
+<p>然后，我们可以将它们绑定到DOM元素上：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updatePerson</span>(<span class="hljs-params">person</span>) </span>{
+  <span class="hljs-keyword">const</span> name = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'name'</span>);
+  name.value = person.name;
+  <span class="hljs-keyword">const</span> birthYear = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'birth-year'</span>);
+  <span class="hljs-keyword">const</span> birthMonth = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'birth-month'</span>);
+  <span class="hljs-keyword">const</span> {year, month} = person.birthday;
+  birthYear.value = <span class="hljs-string">`<span class="hljs-subst">${year}</span>年`</span>;
+  birthMonth.value = <span class="hljs-string">`<span class="hljs-subst">${month}</span>月`</span>;
+  <span class="hljs-keyword">const</span> age = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'age'</span>);
+  age.value = <span class="hljs-string">`<span class="hljs-subst">${person.age}</span>岁`</span>;
+  <span class="hljs-keyword">const</span> portrait = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'portrait'</span>);
+  portrait.value = person.portrait;
+}
+
+<span class="hljs-keyword">const</span> p = <span class="hljs-keyword">new</span> Person({<span class="hljs-attr">name</span>:<span class="hljs-string">'张三'</span>, <span class="hljs-attr">birthday</span>:<span class="hljs-string">'1999-12'</span>});
+updatePerson(p);
+</code></pre>
+<p>这样就实现了UI组件的更新。</p>
+<p>不过，上面这个代码仅仅能实现将数据更新给UI组件，如果我们操作UI组件，改变内容，数据并不会主动跟着变化，关联的UI也不会更新。比如，我们操作下拉框，将张三的出身生年月改成2006年，用户画像那一栏里的“成年”，并不会被自动更新成“少年”。这样的UI，所有的操作都需要我们手动去控制，用起来比较繁琐。而且在产品需求比较复杂的时候，如果我们要根据用户的交互，用同一组数据更新多处UI，用JavaScript手动操作DOM元素，会使得页面逻辑变得非常复杂。</p>
+<h3>监听属性改变</h3>
+<p>现在比较流行的一种设计是，让UI绑定对象的数据，在某个对象的属性发生变化的时候，UI收到属性改变的消息，自动更新。</p>
+<p>这种设计强调以数据为中心，开发者只操作数据，让数据改变去自动更新对应的UI。</p>
+<p><img src="img\a4225a85-ae6f-11ed-bc4e-342eb7027b95.jpg" alt=""></p>
+<p>这样的方法叫做<strong>数据驱动UI</strong>或者<strong>响应式数据绑定</strong>。那么具体怎么实现呢？</p>
+<p>我们稍稍修改一下前面例子的UI：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"avatar"</span>></span>姓名<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">form</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">label</span>></span>姓名：<span class="hljs-tag">&#x3C;/<span class="hljs-name">label</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"name"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">""</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">label</span>></span>出生年月：<span class="hljs-tag">&#x3C;/<span class="hljs-name">label</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"birth-year"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>1995年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>1996年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>1997年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>1998年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>1999年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2000年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2001年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2002年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2003年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2004年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2005年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2006年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2007年<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">select</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"birth-month"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>1月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>2月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>3月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>4月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>5月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>6月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>7月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>8月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>9月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>10月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>11月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">option</span>></span>12月<span class="hljs-tag">&#x3C;/<span class="hljs-name">option</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">select</span>></span>
+   <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">label</span>></span>年龄：<span class="hljs-tag">&#x3C;/<span class="hljs-name">label</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"age"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">""</span> <span class="hljs-attr">readonly</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">label</span>></span>用户画像：<span class="hljs-tag">&#x3C;/<span class="hljs-name">label</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"portrait"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">""</span> <span class="hljs-attr">readonly</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">form</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-tag">label</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">80px</span>;
+  <span class="hljs-attribute">text-align</span>: right;
+  <span class="hljs-attribute">padding-right</span>: <span class="hljs-number">10px</span>;
+}
+
+<span class="hljs-selector-id">#avatar</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">120px</span>;
+  <span class="hljs-attribute">border</span>: solid <span class="hljs-number">1px</span>;
+  <span class="hljs-attribute">margin-left</span>: <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+}
+
+<span class="hljs-selector-tag">form</span> {
+  <span class="hljs-attribute">float</span>: left;
+}
+</code></pre>
+<p><img src="img\a441447e-ae6f-11ed-842f-342eb7027b95.jpg" alt=""></p>
+<p>然后修改一下JS：</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// 中间人</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PubSub</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">this</span>.subscribers = {};
+  }
+
+  <span class="hljs-comment">/*
+    @type 消息类型，如scroll
+    @receiver 订阅者
+    @fn 响应消息的处理函数
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">sub</span>(<span class="hljs-params">type, receiver, fn</span>)</span> {
+    <span class="hljs-built_in">this</span>.subscribers[type] = <span class="hljs-built_in">this</span>.subscribers[type] || [];
+    <span class="hljs-built_in">this</span>.subscribers[type].push(fn.bind(receiver));
+  }
+
+  <span class="hljs-comment">/*
+    @type 消息类型
+    @sender 派发消息者
+    @data 数据，比如状态数据
+  */</span>
+  <span class="hljs-function"><span class="hljs-title">pub</span>(<span class="hljs-params">type, sender, data</span>)</span> {
+    <span class="hljs-keyword">const</span> subscribers = <span class="hljs-built_in">this</span>.subscribers[type];
+    subscribers.forEach(<span class="hljs-function">(<span class="hljs-params">subscriber</span>) =></span> {
+      subscriber({type, sender, data});
+    });
+  }
+}
+
+<span class="hljs-keyword">const</span> name = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'name'</span>);
+<span class="hljs-keyword">const</span> avatar = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'avatar'</span>);
+<span class="hljs-keyword">const</span> birthYear = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'birth-year'</span>);
+<span class="hljs-keyword">const</span> birthMonth = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'birth-month'</span>);
+<span class="hljs-keyword">const</span> age = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'age'</span>);
+<span class="hljs-keyword">const</span> portrait = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'portrait'</span>);
+
+<span class="hljs-comment">// 根据person模型数据更新UI</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updatePerson</span>(<span class="hljs-params">person</span>) </span>{
+  name.value = person.name;
+  <span class="hljs-keyword">const</span> {year, month} = person.birthday;
+  birthYear.value = <span class="hljs-string">`<span class="hljs-subst">${year}</span>年`</span>;
+  birthMonth.value = <span class="hljs-string">`<span class="hljs-subst">${month}</span>月`</span>;
+  age.value = <span class="hljs-string">`<span class="hljs-subst">${person.age}</span>岁`</span>;
+  portrait.value = person.portrait;
+  avatar.innerHTML = person.name;
+}
+
+<span class="hljs-keyword">const</span> p = <span class="hljs-keyword">new</span> Person({<span class="hljs-attr">name</span>: <span class="hljs-string">'张三'</span>, <span class="hljs-attr">birthday</span>: <span class="hljs-string">'1999-12'</span>});
+<span class="hljs-comment">// 注册需要监听的change事件</span>
+p.watcher.sub(<span class="hljs-string">'change'</span>, <span class="hljs-literal">null</span>, <span class="hljs-function">(<span class="hljs-params">{sender}</span>) =></span> {
+  updatePerson(sender); <span class="hljs-comment">// 更新UI</span>
+});
+updatePerson(p);
+
+name.addEventListener(<span class="hljs-string">'change'</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+  p.name = e.target.value;
+});
+
+birthYear.addEventListener(<span class="hljs-string">'change'</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+  p.birthday = {<span class="hljs-attr">year</span>: <span class="hljs-built_in">parseInt</span>(e.target.value, <span class="hljs-number">10</span>)};
+});
+
+birthMonth.addEventListener(<span class="hljs-string">'change'</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+  p.birthday = {<span class="hljs-attr">month</span>: <span class="hljs-built_in">parseInt</span>(e.target.value, <span class="hljs-number">10</span>)};
+});
+</code></pre>
+<p>如上代码所示，我们用在第六日中学到过的设计模式——中间人模式，给<code>Person</code>对象的<code>name</code>和<code>birthday</code>属性添加set访问器属性，并添加了一个<code>watcher</code>只读属性，用来监听<code>Person</code>对象的属性变化。</p>
+<p>我们在<code>name</code>和<code>birthday</code>属性的set访问器中调用<code>Person</code>对象的<code>update</code>方法，在<code>update</code>方法里通过中间人pub一条<code>change</code>消息。然后我们通过<code>p.watcher.sub</code>监听这条消息，在监听器中调用<code>updatePerson</code>方法更新数据到DOM元素。</p>
+<p>这样我们在<code>name</code>、<code>birthYear</code>和<code>birthMonth</code>三个UI元素内容改变的时候，回写数据给Person对象，而Person对象数据改变，就会自动通过<code>watcher</code>执行<code>updatePerson</code>。于是这段代码的效果就是，当用户通过操作表单修改name、birthday时，UI上相关的内容就会自动更新了。<a href="https://junyux.github.io/FE-Advance/day09/index1.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<p><img src="img\a46038a0-ae6f-11ed-9748-342eb7027b95.jpg" alt=""></p>
+<p>所以，如上面例子所示，属性访问器能够实现响应式数据绑定，为我们处理复杂UI问题带来便利。不过，这个例子中的属性访问器也有些不足之处，因为每次添加一个set属性，我们就需要记得调用一下对象的<code>update</code>方法，由这个方法负责通知消息监听者对象属性改变。当我们的对象属性很多的时候，有可能因为忘记调用<code>update</code>方法产生错误。不过，JavaScript还有一个更强的特性，可以监听对象上任意属性的读写操作，我们在下一个故事中来讨论它。</p>
+<h2>第三个故事：使用代理Proxy</h2>
+<p>Proxy是ES6之后内置的JavaScript标准对象，它可以代理一个目标对象，以拦截该目标对象的<strong>基本操作</strong>。</p>
+
+<p>我们用一个简单的例子，来看看Proxy对象是如何使用的：</p>
+<p>我们知道，JavaScript对象访问一个不存在的属性的时候，该属性返回undefined。假设我们现在希望提供给用户一个对象，当用户访问这个对象时，若属性不存在则抛出异常。</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">let</span> handler = {
+  <span class="hljs-attr">get</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">target, name</span>)</span>{
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">name <span class="hljs-keyword">in</span> target</span>)</span> {
+      <span class="hljs-keyword">return</span> target[name];
+    }
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'invalid property'</span>);
+  }
+};
+
+<span class="hljs-keyword">const</span> p = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Proxy</span>({}, handler);
+
+p.a = <span class="hljs-number">1</span>;
+p.b = <span class="hljs-number">2</span>;
+
+<span class="hljs-built_in">console</span>.log(p.a, p.b); <span class="hljs-comment">// 1, 2</span>
+<span class="hljs-built_in">console</span>.log(p.c); <span class="hljs-comment">// Error: invalid property</span>
+</code></pre>
+<p>以上的代码中，Proxy构造器接受两个参数，第一个参数表示被代理的对象，第二个对象表示拦截对象（也就是<code>hanlder</code>)。那么这个<code>handler</code>对象拦截什么呢？ <code>get: function(target, name){...}</code>表示拦截被拦截对象中所有的get访问器属性，如果<code>target</code>（即，被拦截对象）中的<code>name</code>属性不存在，那么就抛出错误。</p>
+<p>Proxy对象不能被直接继承：</p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PObject</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Proxy</span> </span>{
+  
+}
+</code></pre>
+<p>像上面这样继承会报错：</p>
+<pre><code>VM158:1 Uncaught TypeError: Class extends value does not have valid prototype property undefined
+    at &#x3C;anonymous>:1:23
+</code></pre>
+<p>但是，我们可以通过将原型设为代理对象来做到。</p>
+<p>所以如果我们想要定义一组类，拥有上面那种拦截特性，我们可以这么做：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">let</span> handler = {
+  <span class="hljs-attr">get</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">target, name</span>)</span>{
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">name <span class="hljs-keyword">in</span> target</span>)</span> {
+      <span class="hljs-keyword">return</span> target[name];
+    }
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'invalid property'</span>);
+  }
+};
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Base</span>(<span class="hljs-params"></span>) </span>{} <span class="hljs-comment">// 定义一个Base类</span>
+Base.prototype = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Proxy</span>({}, handler);
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Base</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">super</span>();
+    <span class="hljs-built_in">this</span>.a = <span class="hljs-number">1</span>;
+    <span class="hljs-built_in">this</span>.b = <span class="hljs-number">2</span>;
+  }
+}
+
+<span class="hljs-keyword">const</span> foo = <span class="hljs-keyword">new</span> Foo();
+<span class="hljs-built_in">console</span>.log(foo.a, foo.b); <span class="hljs-comment">// 1, 2</span>
+<span class="hljs-built_in">console</span>.log(foo.c); <span class="hljs-comment">// Error: invalid property</span>
+</code></pre>
+<p>如上代码所示，我们首先定义了一个名叫Base的基类。然后将这个Base对象的<code>prototype</code>设置为Proxy对象。这样继承了Base类的Foo对象就有了拦截不存在属性的特性。</p>
+<p>了解了JS的Proxy对象的特性和使用， 我们可以改造一下上一篇中监听属性变化的代码——用Proxy来拦截属性的变化：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> _name = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'name'</span>);
+<span class="hljs-keyword">const</span> _birthYear = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'birth-year'</span>);
+<span class="hljs-keyword">const</span> _birthMonth = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'birth-month'</span>);
+
+<span class="hljs-comment">/*
+  这个person类的定义中，去掉了中间人的设置
+*/</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">{name, birthday}</span>)</span> {
+    <span class="hljs-built_in">this</span>[_name] = name;
+    <span class="hljs-keyword">const</span> date = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(birthday);
+    <span class="hljs-built_in">this</span>[_birthYear] = date.getFullYear();
+    <span class="hljs-built_in">this</span>[_birthMonth] = date.getMonth() + <span class="hljs-number">1</span>;
+  }
+  
+  <span class="hljs-keyword">get</span> <span class="hljs-title">name</span>() {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>[_name];
+  }
+  
+  <span class="hljs-keyword">set</span> <span class="hljs-title">name</span>(<span class="hljs-params">value</span>) {
+    <span class="hljs-built_in">this</span>[_name] = value;
+  }
+  
+  <span class="hljs-keyword">get</span> <span class="hljs-title">birthday</span>() {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">year</span>: <span class="hljs-built_in">this</span>[_birthYear],
+      <span class="hljs-attr">month</span>: <span class="hljs-built_in">this</span>[_birthMonth],
+    };
+  }
+  
+  <span class="hljs-keyword">set</span> <span class="hljs-title">birthday</span>(<span class="hljs-params">{year = <span class="hljs-built_in">this</span>[_birthYear], month = <span class="hljs-built_in">this</span>[_birthMonth]}</span>) {
+    <span class="hljs-built_in">this</span>[_birthYear] = year;
+    <span class="hljs-built_in">this</span>[_birthMonth] = month;
+  }
+  
+  <span class="hljs-keyword">get</span> <span class="hljs-title">age</span>() {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getFullYear() - <span class="hljs-built_in">this</span>[_birthYear];
+  }
+  
+  <span class="hljs-keyword">get</span> <span class="hljs-title">portrait</span>() {
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">this</span>.age &#x3C;= <span class="hljs-number">18</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">'少年'</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'成年'</span>;
+  }
+}
+
+<span class="hljs-keyword">const</span> name = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'name'</span>);
+<span class="hljs-keyword">const</span> avatar = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'avatar'</span>);
+<span class="hljs-keyword">const</span> birthYear = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'birth-year'</span>);
+<span class="hljs-keyword">const</span> birthMonth = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'birth-month'</span>);
+<span class="hljs-keyword">const</span> age = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'age'</span>);
+<span class="hljs-keyword">const</span> portrait = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'portrait'</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updatePerson</span>(<span class="hljs-params">person</span>) </span>{
+  name.value = person.name;
+  <span class="hljs-keyword">const</span> {year, month} = person.birthday;
+  birthYear.value = <span class="hljs-string">`<span class="hljs-subst">${year}</span>年`</span>;
+  birthMonth.value = <span class="hljs-string">`<span class="hljs-subst">${month}</span>月`</span>;
+  age.value = <span class="hljs-string">`<span class="hljs-subst">${person.age}</span>岁`</span>;
+  portrait.value = person.portrait;
+  avatar.innerHTML = person.name;
+}
+
+<span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> Person({<span class="hljs-attr">name</span>: <span class="hljs-string">'张三'</span>, <span class="hljs-attr">birthday</span>: <span class="hljs-string">'1999-12'</span>});
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">watch</span>(<span class="hljs-params">obj, onchange</span>) </span>{
+  <span class="hljs-comment">/*
+    这个代理对象表示拦截persion对象的属性赋值操作，在属性赋值操作后，都执行一次onchange方法。这样就无需派发消息的中间人，但又实现了数据驱动UI的效果。
+  */</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Proxy</span>(obj, {
+    <span class="hljs-function"><span class="hljs-title">set</span>(<span class="hljs-params">target, name, value</span>)</span> {
+      <span class="hljs-built_in">Reflect</span>.set(target, name, value); <span class="hljs-comment">// 调用person对象的原始操作(即，属性赋值操作)</span>
+      onchange(target, {[name]: value});
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">// 表示成功</span>
+    },
+  });
+}
+
+p = watch(p, <span class="hljs-function">(<span class="hljs-params">subject</span>) =></span> {
+  updatePerson(subject);
+});
+updatePerson(p);
+
+name.addEventListener(<span class="hljs-string">'change'</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+  p.name = e.target.value;
+});
+
+birthYear.addEventListener(<span class="hljs-string">'change'</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+  p.birthday = {<span class="hljs-attr">year</span>: <span class="hljs-built_in">parseInt</span>(e.target.value, <span class="hljs-number">10</span>)};
+});
+
+birthMonth.addEventListener(<span class="hljs-string">'change'</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+  p.birthday = {<span class="hljs-attr">month</span>: <span class="hljs-built_in">parseInt</span>(e.target.value, <span class="hljs-number">10</span>)};
+});
+</code></pre>
+<p>上面的代码，使用Proxy来拦截属性变化，这样就不用在Person上定义和手工调用<code>update</code>方法了。<a href="https://junyux.github.io/FE-Advance/day09/index2.html" target="_blank" rel="nofollow noopener noreferrer">在线演示</a></p>
+<p>Proxy还有很多拦截对象行为的方式，利用这些方式可以改变或扩展JavaScript代码的语义。</p>
+<p>通常情况下，我们把改变或扩展编程语言语义的行为，叫做<strong>元编程</strong>(Meta-Programming)。下面我们就通过一些实例来说明Proxy是如何改变语言的语义的。</p>
+<p>改变<code>in</code>操作符的语义：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> text = <span class="hljs-string">`君喻教育。
+君子之教，喻也。
+http://junyux.com`</span>;
+
+<span class="hljs-keyword">const</span> p = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Proxy</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">String</span>(text), {
+  <span class="hljs-attr">has</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">target, name</span>) </span>{
+     <span class="hljs-keyword">return</span> target.indexOf(name) >= <span class="hljs-number">0</span>;
+  }
+});
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'君喻'</span> <span class="hljs-keyword">in</span> p);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'君子之教'</span> <span class="hljs-keyword">in</span> p);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'junyux.com'</span> <span class="hljs-keyword">in</span> p);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'foo'</span> <span class="hljs-keyword">in</span> p);
+</code></pre>
+<p>在上面的代码里，我们通过Proxy改变了对象的<code>in</code>操作符的语义，将它从判断是否是对象上的属性，变为了判断字符串是否在被代理的文本内容中。</p>
+<p>注意，这里我们用了一个字符串的装箱操作（即，将原始类型string包装成对象String），因为Proxy的第一个参数必须是一个对象。</p>
+<p>我们再来看一个例子——改变对象赋值的语义：</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>1<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>2<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>3<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>4<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>5<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>6<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+</code></pre>
+<pre><code class="hljs language-css"><span class="hljs-selector-tag">li</span><span class="hljs-selector-class">.selected</span> {
+  <span class="hljs-attribute">color</span>: red;
+}
+</code></pre>
+<pre><code class="hljs language-js"><span class="hljs-keyword">let</span> view = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Proxy</span>({
+  <span class="hljs-attr">selected</span>: <span class="hljs-literal">null</span>
+},
+{
+  <span class="hljs-attr">set</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">target, prop, newval</span>) </span>{
+    <span class="hljs-keyword">let</span> oldval = target[prop];
+
+    <span class="hljs-keyword">if</span> (prop === <span class="hljs-string">'selected'</span>) {
+      <span class="hljs-keyword">if</span> (oldval) {
+        oldval.className = <span class="hljs-string">''</span>;
+      }
+      <span class="hljs-keyword">if</span> (newval) {
+        newval.className = <span class="hljs-string">'selected'</span>;
+      }
+    }
+
+    <span class="hljs-built_in">Reflect</span>.set(target, prop, newval);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  }
+});
+
+<span class="hljs-keyword">const</span> list = <span class="hljs-built_in">document</span>.querySelectorAll(<span class="hljs-string">'ul li'</span>);
+view.selected = list[<span class="hljs-number">1</span>];
+
+<span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+  view.selected = list[<span class="hljs-number">2</span>];
+}, <span class="hljs-number">1000</span>);
+
+<span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+  view.selected = list[<span class="hljs-number">3</span>];
+}, <span class="hljs-number">2000</span>);
+</code></pre>
+<p>上面的代码中，Proxy对象<code>view</code>是<code>{selected: null}</code>对象的代理。当我们设置它的<code>selected</code>属性的时候，它不仅改变了<code>selected</code>属性的值，而且还改变了被选中元素对象的<code>className</code>的属性值。这样，我们使用这个<code>view</code>，就可以方便地选择元素，而不用每次手工去切换元素的状态。</p>
+<p>第三个例子——改变对象get访问器的语义：</p>
+<p>有时候，我们要创建一个复杂的多级的配置。因为我们不知道某个配置项是否存在，通常情况下我们可能会这样写：</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> config = {...}
+
+<span class="hljs-comment">// 添加新的内容</span>
+
+config.db = config.db || {};
+config.db.mysql = config.db.mysql || {};
+config.db.mysql.server = config.db.mysql.server || {};
+config.db.mysql.server.connectCount = <span class="hljs-number">2</span>;
+</code></pre>
+<p>如果用Proxy，我们可以创建一个这样的对象：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Configure</span>(<span class="hljs-params">config = {}</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Proxy</span>(config, {
+    <span class="hljs-function"><span class="hljs-title">get</span>(<span class="hljs-params">target, key, receiver</span>)</span> {
+      <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">!<span class="hljs-built_in">Reflect</span>.has(target, key) &#x26;&#x26; key !== <span class="hljs-string">'toJSON'</span></span>)</span> { <span class="hljs-comment">// 如果key不存在，创建空对象并返回</span>
+        <span class="hljs-keyword">const</span> ret = {}
+        <span class="hljs-built_in">Reflect</span>.set(target, key, ret)
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Configure(ret)
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">const</span> ret = <span class="hljs-built_in">Reflect</span>.get(target, key)
+        <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">ret &#x26;&#x26; <span class="hljs-keyword">typeof</span> ret === <span class="hljs-string">'object'</span></span>)</span> {
+          <span class="hljs-comment">// 如果key存在，且key的值是一个对象，那么执行递归</span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Configure(ret)
+        }
+        <span class="hljs-keyword">return</span> ret <span class="hljs-comment">// 如果key存在且不是个对象，直接返回key的值</span>
+      }
+    }
+  })
+}
+
+<span class="hljs-keyword">let</span> config = <span class="hljs-keyword">new</span> Configure();
+config.db.mysql.server.connectCount = <span class="hljs-number">2</span>;
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(config)); <span class="hljs-comment">// {"db":{"mysql":{"server":{"connectCount":2}}}}</span>
+</code></pre>
+<p>在上面的代码里，我们使用一个get拦截器，判断当前key是否存在，如果不存在，那么就创建一个空对象{}，并返回这个空对象的代理。如果当前key存在，并且是一个对象，那么将这个对象的代码返回。这样我们就能递归地自动创建多级多级属性，然后赋值，不需要一层一层去判断属性是否存在了。</p>
+<p>上面这些例子是关于Proxy的应用。实际上Proxy是属于ES6提供的比较高级的元编程功能，用它能够改变对象的许多默认行为，从而改变或创造新的语义。不过除了Proxy之外，还有一些语言特性也能改变或创造新的语义，我们再继续看下一个故事。</p>
+<h2>第四个故事：属性描述符、Object对象和Symbols</h2>
+<p>如果你使用过早期版本的JavaScript(ES5之前的版本)，你可能听过“忠告”，说不要往Object.prototype或Array.prototype上添加任何东西。</p>
+<p>这是因为，默认定义在对象或对象原型上的属性都是可枚举的，也就是说，这些属性会被<code>for...in</code>方法枚举出来。</p>
+<pre><code class="hljs language-js"><span class="hljs-built_in">Array</span>.prototype.foo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-built_in">console</span>.log(foo);
+}
+
+<span class="hljs-keyword">const</span> a = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];
+
+<span class="hljs-function"><span class="hljs-title">for</span>(<span class="hljs-params"><span class="hljs-keyword">let</span> i <span class="hljs-keyword">in</span> a</span>)</span> {
+  <span class="hljs-built_in">console</span>.log(i); <span class="hljs-comment">// 0, 1, 2, foo</span>
+}
+</code></pre>
+<p>上面的代码在<code>for...in</code>的时候会打印出 <code>0,1,2,foo</code>。</p>
+<p>要避免这个问题，要么在for循环中判断：</p>
+<pre><code class="hljs language-js"><span class="hljs-function"><span class="hljs-title">for</span>(<span class="hljs-params"><span class="hljs-keyword">let</span> i <span class="hljs-keyword">in</span> a</span>)</span> {
+  <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">a.hasOwnProperty(i)</span>)</span> {
+    <span class="hljs-built_in">console</span>.log(i);
+  }
+}
+</code></pre>
+<p>通过对象的<code>hasOwnProperty</code>方法将原型上添加的方法排除。</p>
+<p>要么，通过<code>Object.defineProperty</code>，将<code>foo</code>方法设置为不可枚举。</p>
+<pre><code class="hljs language-js"><span class="hljs-built_in">Object</span>.defineProperty(<span class="hljs-built_in">Array</span>.prototype, <span class="hljs-string">'foo'</span>, {
+  <span class="hljs-attr">value</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'foo'</span>;
+  },
+  <span class="hljs-comment">// enumerable: false, 默认值就是false</span>
+});
+<span class="hljs-keyword">const</span> a = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];
+
+<span class="hljs-function"><span class="hljs-title">for</span>(<span class="hljs-params"><span class="hljs-keyword">let</span> i <span class="hljs-keyword">in</span> a</span>)</span> {
+  <span class="hljs-built_in">console</span>.log(i); <span class="hljs-comment">// 1, 2, 3</span>
+}
+</code></pre>
+<p>如上代码所示，<code>Object.defineProperty</code>通过属性描述符定义对象的属性，使用这种方式定义的属性，默认情况下是不可枚举的。</p>
+<p><code>Object.defineProperty</code>除了改变枚举方式之外，还可以改变读写和删除操作的结果。</p>
+<p>在对象上要定义一个只读属性，通过<code>defineProperty</code>有两种办法，如果是数据，我们可以将<code>writable</code>属性置为<code>false</code>（实际上默认值就是<code>false</code>）。</p>
+<p>试着改写一下上面的代码的<code>Array.prototype.foo</code>：</p>
+<pre><code class="hljs language-js"><span class="hljs-built_in">Array</span>.prototype.foo = <span class="hljs-string">'bar'</span>;
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">Array</span>.prototype.foo); <span class="hljs-comment">// function()...</span>
+</code></pre>
+<p>如上代码所示，我们试图修改<code>Array.prototype.foo</code>为数据<code>bar</code>， 但是结果依然是function，说明<code>foo</code>属性是一个只读属性。</p>
+<p>另一种办法是为它设置一个get访问器：</p>
+<pre><code class="hljs language-js"><span class="hljs-built_in">Object</span>.defineProperty(<span class="hljs-built_in">Array</span>.prototype, <span class="hljs-string">'foo'</span>, {
+  <span class="hljs-attr">get</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'foo'</span>;
+  },
+});
+</code></pre>
+<p>属性访问器只有<code>get</code>没有<code>set</code>的话，那么这个属性就不可写。</p>
+<p>这个属性除了不可写，也是不可改变的，比如无法用<code>delete</code>删除。</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">delete</span> <span class="hljs-built_in">Array</span>.prototype.foo;
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">Array</span>.prototype.foo); <span class="hljs-comment">// function()...</span>
+</code></pre>
+<p>这段代码，我们试图用<code>delete</code>删除Array原型上的<code>foo</code>属性，但是没有成功。这是因为，属性描述符还有一个属性叫<code>configurable</code>，定义属性是否可被删除，默认值也是<code>false</code>。</p>
+<p>我们通过普通的赋值方式设置的属性，它的<code>enumerable</code>、<code>writable</code>和<code>configurable</code>都是<code>true</code>。</p>
+<p>也就是说，下面这个语句：</p>
+<pre><code class="hljs language-js">obj.foo = <span class="hljs-string">'foo'</span>;
+</code></pre>
+<p>等价于</p>
+<pre><code class="hljs language-js"><span class="hljs-built_in">Object</span>.defineProperty(obj, <span class="hljs-string">'foo'</span>, {
+  <span class="hljs-attr">value</span>: <span class="hljs-string">'foo'</span>,
+  <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">writable</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">configurable</span>: <span class="hljs-literal">true</span>,
+})
+</code></pre>
+<p>如果在<code>class</code>中定义的方法默认<code>enumerable</code>是<code>false</code>，而<code>writable</code>和<code>configurable</code>都是<code>true</code>。比如：</p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">foo</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'foo'</span>;
+  }
+}
+</code></pre>
+<p>相当于：</p>
+<pre><code class="hljs language-js"><span class="hljs-built_in">Object</span>.defineProperty(Foo.prototype, <span class="hljs-string">'foo'</span>, {
+  <span class="hljs-attr">value</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'foo'</span>;
+  },
+  <span class="hljs-attr">writable</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">configurable</span>: <span class="hljs-literal">true</span>,
+});
+</code></pre>
+<p>除了属性描述符可以在定义属性的时候决定属性是否可枚举、是否可写、是否可删除外，Object上还提供了一些辅助方法来改变一个对象的属性操作方式。</p>
+<p>比如我们如果不希望一个对象的属性在运行时发生改变，可以用<code>Object.freeze</code>方法将它“冻结”。</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> obj = {
+  <span class="hljs-attr">x</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">y</span>: <span class="hljs-number">2</span>,
+};
+
+<span class="hljs-built_in">Object</span>.freeze(obj);
+
+obj.x = -<span class="hljs-number">1</span>;
+obj.y = -<span class="hljs-number">2</span>;
+obj.z = <span class="hljs-number">3</span>;
+
+<span class="hljs-built_in">console</span>.log(obj); <span class="hljs-comment">// {x: 1, y: 2}</span>
+
+<span class="hljs-keyword">delete</span> obj.x;
+
+<span class="hljs-built_in">console</span>.log(obj); <span class="hljs-comment">// {x: 1, y: 2}</span>
+</code></pre>
+<p>“冻结”对象相当于将对象上的所有属性都设为不可写（<code>writable: false</code>）、不可改变（<code>configurable: false</code>），并且不允许再新增属性。不过，如果这个对象上本身有引用类型的属性，这个属性的那个对象依然是可写的。</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> obj = {
+  <span class="hljs-attr">x</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">y</span>: <span class="hljs-number">2</span>,
+  <span class="hljs-attr">z</span>: {},
+};
+
+<span class="hljs-built_in">Object</span>.freeze(obj);
+
+obj.z.a = <span class="hljs-number">10</span>;
+
+<span class="hljs-built_in">console</span>.log(obj.z.a); <span class="hljs-comment">// 10</span>
+</code></pre>
+<p>对应地，如果我们不想让对象不可写，只是希望对象的属性不能新增或删除，那么可以使用<code>Object.seal</code>，相当于将对象上的所有属性都设为不可改变（即，<code>configurable: false</code>），并且不允许再新增属性。</p>
+<p>通常情况下，如果我们有很大的数据项，而这些数据项一旦加载之后就不可改变，我们可以将它通过<code>Object.freeze</code>冻结，这样在一定程度上可以提升性能，JS引擎在这里做了优化。</p>
+<p>而<code>Object.seal</code>对性能没有影响，但在一些场景下也会有用。比如我们给一个对象设置很多可配置的属性，为了防止用户因为拼写错误给对象添加了错误的属性，我们可以通过<code>Object.seal</code>将对象属性锁住。</p>
+<p>另外，对象一旦被<code>Object.freeze</code>或<code>Object.seal</code>，则不能再还原成正常的对象。所以，如果我们不希望使用这两个方法改变原对象，但又希望达到同样的效果，我们可以使用上一节里的<code>Proxy</code>来模拟类似的功能。</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">/*
+  Proxy中可以通过defineProperty拦截对象新属性的赋值和defineProperty操作
+  通过deleteProperty拦截对象删除属性的操作
+ */</span>
+<span class="hljs-keyword">const</span> sealHandler = {
+  <span class="hljs-function"><span class="hljs-title">deleteProperty</span>(<span class="hljs-params">target, name</span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// 禁止delete属性</span>
+  },
+  <span class="hljs-attr">defineProperty</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">target, name</span>) </span>{
+    <span class="hljs-keyword">return</span> target; <span class="hljs-comment">// 禁止defineProperty</span>
+  },
+}
+
+<span class="hljs-keyword">const</span> o = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Proxy</span>({
+  <span class="hljs-attr">x</span>: <span class="hljs-number">1</span>, 
+  <span class="hljs-attr">y</span>: <span class="hljs-number">2</span>,
+}, sealHandler);
+
+<span class="hljs-built_in">console</span>.log(o.x, o.y); <span class="hljs-comment">// 1 2</span>
+o.z = <span class="hljs-number">3</span>;
+<span class="hljs-built_in">console</span>.log(o.z); <span class="hljs-comment">// undefined</span>
+<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">Object</span>.keys(o)); <span class="hljs-comment">// ["x", "y"]</span>
+<span class="hljs-keyword">delete</span> o.x; <span class="hljs-comment">// 此操作不成功</span>
+<span class="hljs-built_in">console</span>.log(o.x, o.y); <span class="hljs-comment">// 1 2</span>
+<span class="hljs-built_in">Object</span>.defineProperty(o, <span class="hljs-string">'z'</span>, {
+  <span class="hljs-attr">value</span>: <span class="hljs-number">3</span>,
+});
+<span class="hljs-built_in">console</span>.log(o.z); <span class="hljs-comment">// undefined</span>
+</code></pre>
+<p>上面的代码使用Proxy模拟了<code>Object.freeze</code>的操作。在不改变原对象（<code>{x: 1, y: 2}</code>）的情况下，使用者无法对这个对象进行增加新属性、删除属性以及修改属性操作。</p>
+<p>除了用属性描述符和<code>Object.freeze</code>、<code>Object.seal</code>改变对象行为之外，引擎提供了一些内置的<code>Symbol</code>，可以改写对象内部的语义。</p>
+<p>比如，我们可以通过给对象的<code>Symbol.iterator</code>属性设置方法，来影响目标对象的数组<code>spread</code>操作（即，<code>...</code>操作符）结果和<code>for...of</code>行为。</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> _baseUrl = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'baseUrl'</span>);
+<span class="hljs-keyword">const</span> _paths = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'paths'</span>);
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Router</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">baseUrl = <span class="hljs-string">'./'</span></span>)</span> {
+    <span class="hljs-built_in">this</span>[_baseUrl] = baseUrl;
+    <span class="hljs-built_in">this</span>[_paths] = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>();
+  }
+
+  <span class="hljs-function"><span class="hljs-title">addPath</span>(<span class="hljs-params">path</span>)</span> {
+    <span class="hljs-built_in">this</span>[_paths].add(path);
+  }
+  
+  *[<span class="hljs-built_in">Symbol</span>.iterator]() {
+    <span class="hljs-keyword">const</span> baseUrl = <span class="hljs-built_in">this</span>[_baseUrl];
+    <span class="hljs-function"><span class="hljs-title">for</span>(<span class="hljs-params"><span class="hljs-keyword">let</span> path <span class="hljs-keyword">of</span> <span class="hljs-built_in">this</span>[_paths]</span>)</span> {
+      <span class="hljs-keyword">yield</span> <span class="hljs-string">`<span class="hljs-subst">${baseUrl}</span>/<span class="hljs-subst">${path}</span>`</span>;
+    }
+  }
+}
+
+<span class="hljs-keyword">const</span> router = <span class="hljs-keyword">new</span> Router(<span class="hljs-string">'./src'</span>);
+
+router.addPath(<span class="hljs-string">'a/b'</span>);
+router.addPath(<span class="hljs-string">'c/d'</span>);
+
+<span class="hljs-built_in">console</span>.log([...router]); <span class="hljs-comment">// ["./src/a/b", "./src/c/d"]</span>
+</code></pre>
+<p>还有设置对象的<code>Symbol.toStringTag</code>会影响一个对象被<code>Object.prototype.toString</code>调用时返回的值。从而也改变它默认的<code>toString</code>行为。</p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> </span>{
+  get [<span class="hljs-built_in">Symbol</span>.toStringTag]() {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.constructor.name;
+  }  
+}
+
+<span class="hljs-keyword">const</span> foo = <span class="hljs-keyword">new</span> Foo();
+
+<span class="hljs-built_in">console</span>.log(foo + <span class="hljs-string">''</span>); <span class="hljs-comment">// [object Foo]</span>
+</code></pre>
+<p>此外，改写类的静态方法<code>Symbol.hasInstance</code>，可以改变<code>instanceof</code>操作的结果。因为JavaScript的类继承是单继承，所以在需要多继承的时候，我们只能通过混合的方式来处理：</p>
+<pre><code class="hljs language-js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+  }
+
+  <span class="hljs-function"><span class="hljs-title">methodA</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'method A'</span>);
+  }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">A</span> </span>{
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">super</span>();
+  }
+  <span class="hljs-function"><span class="hljs-title">methodB</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'method B'</span>);
+  }
+}
+
+<span class="hljs-keyword">const</span> InterfaceC = {
+  <span class="hljs-comment">// [Symbol.hasInstance](obj) {</span>
+  <span class="hljs-comment">//   return obj instanceof B;</span>
+  <span class="hljs-comment">// },</span>
+  <span class="hljs-function"><span class="hljs-title">methodC</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'method C'</span>);
+  }
+};
+
+<span class="hljs-built_in">Object</span>.assign(B.prototype, InterfaceC);
+
+<span class="hljs-keyword">const</span> b = <span class="hljs-keyword">new</span> B();
+
+<span class="hljs-built_in">console</span>.log(b.a, b.b, b.methodA(), b.methodB(), b.methodC()); <span class="hljs-comment">// a, b, method A, method B, method C</span>
+
+<span class="hljs-built_in">console</span>.log(b <span class="hljs-keyword">instanceof</span> B); <span class="hljs-comment">// true</span>
+<span class="hljs-built_in">console</span>.log(b <span class="hljs-keyword">instanceof</span> A); <span class="hljs-comment">// true</span>
+<span class="hljs-built_in">console</span>.log(b <span class="hljs-keyword">instanceof</span> InterfaceC); <span class="hljs-comment">// false</span>
+</code></pre>
+<p>上面的代码定义了A、B两个类，B继承了A，另外我们定义了一个接口InterfaceC，我们将InterfaceC的属性通过<code>Object.assign</code>给赋值到B的原型上，这样B的实例（<code>b</code>）就能调用InterfaceC的方法（即，<code>b.methodC()</code>）。但是，使用<code>instanceof</code> 判断对象<code>b</code>是否是InterfaceC的实例时，却返回了false。</p>
+<p>为了让<code>instanceof</code>方法正常处理多继承，我们需要使用<code>[Symbol.hasInstance]</code>方法，并让它返回<code>obj instanceof B</code>，这样的话，就能让B实例的行为真正像是InterfaceC的实例了，即<code>b instanceof InterfaceC</code>返回true。如下代码所示：</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// ...省略其他的代码...</span>
+<span class="hljs-keyword">const</span> InterfaceC = {
+  [<span class="hljs-built_in">Symbol</span>.hasInstance](obj) {
+    <span class="hljs-keyword">return</span> obj <span class="hljs-keyword">instanceof</span> B;
+  },
+};
+
+<span class="hljs-built_in">console</span>.log(b <span class="hljs-keyword">instanceof</span> InterfaceC); <span class="hljs-comment">// true</span>
+</code></pre>
+<p>除了这些以外，Symbol上还有<code>Symbol.match</code>可以设置字符串操作<code>String.prototype.match</code>的返回结果，还有<code>Symbol.split</code>、<code>Symbol.search</code>、<code>Symbol.replace</code>等等，也是控制相应的字符串操作的结果，另外还有<code>Symbol.toPrimitive</code>能够控制对象转换成原始类型的值，等等，还有许多有用的方法，虽然不太常用，但是确实能改变对象的语义，在这里就不一一列出了，有兴趣的同学可以自行查阅<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#" target="_blank" rel="nofollow noopener noreferrer">MDN文档</a>。</p>
+</div>
+</body>
+</html>
